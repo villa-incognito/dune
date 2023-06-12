@@ -21,6 +21,8 @@ import { ReactNode, useContext } from "react";
 import { SessionContext } from "gui/session/session";
 import { MigrationBanner } from "shared/MigrationBanner/MigrationBanner";
 import { UsageTracker } from "shared/UsageTracker/UsageTracker";
+import { MigrationDialogV2 } from "../../MigrationDialogV2/MigrationDialogV2";
+import { Button } from "components/Button/Button";
 
 interface Props {
   className?: string;
@@ -29,8 +31,8 @@ interface Props {
 export function HeaderDesktop(props: Props) {
   const { session, sessionLoading, logout } = useContext(SessionContext);
   const isLoggedOut = !session && !sessionLoading;
-
   const activeContext = useActiveContext();
+  const currentPlanId = activeContext?.serviceTier?.id;
 
   return (
     <header className={cn(styles.header, props.className)}>
@@ -91,9 +93,21 @@ export function HeaderDesktop(props: Props) {
           <ul className={styles.spacedGroup}>
             {session && (
               <li>
-                <AnchorButton theme="secondary-light" size="M" href="/pricing">
-                  Explore new plans
-                </AnchorButton>
+                {currentPlanId && [3, 4].includes(currentPlanId) ? (
+                  <MigrationDialogV2>
+                    <Button size="M" theme="secondary-light">
+                      Explore new plans
+                    </Button>
+                  </MigrationDialogV2>
+                ) : (
+                  <AnchorButton
+                    theme="secondary-light"
+                    size="M"
+                    href="/pricing"
+                  >
+                    Explore new plans
+                  </AnchorButton>
+                )}
               </li>
             )}
             <li>

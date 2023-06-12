@@ -13,6 +13,7 @@ const SessionUser = gql`
     id
     name
     profile_image_url
+    created_at
     private_info {
       stripeCustomerId: stripe_customer_id
       orbCustomerId: orb_customer_id
@@ -23,6 +24,7 @@ const SessionUser = gql`
       orbSubscriptionId: orb_subscription_id
       orbApiSubscriptionId: orb_api_subscription_id
       fromServiceTier: from_service_tier
+      onboarding_qs_skipped_until
     }
     user_service_tier {
       id
@@ -34,6 +36,7 @@ const SessionUser = gql`
       included_nanocredits
       remove_watermark
       base_monthly_price_dollars_cents
+      max_query_event_retention_days
       is_public
       performance
       release_version

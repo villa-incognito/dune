@@ -1,6 +1,4 @@
 import styles from "./DashboardsList.module.css";
-import tagsStyles from "gui/tags/tags.module.css";
-import cn from "classnames";
 
 import Link from "next/link";
 import { Avatar } from "gui/avatar/avatar";
@@ -12,6 +10,7 @@ import useDashboardsFavorites from "../api/useDashboardsFavorites";
 
 import type { ApiParams } from "../api/listBrowseDashboards";
 import type { DashboardType } from "../api/dashboardItem";
+import { Tags } from "gui/tags/tags";
 
 interface Props {
   dashboards: DashboardType[];
@@ -48,18 +47,11 @@ export default function DashboardsList(props: Props) {
                     </a>
                   </Link>
                   {dashboard.tags.length > 0 && (
-                    <ul className={cn(styles.tags, tagsStyles.tags)}>
-                      {dashboard.tags.slice(0, 5).map((tag) => (
-                        <li key={tag}>
-                          <Link
-                            href={`/browse/dashboards?tags=${tag}`}
-                            prefetch={false}
-                          >
-                            <a>#{tag}</a>
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
+                    <Tags
+                      className={styles.tags}
+                      slug="dashboards"
+                      tags={dashboard.tags.slice(0, 5)}
+                    />
                   )}
                 </div>
                 <div className={styles.userName}>

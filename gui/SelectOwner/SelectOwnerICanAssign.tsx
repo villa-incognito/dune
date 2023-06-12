@@ -80,6 +80,7 @@ export default function SelectOwnerICanAssign(props: {
 
   return (
     <SelectBox
+      name="owner"
       size="M"
       type="contained"
       label="Owner"

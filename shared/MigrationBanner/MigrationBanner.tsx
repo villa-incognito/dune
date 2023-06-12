@@ -13,10 +13,12 @@ import { addToastNotification } from "shared/Toasts/toastNotificationStore";
 import styles from "./MigrationBanner.module.css";
 import { useHasPendingDowngradeToFreeTier } from "page-components/Settings/Subscription/hooks/useHasPendingDowngradeToFreeTier";
 import { useAnalytics } from "gui/analytics/analytics";
+import { Button } from "components/Button/Button";
+import { MigrationDialogV2 } from "../MigrationDialogV2/MigrationDialogV2";
 
 const STORAGE_DISMISSED_KEY = "migrationNotificationDismissed";
 const STORAGE_VIEWED_KEY = "migrationNotificationViewed";
-const VERSION = "v2";
+const VERSION = "v3";
 
 const WithContext = (
   BaseComponent: React.FC<{
@@ -174,13 +176,7 @@ const getDescription = (serviceTierId: number, fromServiceTier?: number) => {
         );
       }
     case 2: // Analyzooor
-      return (
-        <>Get a more powerful Dune experience by migrating to a new plan.</>
-      );
     case 3: // Thug life
-      return (
-        <>Get a more powerful Dune experience by migrating to a new plan.</>
-      );
     case 4: // Elite
       return (
         <>Get a more powerful Dune experience by migrating to a new plan.</>
@@ -189,6 +185,28 @@ const getDescription = (serviceTierId: number, fromServiceTier?: number) => {
       return null;
   }
 };
+
+const ActionButton = ({
+  onClick,
+  trackClick,
+}: {
+  onClick?: () => void;
+  trackClick: () => void;
+}) => (
+  <Button
+    size="S"
+    theme="secondary"
+    onClick={() => {
+      trackClick();
+
+      if (onClick) {
+        onClick();
+      }
+    }}
+  >
+    Migrate plan
+  </Button>
+);
 
 function CustomActions(props: {
   serviceTierId: number;
@@ -210,14 +228,11 @@ function CustomActions(props: {
     case 3:
     case 4:
       return (
-        <AnchorButton
-          size="S"
-          theme="secondary"
-          href="/subscription/migrate"
-          onClick={() => trackClick("migrate", serviceTierId)}
-        >
-          Migrate now
-        </AnchorButton>
+        <MigrationDialogV2>
+          <ActionButton
+            trackClick={() => trackClick("migrate", serviceTierId)}
+          />
+        </MigrationDialogV2>
       );
     default:
       return null;

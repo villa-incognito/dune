@@ -1,6 +1,6 @@
 import styles from "./styles/SelectBox.module.css";
 import cn from "classnames";
-import { ReactNode, useMemo } from "react";
+import { ReactNode, forwardRef, useMemo } from "react";
 import { Warning as IconWarning } from "phosphor-react";
 import uniqueId from "lodash/uniqueId";
 
@@ -14,6 +14,7 @@ interface Props {
   placeholder: string;
   onChange: (event?: any) => void;
   value: string;
+  name: string;
   children: ReactNode; // This should be the options for the select
   label?: ReactNode; // This can come with only text, but with an icon as well
   disabled?: boolean;
@@ -21,8 +22,21 @@ interface Props {
   error?: string;
 }
 
-export function SelectBox(props: Props) {
-  const { size, type, placeholder, label, value, hint, error } = props;
+export const SelectBox = forwardRef<HTMLSelectElement, Props>((props, ref) => {
+  const {
+    size,
+    type,
+    placeholder,
+    label,
+    value,
+    hint,
+    error,
+    onChange,
+    disabled,
+    children,
+    name,
+    ...nativeProps
+  } = props;
 
   const selectBoxId = useMemo(() => uniqueId("selectBox-"), []);
 
@@ -38,20 +52,23 @@ export function SelectBox(props: Props) {
           styles.selectBox,
           styles[`size-${size}`],
           styles[`type-${type}`],
-          props.disabled && styles.disabled,
+          disabled && styles.disabled,
           error && styles.selectBoxError
         )}
       >
         <select
+          ref={ref}
+          name={name}
           id={selectBoxId}
-          onChange={props.onChange}
+          onChange={onChange}
           value={value}
-          disabled={props.disabled}
+          disabled={disabled}
+          {...nativeProps}
         >
           <option value="" disabled>
             {placeholder}
           </option>
-          {props.children}
+          {children}
         </select>
       </div>
       {error && (
@@ -67,4 +84,4 @@ export function SelectBox(props: Props) {
       )}
     </div>
   );
-}
+});

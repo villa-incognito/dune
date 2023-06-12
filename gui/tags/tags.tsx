@@ -1,23 +1,22 @@
+import React from "react";
 import cn from "classnames";
 import Link from "next/link";
 import styles from "gui/tags/tags.module.css";
 import { FieldLabel } from "gui/input/fields";
 import { InputText } from "gui/input/input";
+import { Badge, BadgeProps } from "components/Badge/Badge";
 
 export const Tags: React.FC<{
-  slug: string;
+  slug: "queries" | "dashboards";
   tags: string[];
   className?: string;
   limit?: number;
   color1?: boolean;
 }> = (props) => {
   const tags = props.limit ? props.tags.slice(0, props.limit) : props.tags;
+  const color: BadgeProps["color"] = props.color1 ? "brand-orange" : "neutral";
 
-  const className = cn(
-    styles.tags,
-    props.color1 && styles.color1,
-    props.className
-  );
+  const className = cn(styles.tags, props.className);
 
   if (tags.length === 0) {
     return null;
@@ -27,12 +26,12 @@ export const Tags: React.FC<{
     <ul className={className}>
       {tags.map((t) => (
         <li key={t}>
-          <Link
-            href="/browse/[slug]"
-            as={`/browse/${props.slug}?tags=${t}`}
-            prefetch={false}
-          >
-            <a>#{t}</a>
+          <Link prefetch={false} href={`/browse/${props.slug}?tags=${t}`}>
+            <a>
+              <Badge size="M" color={color} variant="filled">
+                #{t}
+              </Badge>
+            </a>
           </Link>
         </li>
       ))}

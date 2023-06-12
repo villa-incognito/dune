@@ -25,7 +25,7 @@ import { ToastNotificationWrapper } from "shared/Toasts/ToastNotificationWrapper
 import { apolloCore } from "lib/apollo/apollo";
 import sentryInit from "lib/sentry/init";
 import CookieNotification from "gui/CookieNotification/CookieNotification";
-import { MigrationDialog } from "shared/MigrationDialog/MigrationDialog";
+import { PromptDialogs } from "shared/PromptDialogs/PromptDialogs";
 
 if (typeof window !== "undefined") {
   sentryInit();
@@ -58,7 +58,7 @@ export const App = ({ Component, pageProps }: AppProps) => {
             <SessionProvider>
               <AppHead />
               <AnalyticsProvider>
-                <MigrationDialog />
+                <PromptDialogs />
                 <Component {...pageProps} />
                 <ToastNotificationWrapper />
                 <CookieNotification />

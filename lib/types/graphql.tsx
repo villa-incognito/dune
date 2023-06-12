@@ -350,6 +350,13 @@ export type GetResultV3Response = {
   result_id?: Maybe<Scalars['String']>;
 };
 
+export type GetResultV4Response = {
+  __typename?: 'GetResultV4Response';
+  error_id?: Maybe<Scalars['String']>;
+  job_id?: Maybe<Scalars['String']>;
+  result_id?: Maybe<Scalars['String']>;
+};
+
 export type GetTablePreviewResponse = {
   __typename?: 'GetTablePreviewResponse';
   error_id?: Maybe<Scalars['String']>;
@@ -16439,6 +16446,7 @@ export type Query_Root = {
   /** fetch aggregated fields from the table: "get_result_template" */
   get_result_template_aggregate: Get_Result_Template_Aggregate;
   get_result_v3?: Maybe<GetResultV3Response>;
+  get_result_v4?: Maybe<GetResultV4Response>;
   /** Collect and merge team invoices from stripe and orb */
   get_team_invoices?: Maybe<GetTeamInvoiceResponse>;
   /** Get orb subscription upcoming invoice */
@@ -17085,6 +17093,13 @@ export type Query_RootGet_Result_Template_AggregateArgs = {
 
 
 export type Query_RootGet_Result_V3Args = {
+  parameters?: Maybe<Array<Parameter>>;
+  query_id: Scalars['Int'];
+};
+
+
+export type Query_RootGet_Result_V4Args = {
+  can_refresh: Scalars['Boolean'];
   parameters?: Maybe<Array<Parameter>>;
   query_id: Scalars['Int'];
 };
@@ -20724,6 +20739,7 @@ export type Team_Received_Stars_Variance_Fields = {
 /** columns and relationships of "team_service_tiers" */
 export type Team_Service_Tiers = {
   __typename?: 'team_service_tiers';
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents: Scalars['Int'];
   can_hide_members: Scalars['Boolean'];
   created_at: Scalars['timestamptz'];
@@ -20850,6 +20866,7 @@ export type Team_Service_Tiers_Bool_Exp = {
   _and?: Maybe<Array<Team_Service_Tiers_Bool_Exp>>;
   _not?: Maybe<Team_Service_Tiers_Bool_Exp>;
   _or?: Maybe<Array<Team_Service_Tiers_Bool_Exp>>;
+  allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   can_hide_members?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
@@ -20904,6 +20921,7 @@ export type Team_Service_Tiers_Inc_Input = {
 
 /** input type for inserting data into table "team_service_tiers" */
 export type Team_Service_Tiers_Insert_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -21009,6 +21027,7 @@ export type Team_Service_Tiers_On_Conflict = {
 
 /** Ordering options when selecting data from "team_service_tiers". */
 export type Team_Service_Tiers_Order_By = {
+  allow_private_queries_as_views?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   can_hide_members?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
@@ -21044,6 +21063,8 @@ export type Team_Service_Tiers_Pk_Columns_Input = {
 
 /** select columns of table "team_service_tiers" */
 export enum Team_Service_Tiers_Select_Column {
+  /** column name */
+  AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -21096,6 +21117,7 @@ export enum Team_Service_Tiers_Select_Column {
 
 /** input type for updating data in table "team_service_tiers" */
 export type Team_Service_Tiers_Set_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -21183,6 +21205,7 @@ export type Team_Service_Tiers_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
@@ -21228,6 +21251,8 @@ export type Team_Service_Tiers_Sum_Fields = {
 
 /** update columns of table "team_service_tiers" */
 export enum Team_Service_Tiers_Update_Column {
+  /** column name */
+  AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -23705,6 +23730,7 @@ export type User_Received_Stars_Variance_Fields = {
 /** columns and relationships of "user_service_tiers" */
 export type User_Service_Tiers = {
   __typename?: 'user_service_tiers';
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents: Scalars['Int'];
   created_at: Scalars['timestamptz'];
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -23828,6 +23854,7 @@ export type User_Service_Tiers_Bool_Exp = {
   _and?: Maybe<Array<User_Service_Tiers_Bool_Exp>>;
   _not?: Maybe<User_Service_Tiers_Bool_Exp>;
   _or?: Maybe<Array<User_Service_Tiers_Bool_Exp>>;
+  allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   csv_downloads_per_month?: Maybe<Int_Comparison_Exp>;
@@ -23879,6 +23906,7 @@ export type User_Service_Tiers_Inc_Input = {
 
 /** input type for inserting data into table "user_service_tiers" */
 export type User_Service_Tiers_Insert_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -23980,6 +24008,7 @@ export type User_Service_Tiers_On_Conflict = {
 
 /** Ordering options when selecting data from "user_service_tiers". */
 export type User_Service_Tiers_Order_By = {
+  allow_private_queries_as_views?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   csv_downloads_per_month?: Maybe<Order_By>;
@@ -24013,6 +24042,8 @@ export type User_Service_Tiers_Pk_Columns_Input = {
 
 /** select columns of table "user_service_tiers" */
 export enum User_Service_Tiers_Select_Column {
+  /** column name */
+  AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -24061,6 +24092,7 @@ export enum User_Service_Tiers_Select_Column {
 
 /** input type for updating data in table "user_service_tiers" */
 export type User_Service_Tiers_Set_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -24143,6 +24175,7 @@ export type User_Service_Tiers_Stream_Cursor_Input = {
 
 /** Initial value of the column from where the streaming should start */
 export type User_Service_Tiers_Stream_Cursor_Value_Input = {
+  allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -24185,6 +24218,8 @@ export type User_Service_Tiers_Sum_Fields = {
 
 /** update columns of table "user_service_tiers" */
 export enum User_Service_Tiers_Update_Column {
+  /** column name */
+  AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -27380,7 +27415,7 @@ export type ListBrowseQueriesQuery = (
 
 export type QueryItemFragment = (
   { __typename?: 'queries' }
-  & Pick<Queries, 'id' | 'name' | 'created_at' | 'tags' | 'is_private'>
+  & Pick<Queries, 'id' | 'name' | 'created_at' | 'tags' | 'matview_id' | 'is_private'>
   & { user?: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id' | 'name' | 'profile_image_url'>
@@ -27616,6 +27651,7 @@ export type ListMyQueriesQueryVariables = Exact<{
   filter_name?: Maybe<String_Comparison_Exp>;
   filter_tags?: Maybe<Jsonb_Comparison_Exp>;
   filter_is_private?: Maybe<Boolean_Comparison_Exp>;
+  filter_is_matview?: Maybe<String_Comparison_Exp>;
   filter_custom?: Maybe<Array<Queries_Bool_Exp> | Queries_Bool_Exp>;
   is_archived: Scalars['Boolean'];
   order?: Maybe<Array<Queries_Order_By> | Queries_Order_By>;
@@ -28286,6 +28322,19 @@ export type HomeSearchQuery = (
   )>, abis: Array<(
     { __typename?: 'arrakis_schemas' }
     & Pick<Arrakis_Schemas, 'namespace' | 'contract_name' | 'abi_name' | 'abi_type' | 'full_name' | 'blockchains'>
+  )> }
+);
+
+export type ListMaterializedViewsQueryVariables = Exact<{
+  offset?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type ListMaterializedViewsQuery = (
+  { __typename?: 'query_root' }
+  & { queries: Array<(
+    { __typename?: 'queries' }
+    & Pick<Queries, 'name'>
   )> }
 );
 
@@ -29772,14 +29821,15 @@ export type UpdateUserQueryExecutionQuotaMutation = (
 export type GetResultQueryVariables = Exact<{
   query_id: Scalars['Int'];
   parameters: Array<Parameter> | Parameter;
+  can_refresh: Scalars['Boolean'];
 }>;
 
 
 export type GetResultQuery = (
   { __typename?: 'query_root' }
-  & { get_result_v3?: Maybe<(
-    { __typename?: 'GetResultV3Response' }
-    & Pick<GetResultV3Response, 'job_id' | 'result_id' | 'error_id'>
+  & { get_result_v4?: Maybe<(
+    { __typename?: 'GetResultV4Response' }
+    & Pick<GetResultV4Response, 'job_id' | 'result_id' | 'error_id'>
   )> }
 );
 
@@ -29953,14 +30003,14 @@ export type UserFragment = (
 
 export type SessionUserFragment = (
   { __typename?: 'users' }
-  & Pick<Users, 'id' | 'name' | 'profile_image_url'>
+  & Pick<Users, 'id' | 'name' | 'profile_image_url' | 'created_at'>
   & { private_info?: Maybe<(
     { __typename?: 'user_private' }
-    & Pick<User_Private, 'permissions' | 'service_tier'>
+    & Pick<User_Private, 'permissions' | 'service_tier' | 'onboarding_qs_skipped_until'>
     & { stripeCustomerId: User_Private['stripe_customer_id'], orbCustomerId: User_Private['orb_customer_id'], serviceTierId: User_Private['service_tier'], apiServiceTierId: User_Private['api_service_tier_id'], orbSubscriptionId: User_Private['orb_subscription_id'], orbApiSubscriptionId: User_Private['orb_api_subscription_id'], fromServiceTier: User_Private['from_service_tier'] }
   )>, user_service_tier: (
     { __typename?: 'user_service_tiers' }
-    & Pick<User_Service_Tiers, 'id' | 'name' | 'max_private_queries' | 'max_private_dashboards' | 'csv_downloads_per_month' | 'included_query_executions' | 'included_nanocredits' | 'remove_watermark' | 'base_monthly_price_dollars_cents' | 'is_public' | 'performance' | 'release_version'>
+    & Pick<User_Service_Tiers, 'id' | 'name' | 'max_private_queries' | 'max_private_dashboards' | 'csv_downloads_per_month' | 'included_query_executions' | 'included_nanocredits' | 'remove_watermark' | 'base_monthly_price_dollars_cents' | 'max_query_event_retention_days' | 'is_public' | 'performance' | 'release_version'>
   ), api_user_service_tier?: Maybe<(
     { __typename?: 'api_user_service_tiers' }
     & Pick<Api_User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'included_datapoints' | 'included_executions' | 'is_public'>
@@ -31146,7 +31196,58 @@ export type GetTeamServiceTierInfoByNameQuery = (
   { __typename?: 'query_root' }
   & { team_service_tiers: Array<(
     { __typename?: 'team_service_tiers' }
-    & Pick<Team_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'max_private_queries' | 'max_private_dashboards' | 'remove_watermark' | 'csv_downloads_per_month' | 'performance' | 'included_query_executions' | 'query_exec_overage_dollars_cents' | 'included_nanocredits' | 'nanocredits_cost_cents'>
+    & Pick<Team_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'max_private_queries' | 'max_private_dashboards' | 'remove_watermark' | 'csv_downloads_per_month' | 'performance' | 'included_query_executions' | 'query_exec_overage_dollars_cents' | 'max_query_event_retention_days' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'release_version'>
+  )> }
+);
+
+export type SubmitOnboardingQsMutationVariables = Exact<{
+  user_id: Scalars['Int'];
+  brings_to_dune: Scalars['String'];
+  achieve_with_dune: Scalars['String'];
+  sql_experience?: Maybe<Scalars['String']>;
+  blockchain_experience: Scalars['String'];
+  organization_size?: Maybe<Scalars['String']>;
+  version: Scalars['String'];
+  until: Scalars['timestamptz'];
+}>;
+
+
+export type SubmitOnboardingQsMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_onboarding_questions?: Maybe<(
+    { __typename?: 'onboarding_questions_mutation_response' }
+    & Pick<Onboarding_Questions_Mutation_Response, 'affected_rows'>
+  )>, update_users?: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'users' }
+      & Pick<Users, 'id'>
+      & { private_info?: Maybe<(
+        { __typename?: 'user_private' }
+        & Pick<User_Private, 'onboarding_qs_skipped_until'>
+      )> }
+    )> }
+  )> }
+);
+
+export type SkipOnboardingQsMutationVariables = Exact<{
+  user_id: Scalars['Int'];
+  until: Scalars['timestamptz'];
+}>;
+
+
+export type SkipOnboardingQsMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_users?: Maybe<(
+    { __typename?: 'users_mutation_response' }
+    & { returning: Array<(
+      { __typename?: 'users' }
+      & Pick<Users, 'id'>
+      & { private_info?: Maybe<(
+        { __typename?: 'user_private' }
+        & Pick<User_Private, 'onboarding_qs_skipped_until'>
+      )> }
+    )> }
   )> }
 );
 
@@ -31359,6 +31460,7 @@ export const QueryItemFragmentDoc = gql`
   name
   created_at
   tags
+  matview_id
   user {
     id
     name
@@ -31749,6 +31851,7 @@ export const SessionUserFragmentDoc = gql`
   id
   name
   profile_image_url
+  created_at
   private_info {
     stripeCustomerId: stripe_customer_id
     orbCustomerId: orb_customer_id
@@ -31759,6 +31862,7 @@ export const SessionUserFragmentDoc = gql`
     orbSubscriptionId: orb_subscription_id
     orbApiSubscriptionId: orb_api_subscription_id
     fromServiceTier: from_service_tier
+    onboarding_qs_skipped_until
   }
   user_service_tier {
     id
@@ -31770,6 +31874,7 @@ export const SessionUserFragmentDoc = gql`
     included_nanocredits
     remove_watermark
     base_monthly_price_dollars_cents
+    max_query_event_retention_days
     is_public
     performance
     release_version
@@ -33201,9 +33306,9 @@ export type ListMyFavoriteQueriesQueryHookResult = ReturnType<typeof useListMyFa
 export type ListMyFavoriteQueriesLazyQueryHookResult = ReturnType<typeof useListMyFavoriteQueriesLazyQuery>;
 export type ListMyFavoriteQueriesQueryResult = Apollo.QueryResult<ListMyFavoriteQueriesQuery, ListMyFavoriteQueriesQueryVariables>;
 export const ListMyQueriesDocument = gql`
-    query ListMyQueries($filter_name: String_comparison_exp, $filter_tags: jsonb_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_custom: [queries_bool_exp!], $is_archived: Boolean!, $order: [queries_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false) {
+    query ListMyQueries($filter_name: String_comparison_exp, $filter_tags: jsonb_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_is_matview: String_comparison_exp, $filter_custom: [queries_bool_exp!], $is_archived: Boolean!, $order: [queries_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false) {
   queries(
-    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, _and: $filter_custom}
+    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, matview_id: $filter_is_matview, _and: $filter_custom}
     limit: $limit
     offset: $offset
     order_by: $order
@@ -33211,7 +33316,7 @@ export const ListMyQueriesDocument = gql`
     ...QueryItem
   }
   queries_aggregate(
-    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, _and: $filter_custom}
+    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, matview_id: $filter_is_matview, is_private: $filter_is_private, _and: $filter_custom}
   ) {
     aggregate {
       count
@@ -33235,6 +33340,7 @@ export const ListMyQueriesDocument = gql`
  *      filter_name: // value for 'filter_name'
  *      filter_tags: // value for 'filter_tags'
  *      filter_is_private: // value for 'filter_is_private'
+ *      filter_is_matview: // value for 'filter_is_matview'
  *      filter_custom: // value for 'filter_custom'
  *      is_archived: // value for 'is_archived'
  *      order: // value for 'order'
@@ -34770,6 +34876,39 @@ export function useHomeSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type HomeSearchQueryHookResult = ReturnType<typeof useHomeSearchQuery>;
 export type HomeSearchLazyQueryHookResult = ReturnType<typeof useHomeSearchLazyQuery>;
 export type HomeSearchQueryResult = Apollo.QueryResult<HomeSearchQuery, HomeSearchQueryVariables>;
+export const ListMaterializedViewsDocument = gql`
+    query ListMaterializedViews($offset: Int) {
+  queries(where: {matview_id: {_is_null: false}}, offset: $offset) {
+    name
+  }
+}
+    `;
+
+/**
+ * __useListMaterializedViewsQuery__
+ *
+ * To run a query within a React component, call `useListMaterializedViewsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListMaterializedViewsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListMaterializedViewsQuery({
+ *   variables: {
+ *      offset: // value for 'offset'
+ *   },
+ * });
+ */
+export function useListMaterializedViewsQuery(baseOptions?: Apollo.QueryHookOptions<ListMaterializedViewsQuery, ListMaterializedViewsQueryVariables>) {
+        return Apollo.useQuery<ListMaterializedViewsQuery, ListMaterializedViewsQueryVariables>(ListMaterializedViewsDocument, baseOptions);
+      }
+export function useListMaterializedViewsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMaterializedViewsQuery, ListMaterializedViewsQueryVariables>) {
+          return Apollo.useLazyQuery<ListMaterializedViewsQuery, ListMaterializedViewsQueryVariables>(ListMaterializedViewsDocument, baseOptions);
+        }
+export type ListMaterializedViewsQueryHookResult = ReturnType<typeof useListMaterializedViewsQuery>;
+export type ListMaterializedViewsLazyQueryHookResult = ReturnType<typeof useListMaterializedViewsLazyQuery>;
+export type ListMaterializedViewsQueryResult = Apollo.QueryResult<ListMaterializedViewsQuery, ListMaterializedViewsQueryVariables>;
 export const ListRawTablesDocument = gql`
     query ListRawTables($dataset_id: Int!, $search_terms: [arrakis_schemas_bool_exp!]!, $filter_blockchains: jsonb_comparison_exp!, $offset: Int) {
   arrakis_schemas(
@@ -37687,8 +37826,12 @@ export type UpdateUserQueryExecutionQuotaMutationHookResult = ReturnType<typeof 
 export type UpdateUserQueryExecutionQuotaMutationResult = Apollo.MutationResult<UpdateUserQueryExecutionQuotaMutation>;
 export type UpdateUserQueryExecutionQuotaMutationOptions = Apollo.BaseMutationOptions<UpdateUserQueryExecutionQuotaMutation, UpdateUserQueryExecutionQuotaMutationVariables>;
 export const GetResultDocument = gql`
-    query GetResult($query_id: Int!, $parameters: [Parameter!]!) {
-  get_result_v3(query_id: $query_id, parameters: $parameters) {
+    query GetResult($query_id: Int!, $parameters: [Parameter!]!, $can_refresh: Boolean!) {
+  get_result_v4(
+    query_id: $query_id
+    parameters: $parameters
+    can_refresh: $can_refresh
+  ) {
     job_id
     result_id
     error_id
@@ -37710,6 +37853,7 @@ export const GetResultDocument = gql`
  *   variables: {
  *      query_id: // value for 'query_id'
  *      parameters: // value for 'parameters'
+ *      can_refresh: // value for 'can_refresh'
  *   },
  * });
  */
@@ -40922,8 +41066,10 @@ export const GetTeamServiceTierInfoByNameDocument = gql`
     performance
     included_query_executions
     query_exec_overage_dollars_cents
+    max_query_event_retention_days
     included_nanocredits
     nanocredits_cost_cents
+    release_version
   }
 }
     `;
@@ -40953,6 +41099,99 @@ export function useGetTeamServiceTierInfoByNameLazyQuery(baseOptions?: Apollo.La
 export type GetTeamServiceTierInfoByNameQueryHookResult = ReturnType<typeof useGetTeamServiceTierInfoByNameQuery>;
 export type GetTeamServiceTierInfoByNameLazyQueryHookResult = ReturnType<typeof useGetTeamServiceTierInfoByNameLazyQuery>;
 export type GetTeamServiceTierInfoByNameQueryResult = Apollo.QueryResult<GetTeamServiceTierInfoByNameQuery, GetTeamServiceTierInfoByNameQueryVariables>;
+export const SubmitOnboardingQsDocument = gql`
+    mutation SubmitOnboardingQs($user_id: Int!, $brings_to_dune: String!, $achieve_with_dune: String!, $sql_experience: String, $blockchain_experience: String!, $organization_size: String, $version: String!, $until: timestamptz!) {
+  insert_onboarding_questions(
+    objects: {user_id: $user_id, brings_to_dune: $brings_to_dune, achieve_with_dune: $achieve_with_dune, sql_experience: $sql_experience, blockchain_experience: $blockchain_experience, organization_size: $organization_size, version: $version}
+  ) {
+    affected_rows
+  }
+  update_users(
+    where: {id: {_eq: $user_id}}
+    _set: {onboarding_qs_skipped_until: $until}
+  ) {
+    returning {
+      id
+      private_info {
+        onboarding_qs_skipped_until
+      }
+    }
+  }
+}
+    `;
+export type SubmitOnboardingQsMutationFn = Apollo.MutationFunction<SubmitOnboardingQsMutation, SubmitOnboardingQsMutationVariables>;
+
+/**
+ * __useSubmitOnboardingQsMutation__
+ *
+ * To run a mutation, you first call `useSubmitOnboardingQsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSubmitOnboardingQsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [submitOnboardingQsMutation, { data, loading, error }] = useSubmitOnboardingQsMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      brings_to_dune: // value for 'brings_to_dune'
+ *      achieve_with_dune: // value for 'achieve_with_dune'
+ *      sql_experience: // value for 'sql_experience'
+ *      blockchain_experience: // value for 'blockchain_experience'
+ *      organization_size: // value for 'organization_size'
+ *      version: // value for 'version'
+ *      until: // value for 'until'
+ *   },
+ * });
+ */
+export function useSubmitOnboardingQsMutation(baseOptions?: Apollo.MutationHookOptions<SubmitOnboardingQsMutation, SubmitOnboardingQsMutationVariables>) {
+        return Apollo.useMutation<SubmitOnboardingQsMutation, SubmitOnboardingQsMutationVariables>(SubmitOnboardingQsDocument, baseOptions);
+      }
+export type SubmitOnboardingQsMutationHookResult = ReturnType<typeof useSubmitOnboardingQsMutation>;
+export type SubmitOnboardingQsMutationResult = Apollo.MutationResult<SubmitOnboardingQsMutation>;
+export type SubmitOnboardingQsMutationOptions = Apollo.BaseMutationOptions<SubmitOnboardingQsMutation, SubmitOnboardingQsMutationVariables>;
+export const SkipOnboardingQsDocument = gql`
+    mutation SkipOnboardingQs($user_id: Int!, $until: timestamptz!) {
+  update_users(
+    where: {id: {_eq: $user_id}}
+    _set: {onboarding_qs_skipped_until: $until}
+  ) {
+    returning {
+      id
+      private_info {
+        onboarding_qs_skipped_until
+      }
+    }
+  }
+}
+    `;
+export type SkipOnboardingQsMutationFn = Apollo.MutationFunction<SkipOnboardingQsMutation, SkipOnboardingQsMutationVariables>;
+
+/**
+ * __useSkipOnboardingQsMutation__
+ *
+ * To run a mutation, you first call `useSkipOnboardingQsMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSkipOnboardingQsMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [skipOnboardingQsMutation, { data, loading, error }] = useSkipOnboardingQsMutation({
+ *   variables: {
+ *      user_id: // value for 'user_id'
+ *      until: // value for 'until'
+ *   },
+ * });
+ */
+export function useSkipOnboardingQsMutation(baseOptions?: Apollo.MutationHookOptions<SkipOnboardingQsMutation, SkipOnboardingQsMutationVariables>) {
+        return Apollo.useMutation<SkipOnboardingQsMutation, SkipOnboardingQsMutationVariables>(SkipOnboardingQsDocument, baseOptions);
+      }
+export type SkipOnboardingQsMutationHookResult = ReturnType<typeof useSkipOnboardingQsMutation>;
+export type SkipOnboardingQsMutationResult = Apollo.MutationResult<SkipOnboardingQsMutation>;
+export type SkipOnboardingQsMutationOptions = Apollo.BaseMutationOptions<SkipOnboardingQsMutation, SkipOnboardingQsMutationVariables>;
 export const GetTeamOperationCostsDocument = gql`
     query GetTeamOperationCosts($teamId: Int!) {
   team_operation_costs(team_id: $teamId) {

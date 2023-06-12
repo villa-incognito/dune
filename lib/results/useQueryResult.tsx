@@ -42,7 +42,7 @@ interface TemporaryJob {
 // re-validating stale results.
 //
 // The flow is as follows:
-//  1) Call `get_result_v3` query, which returns a combination of:
+//  1) Call `get_result_v4` query, which returns a combination of:
 //     - result ID: The latest successful result for a given query
 //     - error ID: The latest error for a given query, if the freshest execution resulted in an error
 //     - job ID: The ID of a job that is currently running to refresh the results for the query
@@ -54,12 +54,19 @@ interface TemporaryJob {
 // Along with the results this hook provides a refresh function that will refetch the data.
 // If a query is updated then you can simply call the refresh function to get the updated results.
 // If you provide a job_id then the passed job_id is used instead of the job_id returned by the
-// get_result_v3.
+// get_result_v4.
 export const useQueryResult = (
-  queryId?: number,
-  parameters?: Parameter[],
-  apiKey?: string,
-  isTest = false
+  queryId: number | undefined,
+  parameters: Parameter[] | undefined,
+  {
+    can_refresh,
+    isTest = false,
+    apiKey,
+  }: {
+    can_refresh: boolean;
+    isTest?: boolean;
+    apiKey?: string;
+  }
 ): QueryResult | undefined => {
   const { sessionLoading } = React.useContext(SessionContext);
   const [tempJob, setTempJob] = React.useState<TemporaryJob>();
@@ -79,7 +86,7 @@ export const useQueryResult = (
     jobId,
     errorId,
     refresh: refreshResultAndJobId,
-  } = useGetResult(queryId, parameters, apiKey);
+  } = useGetResult(queryId, parameters, can_refresh, apiKey);
 
   // if the tempJobId has been set in the refresh callback use it instead of
   // job id returned in step 1
@@ -90,26 +97,19 @@ export const useQueryResult = (
   const {
     data: jobResultsData,
     error: jobResultsDataError,
-  } = useGetRefreshExecution(
-    jobIdToUse,
-    queryIdToUse,
-    parameters,
-    apiKey,
-    isTest
-  );
+  } = useGetRefreshExecution(jobIdToUse, queryIdToUse, parameters, apiKey, {
+    can_refresh,
+    isTest,
+  });
 
   // Step 3: Get the results or error (if available) for the result_id from step 1.
   const {
     data: initialResultsData,
     error: initialResultsDataError,
-  } = useGetInitialResults(
-    resultId,
-    errorId,
-    queryId,
-    parameters,
-    apiKey,
-    isTest
-  );
+  } = useGetInitialResults(resultId, errorId, queryId, parameters, apiKey, {
+    can_refresh,
+    isTest,
+  });
 
   // If there is a tempJobId then only show the results of the job and
   // don't ever show the results of the initial resultId.
@@ -168,14 +168,15 @@ interface QueryResultDetails {
 
 const updateGetResultCache = (
   res: GetExecutionQuery,
-  queryId?: number,
-  parameters?: Parameter[]
+  queryId: number | undefined,
+  parameters: Parameter[] | undefined,
+  can_refresh: boolean
 ) => {
   let cache;
   if (res.get_execution?.execution_succeeded) {
     cache = {
-      get_result_v3: {
-        __typename: "GetResultV3Response",
+      get_result_v4: {
+        __typename: "GetResultV4Response",
         result_id: res.get_execution.execution_succeeded.execution_id,
         job_id: null,
         error_id: null,
@@ -183,8 +184,8 @@ const updateGetResultCache = (
     };
   } else if (res.get_execution?.execution_failed) {
     cache = {
-      get_result_v3: {
-        __typename: "GetResultV3Response",
+      get_result_v4: {
+        __typename: "GetResultV4Response",
         job_id: null,
         error_id: res.get_execution.execution_failed.execution_id,
       },
@@ -195,8 +196,9 @@ const updateGetResultCache = (
     apolloCore.writeQuery({
       query: getResultQuery,
       variables: {
-        parameters: parameters || [],
         query_id: queryId || 0,
+        parameters: parameters || [],
+        can_refresh,
       },
       data: cache,
     });
@@ -209,8 +211,16 @@ const updateGetResultCache = (
 // Only fetches once and then stores result in cache for future invocations.
 // Use returned refresh function to get latest result metadata.
 const getResultQuery = gql`
-  query GetResult($query_id: Int!, $parameters: [Parameter!]!) {
-    get_result_v3(query_id: $query_id, parameters: $parameters) {
+  query GetResult(
+    $query_id: Int!
+    $parameters: [Parameter!]!
+    $can_refresh: Boolean!
+  ) {
+    get_result_v4(
+      query_id: $query_id
+      parameters: $parameters
+      can_refresh: $can_refresh
+    ) {
       job_id
       result_id
       error_id
@@ -221,6 +231,7 @@ const getResultQuery = gql`
 interface GetResultQueryParams {
   queryId?: number;
   parameters?: Parameter[];
+  can_refresh: boolean;
   apiKey: string | undefined;
   session?: Session;
 }
@@ -232,6 +243,7 @@ interface GetResultQueryParams {
 export function getResultQueryParams({
   queryId,
   parameters,
+  can_refresh,
   apiKey,
   session,
 }: GetResultQueryParams) {
@@ -242,19 +254,22 @@ export function getResultQueryParams({
     variables: {
       query_id: queryId || 0,
       parameters: formattedParams,
+      can_refresh,
     },
   };
 }
 
 const useGetResult = (
-  queryId?: number,
-  parameters?: Parameter[],
-  apiKey?: string
+  queryId: number | undefined,
+  parameters: Parameter[] | undefined,
+  can_refresh: boolean,
+  apiKey: string | undefined
 ): QueryResultDetails => {
   const session = useSessionRef();
   const getResultParams = getResultQueryParams({
     queryId,
     parameters,
+    can_refresh,
     apiKey,
     session: session.current,
   });
@@ -269,9 +284,9 @@ const useGetResult = (
   );
   const details = useMemo(
     () => ({
-      jobId: convertNull<string>(res?.data?.get_result_v3?.job_id),
-      resultId: convertNull<string>(res?.data?.get_result_v3?.result_id),
-      errorId: convertNull<string>(res?.data?.get_result_v3?.error_id),
+      jobId: convertNull<string>(res?.data?.get_result_v4?.job_id),
+      resultId: convertNull<string>(res?.data?.get_result_v4?.result_id),
+      errorId: convertNull<string>(res?.data?.get_result_v4?.error_id),
       refresh: res.refetch,
     }),
     [res.data, res.refetch]
@@ -285,11 +300,17 @@ type useGetRefreshExecutionResponse = Pick<
   "data" | "error"
 >;
 const useGetRefreshExecution = (
-  jobId?: string,
-  queryId?: number,
-  parameters?: Parameter[],
-  apiKey?: string,
-  isTest = false
+  jobId: string | undefined,
+  queryId: number | undefined,
+  parameters: Parameter[] | undefined,
+  apiKey: string | undefined,
+  {
+    can_refresh,
+    isTest = false,
+  }: {
+    can_refresh: boolean;
+    isTest?: boolean;
+  }
 ): useGetRefreshExecutionResponse => {
   const [currentPosition, setCurrentPosition] = useState<number | undefined>();
   const session = useSessionRef();
@@ -316,7 +337,7 @@ const useGetRefreshExecution = (
         res.get_execution?.execution_running === null
       ) {
         executionsCache.set(execCacheKey, res);
-        updateGetResultCache(res, queryId, formattedParams);
+        updateGetResultCache(res, queryId, formattedParams, can_refresh);
       }
     },
     client: !isTest ? apolloCoreHack : undefined,
@@ -372,12 +393,18 @@ type useGetInitialResultsResponse = Pick<
   "data" | "error"
 >;
 const useGetInitialResults = (
-  resultId?: string,
-  errorId?: string,
-  queryId?: number,
-  parameters?: Parameter[],
-  apiKey?: string,
-  isTest = false
+  resultId: string | undefined,
+  errorId: string | undefined,
+  queryId: number | undefined,
+  parameters: Parameter[] | undefined,
+  apiKey: string | undefined,
+  {
+    can_refresh,
+    isTest = false,
+  }: {
+    can_refresh: boolean;
+    isTest?: boolean;
+  }
 ): useGetInitialResultsResponse => {
   const session = useSessionRef();
   const formattedParams: Parameter[] = formatParams(parameters);

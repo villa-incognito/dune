@@ -2,7 +2,7 @@ import { EntryFilter } from "lib/entries/types";
 import { Icon } from "gui/icon/icon";
 import { Pagenav } from "gui/pagenav/pagenav";
 import { PagenavItem } from "gui/pagenav/pagenav";
-import { useUploadedTablesCount } from "page-components/MyTablesSubmissionsPage";
+import { useIsFeatureEnabled } from "lib/hooks/useIsFeatureEnabled";
 
 export const BrowseSubNav: React.FC<{
   filter?: EntryFilter;
@@ -20,8 +20,8 @@ export const BrowseSubNav: React.FC<{
   const prefetch = shouldPrefetch && undefined;
 
   const hasAuthoredFilter = filter === "authored";
-  const uploadedTablesCount = useUploadedTablesCount({ hasAuthoredFilter });
-  const showTablesAuthored = hasAuthoredFilter && uploadedTablesCount > 0;
+  const dataUploadEnabled = useIsFeatureEnabled("data-upload-v1");
+  const showTablesAuthored = hasAuthoredFilter && dataUploadEnabled;
 
   return (
     <Pagenav className={className}>

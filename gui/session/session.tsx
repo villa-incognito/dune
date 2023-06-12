@@ -244,7 +244,7 @@ const triggerLogoutTabSync = () => {
 
 // Options for the session fetch.
 const fetchOptions = {
-  refreshInterval: 60 * 1000,
+  refreshInterval: 60 * 1000 * 4, // 4 minutes. JWTs expire after 5 minutes.
   refreshWhenHidden: true,
   revalidateOnFocus: false,
   revalidateOnReconnect: true,

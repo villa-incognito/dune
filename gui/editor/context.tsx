@@ -112,7 +112,9 @@ const EditorProviderValue: React.FC<Props> = (props) => {
   );
 
   const parameters = useParameters(state.query.parameters);
-  const result = useQueryResult(props.query?.id, parameters.appliedMerged);
+  const result = useQueryResult(props.query?.id, parameters.appliedMerged, {
+    can_refresh: false,
+  });
 
   const refresh = React.useCallback(async () => {
     const query = await props.refresh();
@@ -396,6 +398,12 @@ export const useEditorQueryTemp = () => {
   });
 };
 
+export const useEditorQueryIsArchived = () => {
+  return useContextSelector(EditorContext, ({ editor }) => {
+    return editor?.query.is_archived;
+  });
+};
+
 export const useEditorQueryMatViewId = () => {
   return useContextSelector(EditorContext, ({ editor }) => {
     return editor?.query.matview_id;
@@ -480,6 +488,14 @@ export const useEditorVisual = () => {
 
 // Utils
 export function isDeprecated(dataset: Pick<Datasets, "name">) {
+  return dataset.name.includes("[deprecated]");
+}
+
+export function isEditingDisabled(dataset: Pick<Datasets, "name">) {
+  if (dataset.name.includes("v1 Ethereum")) {
+    // Allow editing "v1 Ethereum [deprecated]"
+    return false;
+  }
   return dataset.name.includes("[deprecated]");
 }
 

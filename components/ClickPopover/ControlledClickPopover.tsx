@@ -25,6 +25,7 @@ interface Props {
   position: Position;
   distancePx?: number;
   closeOnClickOutside?: boolean;
+  disableEscKey?: boolean;
 
   isOpen: boolean;
   setIsOpen: (isOpen: boolean) => void;
@@ -42,7 +43,7 @@ export function ControlledClickPopover(props: Props) {
     if (!isOpen) return;
 
     function onKey(event: KeyboardEvent) {
-      if (event.key === "Escape") {
+      if (event.key === "Escape" && !props.disableEscKey) {
         setIsOpen(false);
       }
     }

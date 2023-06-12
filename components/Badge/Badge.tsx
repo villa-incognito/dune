@@ -25,6 +25,8 @@ interface Props {
   children: ReactNode;
 }
 
+export type { Props as BadgeProps };
+
 // Demo: https://dune.com/ui/Badge
 export const Badge = forwardRef<HTMLSpanElement, Props>((props, ref) => {
   const { size, color, variant } = props;

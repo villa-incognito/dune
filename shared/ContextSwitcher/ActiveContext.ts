@@ -11,6 +11,7 @@ export interface ActiveContext {
     name: string;
     version: string;
     hasPlanSubscription: boolean;
+    hasPaidPlanSubscription: boolean;
     csvDownloadsPerMonth: number | null;
     isCSVExportEnabled: boolean;
     includedCredits: number;
@@ -58,6 +59,12 @@ export function getUserContext(session: SessionWithUser): ActiveContext {
           session.user?.user_service_tier.id !== 1
         );
       },
+      get hasPaidPlanSubscription() {
+        return (
+          session.user?.user_service_tier.release_version === "v2" &&
+          session.user?.user_service_tier.id !== 1
+        );
+      },
     },
   };
 }
@@ -91,6 +98,12 @@ export function getTeamContext(team: Team): ActiveContext {
       get hasPlanSubscription() {
         return (
           team.service_tier.release_version === "v2" ||
+          team.service_tier.id !== 1
+        );
+      },
+      get hasPaidPlanSubscription() {
+        return (
+          team.service_tier.release_version === "v2" &&
           team.service_tier.id !== 1
         );
       },
