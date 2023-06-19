@@ -152,6 +152,9 @@ export function HeaderDesktop(props: Props) {
                     </Menu.Section>
                     {session && (
                       <Menu.Section>
+                        <Menu.ItemLink href="/contracts/new">
+                          Submit a contract
+                        </Menu.ItemLink>
                         <Menu.ItemLink href="/settings/profile">
                           Settings
                         </Menu.ItemLink>

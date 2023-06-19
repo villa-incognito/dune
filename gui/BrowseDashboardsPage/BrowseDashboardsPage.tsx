@@ -122,7 +122,7 @@ function Results(props: {
 
     return (
       <>
-        <List dashboards={data.dashboards} order={props.order} />
+        <List dashboards={data.dashboards} />
 
         <BrowsePagination pageSize={pageSize} totalCount={data.total_count} />
       </>

@@ -45,12 +45,6 @@ export const BrowseSubNav: React.FC<{
           </PagenavItem>
         </>
       )}
-      {hasAuthoredFilter && (
-        <PagenavItem href="/browse/contracts/authored">
-          <Icon icon="list-nested" />
-          Contracts
-        </PagenavItem>
-      )}
       {showTablesAuthored && (
         <PagenavItem href="/browse/tables/authored">
           <Icon icon="list-nested" />

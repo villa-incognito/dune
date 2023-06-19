@@ -295,6 +295,7 @@ export type ExecutionSucceeded = {
   data?: Maybe<Scalars['json']>;
   execution_id: Scalars['String'];
   generated_at: Scalars['timestamptz'];
+  max_result_size_reached_bytes?: Maybe<Scalars['Int']>;
   runtime_seconds: Scalars['Int'];
 };
 
@@ -504,9 +505,10 @@ export type QueryEvent = {
   metadata?: Maybe<QueryEventMetadata>;
   query_id: Scalars['Int'];
   query_version: Scalars['Int'];
+  team_id?: Maybe<Scalars['Int']>;
   to: Scalars['json'];
   type: Scalars['String'];
-  user_id: Scalars['Int'];
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 export type QueryEventMetadata = {
@@ -14892,13 +14894,15 @@ export type Query_Event_Types_Updates = {
 export type Query_Events = {
   __typename?: 'query_events';
   created_at: Scalars['timestamptz'];
+  dune_service_name: Scalars['String'];
   from: Scalars['jsonb'];
   id: Scalars['bpchar'];
   query_id: Scalars['Int'];
   query_version: Scalars['Int'];
+  team_id?: Maybe<Scalars['Int']>;
   to: Scalars['jsonb'];
   type: Query_Event_Types_Enum;
-  user_id: Scalars['Int'];
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 
@@ -14954,6 +14958,7 @@ export type Query_Events_Avg_Fields = {
   __typename?: 'query_events_avg_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -14963,10 +14968,12 @@ export type Query_Events_Bool_Exp = {
   _not?: Maybe<Query_Events_Bool_Exp>;
   _or?: Maybe<Array<Query_Events_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  dune_service_name?: Maybe<String_Comparison_Exp>;
   from?: Maybe<Jsonb_Comparison_Exp>;
   id?: Maybe<Bpchar_Comparison_Exp>;
   query_id?: Maybe<Int_Comparison_Exp>;
   query_version?: Maybe<Int_Comparison_Exp>;
+  team_id?: Maybe<Int_Comparison_Exp>;
   to?: Maybe<Jsonb_Comparison_Exp>;
   type?: Maybe<Query_Event_Types_Enum_Comparison_Exp>;
   user_id?: Maybe<Int_Comparison_Exp>;
@@ -15000,16 +15007,19 @@ export type Query_Events_Delete_Key_Input = {
 export type Query_Events_Inc_Input = {
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
 /** input type for inserting data into table "query_events" */
 export type Query_Events_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  dune_service_name?: Maybe<Scalars['String']>;
   from?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['bpchar']>;
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   to?: Maybe<Scalars['jsonb']>;
   type?: Maybe<Query_Event_Types_Enum>;
   user_id?: Maybe<Scalars['Int']>;
@@ -15019,9 +15029,11 @@ export type Query_Events_Insert_Input = {
 export type Query_Events_Max_Fields = {
   __typename?: 'query_events_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  dune_service_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bpchar']>;
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -15029,9 +15041,11 @@ export type Query_Events_Max_Fields = {
 export type Query_Events_Min_Fields = {
   __typename?: 'query_events_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  dune_service_name?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['bpchar']>;
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -15054,10 +15068,12 @@ export type Query_Events_On_Conflict = {
 /** Ordering options when selecting data from "query_events". */
 export type Query_Events_Order_By = {
   created_at?: Maybe<Order_By>;
+  dune_service_name?: Maybe<Order_By>;
   from?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   query_id?: Maybe<Order_By>;
   query_version?: Maybe<Order_By>;
+  team_id?: Maybe<Order_By>;
   to?: Maybe<Order_By>;
   type?: Maybe<Order_By>;
   user_id?: Maybe<Order_By>;
@@ -15079,6 +15095,8 @@ export enum Query_Events_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DuneServiceName = 'dune_service_name',
+  /** column name */
   From = 'from',
   /** column name */
   Id = 'id',
@@ -15086,6 +15104,8 @@ export enum Query_Events_Select_Column {
   QueryId = 'query_id',
   /** column name */
   QueryVersion = 'query_version',
+  /** column name */
+  TeamId = 'team_id',
   /** column name */
   To = 'to',
   /** column name */
@@ -15097,10 +15117,12 @@ export enum Query_Events_Select_Column {
 /** input type for updating data in table "query_events" */
 export type Query_Events_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  dune_service_name?: Maybe<Scalars['String']>;
   from?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['bpchar']>;
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   to?: Maybe<Scalars['jsonb']>;
   type?: Maybe<Query_Event_Types_Enum>;
   user_id?: Maybe<Scalars['Int']>;
@@ -15111,6 +15133,7 @@ export type Query_Events_Stddev_Fields = {
   __typename?: 'query_events_stddev_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -15119,6 +15142,7 @@ export type Query_Events_Stddev_Pop_Fields = {
   __typename?: 'query_events_stddev_pop_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -15127,6 +15151,7 @@ export type Query_Events_Stddev_Samp_Fields = {
   __typename?: 'query_events_stddev_samp_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -15141,10 +15166,12 @@ export type Query_Events_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Query_Events_Stream_Cursor_Value_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  dune_service_name?: Maybe<Scalars['String']>;
   from?: Maybe<Scalars['jsonb']>;
   id?: Maybe<Scalars['bpchar']>;
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   to?: Maybe<Scalars['jsonb']>;
   type?: Maybe<Query_Event_Types_Enum>;
   user_id?: Maybe<Scalars['Int']>;
@@ -15155,6 +15182,7 @@ export type Query_Events_Sum_Fields = {
   __typename?: 'query_events_sum_fields';
   query_id?: Maybe<Scalars['Int']>;
   query_version?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -15163,6 +15191,8 @@ export enum Query_Events_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  DuneServiceName = 'dune_service_name',
+  /** column name */
   From = 'from',
   /** column name */
   Id = 'id',
@@ -15170,6 +15200,8 @@ export enum Query_Events_Update_Column {
   QueryId = 'query_id',
   /** column name */
   QueryVersion = 'query_version',
+  /** column name */
+  TeamId = 'team_id',
   /** column name */
   To = 'to',
   /** column name */
@@ -15201,6 +15233,7 @@ export type Query_Events_Var_Pop_Fields = {
   __typename?: 'query_events_var_pop_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -15209,6 +15242,7 @@ export type Query_Events_Var_Samp_Fields = {
   __typename?: 'query_events_var_samp_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -15217,6 +15251,7 @@ export type Query_Events_Variance_Fields = {
   __typename?: 'query_events_variance_fields';
   query_id?: Maybe<Scalars['Float']>;
   query_version?: Maybe<Scalars['Float']>;
+  team_id?: Maybe<Scalars['Float']>;
   user_id?: Maybe<Scalars['Float']>;
 };
 
@@ -28480,7 +28515,7 @@ export type GetInitialQueryEventQuery = (
   { __typename?: 'query_root' }
   & { get_initial_query_event?: Maybe<(
     { __typename?: 'QueryEvent' }
-    & Pick<QueryEvent, 'id' | 'user_id' | 'query_version' | 'from' | 'to' | 'type' | 'created_at'>
+    & Pick<QueryEvent, 'id' | 'user_id' | 'team_id' | 'query_version' | 'from' | 'to' | 'type' | 'created_at'>
     & { metadata?: Maybe<(
       { __typename?: 'QueryEventMetadata' }
       & Pick<QueryEventMetadata, 'name' | 'description'>
@@ -28502,7 +28537,7 @@ export type GetQueryEventsQuery = (
     & Pick<GetQueryEventsResponse, 'past_retention_window' | 'retention_days'>
     & { results: Array<(
       { __typename?: 'QueryEvent' }
-      & Pick<QueryEvent, 'id' | 'user_id' | 'query_version' | 'from' | 'to' | 'type' | 'created_at'>
+      & Pick<QueryEvent, 'id' | 'user_id' | 'team_id' | 'query_version' | 'from' | 'to' | 'type' | 'created_at'>
       & { metadata?: Maybe<(
         { __typename?: 'QueryEventMetadata' }
         & Pick<QueryEventMetadata, 'name' | 'description'>
@@ -29576,7 +29611,7 @@ export type GetExecutionQuery = (
       & Pick<ExecutionRunning, 'execution_id' | 'execution_user_id' | 'execution_type' | 'started_at' | 'created_at'>
     )>, execution_succeeded?: Maybe<(
       { __typename?: 'ExecutionSucceeded' }
-      & Pick<ExecutionSucceeded, 'execution_id' | 'runtime_seconds' | 'generated_at' | 'columns' | 'data'>
+      & Pick<ExecutionSucceeded, 'execution_id' | 'runtime_seconds' | 'generated_at' | 'columns' | 'data' | 'max_result_size_reached_bytes'>
     )>, execution_failed?: Maybe<(
       { __typename?: 'ExecutionFailed' }
       & Pick<ExecutionFailed, 'execution_id' | 'type' | 'message' | 'runtime_seconds' | 'generated_at'>
@@ -35223,6 +35258,7 @@ export const GetInitialQueryEventDocument = gql`
   get_initial_query_event(query_id: $query_id) {
     id
     user_id
+    team_id
     query_version
     from
     to
@@ -35267,6 +35303,7 @@ export const GetQueryEventsDocument = gql`
     results {
       id
       user_id
+      team_id
       query_version
       from
       to
@@ -37230,6 +37267,7 @@ export const GetExecutionDocument = gql`
       generated_at
       columns
       data
+      max_result_size_reached_bytes
     }
     execution_failed {
       execution_id

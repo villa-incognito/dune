@@ -61,12 +61,12 @@ const apolloCoreCache = new InMemoryCache({
         arrakis_schemas: offsetLimitPagination(["where"]),
         // Apollo throws a warning when merging arrays (https://go.apollo.dev/c/merging-non-normalized-objects)
         view_queue_positions: {
-          merge(existing, incoming) {
+          merge(_existing, incoming) {
             return incoming;
           },
         },
         pending_user_subscription_updates: {
-          merge(existing, incoming) {
+          merge(_existing, incoming) {
             return incoming;
           },
         },

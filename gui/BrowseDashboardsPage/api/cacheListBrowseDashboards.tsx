@@ -49,9 +49,7 @@ export function populateListBrowseDashboardsCache(
   });
 }
 
-export function evictListBrowseDashboardsCache(
-  cacheData: ListBrowseDashboardsCacheDataItem[]
-) {
+export function evictListBrowseDashboardsCache() {
   apolloCore.cache.evict({ id: "ROOT_QUERY", fieldName: "dashboards" });
   apolloCore.cache.evict({
     id: "ROOT_QUERY",
@@ -69,7 +67,7 @@ export function usePopulateListBrowseDashboardsCache(
 
     fetchServerTimeUnixMs().then((now: number) => {
       if (now > expiresAt) {
-        evictListBrowseDashboardsCache(cacheData);
+        evictListBrowseDashboardsCache();
       }
     });
   });

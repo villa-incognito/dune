@@ -1,9 +1,6 @@
-import modal from "components/Modal/ModalContent.module.css";
-import modalOverlay from "components/Modal/ModalOverlay.module.css";
-import cn from "classnames";
 import { useEffect, useState } from "react";
-import { DialogContent, DialogOverlay } from "@reach/dialog";
 import { useSession } from "gui/session/session";
+import { ModalWithoutTrigger } from "components/Modal";
 import { Content } from "./Content";
 import { useWindowSize } from "@reach/window-size";
 
@@ -30,21 +27,20 @@ export function OnboardingQuestions() {
   };
 
   return (
-    <>
-      <DialogOverlay isOpen={isOpen} className={modalOverlay.overlay}>
-        <DialogContent
-          className={cn(modal.contentWrapper, modal[`size-M`])}
-          aria-label="Onboarding Questions"
-        >
-          <Content
-            session={session}
-            userId={session.user.id}
-            onDismiss={onDismiss}
-            hasSkippedBefore={hasSkippedBefore}
-          />
-        </DialogContent>
-      </DialogOverlay>
-    </>
+    <ModalWithoutTrigger
+      size="M"
+      label="Onboarding Questions"
+      content={
+        <Content
+          session={session}
+          userId={session.user.id}
+          onDismiss={onDismiss}
+          hasSkippedBefore={hasSkippedBefore}
+        />
+      }
+      isOpen={isOpen}
+      onDismiss={undefined}
+    />
   );
 }
 

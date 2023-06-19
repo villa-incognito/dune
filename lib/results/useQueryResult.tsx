@@ -60,11 +60,9 @@ export const useQueryResult = (
   parameters: Parameter[] | undefined,
   {
     can_refresh,
-    isTest = false,
     apiKey,
   }: {
     can_refresh: boolean;
-    isTest?: boolean;
     apiKey?: string;
   }
 ): QueryResult | undefined => {
@@ -99,17 +97,13 @@ export const useQueryResult = (
     error: jobResultsDataError,
   } = useGetRefreshExecution(jobIdToUse, queryIdToUse, parameters, apiKey, {
     can_refresh,
-    isTest,
   });
 
   // Step 3: Get the results or error (if available) for the result_id from step 1.
   const {
     data: initialResultsData,
     error: initialResultsDataError,
-  } = useGetInitialResults(resultId, errorId, queryId, parameters, apiKey, {
-    can_refresh,
-    isTest,
-  });
+  } = useGetInitialResults(resultId, errorId, queryId, parameters, apiKey);
 
   // If there is a tempJobId then only show the results of the job and
   // don't ever show the results of the initial resultId.
@@ -306,10 +300,8 @@ const useGetRefreshExecution = (
   apiKey: string | undefined,
   {
     can_refresh,
-    isTest = false,
   }: {
     can_refresh: boolean;
-    isTest?: boolean;
   }
 ): useGetRefreshExecutionResponse => {
   const [currentPosition, setCurrentPosition] = useState<number | undefined>();
@@ -340,7 +332,7 @@ const useGetRefreshExecution = (
         updateGetResultCache(res, queryId, formattedParams, can_refresh);
       }
     },
-    client: !isTest ? apolloCoreHack : undefined,
+    client: apolloCoreHack,
   });
 
   // A job is considered to be done when it has been executed
@@ -397,14 +389,7 @@ const useGetInitialResults = (
   errorId: string | undefined,
   queryId: number | undefined,
   parameters: Parameter[] | undefined,
-  apiKey: string | undefined,
-  {
-    can_refresh,
-    isTest = false,
-  }: {
-    can_refresh: boolean;
-    isTest?: boolean;
-  }
+  apiKey: string | undefined
 ): useGetInitialResultsResponse => {
   const session = useSessionRef();
   const formattedParams: Parameter[] = formatParams(parameters);
@@ -423,7 +408,7 @@ const useGetInitialResults = (
     onCompleted: (res) => {
       executionsCache.set(resultCacheKey, res);
     },
-    client: !isTest ? apolloCoreHack : undefined,
+    client: apolloCoreHack,
   });
   const errorCacheKey = `execution_${errorId}`;
   const cachedError = executionsCache.get(errorCacheKey);
@@ -442,7 +427,7 @@ const useGetInitialResults = (
     onCompleted: (res) => {
       executionsCache.set(errorCacheKey, res);
     },
-    client: !isTest ? apolloCoreHack : undefined,
+    client: apolloCoreHack,
   });
 
   // Build the result
@@ -482,6 +467,9 @@ const getMeta = (
       ),
       generated_at: convertNull<string>(
         result.get_execution.execution_succeeded.generated_at
+      ),
+      max_result_size_reached_bytes: convertNull<number>(
+        result.get_execution.execution_succeeded.max_result_size_reached_bytes
       ),
     });
   }

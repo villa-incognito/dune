@@ -4,8 +4,6 @@ import { logger } from "lib/logger/browser";
 import { useSession } from "gui/session/session";
 import { useDashboardsFavoritesQuery } from "lib/types/graphql";
 
-import type { ApiParams } from "./listBrowseDashboards";
-
 type DashboardId = number;
 
 export interface Output {
@@ -13,8 +11,7 @@ export interface Output {
 }
 
 export default function useDashboardsFavorites(
-  dashboard_ids: number[],
-  order: ApiParams["order"]
+  dashboard_ids: number[]
 ): Output {
   const session = useSession();
   const session_id = session?.user?.id;

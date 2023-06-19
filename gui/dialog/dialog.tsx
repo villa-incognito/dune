@@ -27,7 +27,7 @@ export const Dialog: React.FC<DialogProps> = (props) => {
   );
 
   // Make sure props.onDismiss is called without args.
-  const onDismiss = (event?: React.SyntheticEvent) => {
+  const onDismiss = () => {
     props.onDismiss();
   };
 

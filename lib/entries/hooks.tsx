@@ -20,7 +20,7 @@ import { useTokenFetch } from "lib/hooks/use-token-fetch";
 export const useEntryQuery = (query?: number, apiKey?: string) => {
   return useTokenFetch(
     ["useEntryQuery", query, apiKey],
-    async (csrf: string, session?: Session) => {
+    async (_csrf: string, session?: Session) => {
       if (typeof query === "number") {
         return fetchQuery(query, session, apiKey);
       }
@@ -35,7 +35,7 @@ export const useFullDashboard = (
 ) => {
   return useTokenFetch(
     ["useFullDashboard", user, slug, apiKey],
-    async (csrf: string, session?: Session) => {
+    async (_csrf: string, session?: Session) => {
       if (typeof user === "string" && typeof slug === "string") {
         return fetchDashboard(user, slug, session, apiKey);
       }
@@ -46,7 +46,7 @@ export const useFullDashboard = (
 export const useRelatedDashboards = (dashboard: FullDashboard) => {
   return useTokenFetch(
     ["useRelatedDashboards", dashboard.slug],
-    async (csrf: string, session?: Session) => {
+    async (_csrf: string, session?: Session) => {
       return fetchRelatedDashboards(dashboard, session);
     }
   );
@@ -55,7 +55,7 @@ export const useRelatedDashboards = (dashboard: FullDashboard) => {
 export const useUsers = (entriesRequestFilters: EntriesRequestFilters) => {
   return useTokenFetch<EntryPage<EntryUser>>(
     [JSON.stringify(entriesRequestFilters)],
-    (csrf: string, session?: Session) => {
+    (_csrf: string, session?: Session) => {
       return fetchUsers(entriesRequestFilters, session);
     }
   );
@@ -68,7 +68,7 @@ export const useEntries = (
 ) => {
   return useTokenFetch(
     [slug, filter, JSON.stringify(entriesRequestFilters)],
-    async (csrf: string, session?: Session) => {
+    async (_csrf: string, session?: Session) => {
       switch (filter) {
         case "authored":
           switch (slug) {

@@ -31,7 +31,7 @@ export const MigrationDialogV2 = (props: Props) => {
   const isControlled = children !== undefined;
   const isCreatingTeam = React.useRef(false);
   const [plan, setPlan] = useState<string | undefined>(props.preselectedPlan);
-  const teams = (useMyTeamsIfLoggedIn(session) ?? []).filter(
+  const teams = useMyTeamsIfLoggedIn(session)?.filter(
     (team) =>
       ["admin"].includes(team.membership.role) && team.service_tier.is_public
   );
@@ -43,7 +43,7 @@ export const MigrationDialogV2 = (props: Props) => {
   const isHidden =
     !session?.user ||
     (pathname === "/subscription/migrate" && !isControlled) ||
-    !teams.length;
+    !teams;
 
   const onMigrate = (plan: string) => {
     if (teams?.length) {

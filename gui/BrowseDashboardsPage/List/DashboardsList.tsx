@@ -8,18 +8,16 @@ import Star from "./DashboardStar";
 
 import useDashboardsFavorites from "../api/useDashboardsFavorites";
 
-import type { ApiParams } from "../api/listBrowseDashboards";
 import type { DashboardType } from "../api/dashboardItem";
 import { Tags } from "gui/tags/tags";
 
 interface Props {
   dashboards: DashboardType[];
-  order: ApiParams["order"];
 }
 
 export default function DashboardsList(props: Props) {
   const dashboardIds = props.dashboards.map((q) => q.id);
-  const favorites = useDashboardsFavorites(dashboardIds, props.order);
+  const favorites = useDashboardsFavorites(dashboardIds);
 
   return (
     <table className={styles.table}>

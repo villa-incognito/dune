@@ -67,7 +67,7 @@ function ToggleableDashboardStar(props: Props) {
             addToFavorites(session, props.dashboard_id)
               .then(() => refetchFavorites(session, props.dashboard_id))
               .catch(
-                (error) => {} // ignore failed request
+                () => {} // ignore failed request
               );
           }}
         >
@@ -85,7 +85,7 @@ function ToggleableDashboardStar(props: Props) {
             removeFromFavorites(session, props.dashboard_id)
               .then(() => refetchFavorites(session, props.dashboard_id))
               .catch(
-                (error) => {} // ignore failed request
+                () => {} // ignore failed request
               );
           }}
         >

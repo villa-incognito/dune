@@ -75,13 +75,13 @@ type SupportedTypes =
   | Record<string, any>;
 // The assumed size in bytes of each data type
 const typeSizes = {
-  undefined: (item: any) => BigInt(0),
-  boolean: (item: boolean) => BigInt(4),
-  number: (item: number) => BigInt(8),
+  undefined: (_item: any) => BigInt(0),
+  boolean: (_item: boolean) => BigInt(4),
+  number: (_item: number) => BigInt(8),
   string: (item: string) => BigInt(2 * item.length),
-  function: (item: any) => BigInt(0),
-  symbol: (item: any) => BigInt(0),
-  bigint: (item: any) => BigInt(0),
+  function: (_item: any) => BigInt(0),
+  symbol: (_item: any) => BigInt(0),
+  bigint: (_item: any) => BigInt(0),
   object: (item: Record<string, any>): bigint =>
     !item
       ? BigInt(0)

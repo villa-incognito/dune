@@ -157,6 +157,9 @@ export function HamburgerMenu() {
             <Menu.ItemLink href="/pricing">Subscriptions</Menu.ItemLink>
             <Menu.ItemLink href="/careers">Careers</Menu.ItemLink>
             <Menu.ItemLink href="/changelog">Changelog</Menu.ItemLink>
+            <Menu.ItemLink href="/contracts/new">
+              Submit a contract
+            </Menu.ItemLink>
           </ul>
         </nav>
       )}

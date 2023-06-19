@@ -13,6 +13,7 @@ import { Button } from "components/Button/Button";
 import cn from "classnames";
 import { AnchorButton } from "components/Button/AnchorButton";
 import { IconCoins } from "components/Icons/IconCoins";
+import { Badge } from "components/Badge/Badge";
 
 const v2Plan: Record<number, string> = {
   3: "plus",
@@ -41,7 +42,7 @@ interface PlanCardProps {
 const PlanCard = ({ plan, type, onClick }: PlanCardProps) => {
   const credits =
     plan.release_version === "v1"
-      ? Math.round((plan.included_query_executions ?? 0) / 10)
+      ? Math.round((plan.included_query_executions ?? 0) * 10)
       : Math.round(plan.included_nanocredits / 10 ** 9);
 
   const clickHandler = () => {
@@ -52,7 +53,20 @@ const PlanCard = ({ plan, type, onClick }: PlanCardProps) => {
 
   return (
     <div className={cn(styles.planCard, styles[type])}>
-      <h2>{formattedPlanName(plan.name)}</h2>
+      <h2>
+        <span>{formattedPlanName(plan.name)}</span>
+        <div className={styles.planBadge}>
+          {type === "compare" ? (
+            <Badge size="L" variant="filled" color="neutral">
+              Current
+            </Badge>
+          ) : (
+            <Badge size="L" variant="filled" color="brand-blue">
+              Recommended
+            </Badge>
+          )}
+        </div>
+      </h2>
       <p className={styles.secondary}>{plan.description}</p>
       <div className={styles.price}>
         <h2>${plan.base_monthly_price_dollars_cents / 100}</h2>
@@ -63,7 +77,7 @@ const PlanCard = ({ plan, type, onClick }: PlanCardProps) => {
         <li>
           <strong>{credits}</strong> Credits{" "}
           {plan.release_version === "v1" ? (
-            `(${credits} med exec)`
+            `(${credits / 10} Medium executions)`
           ) : (
             <IconCoins />
           )}

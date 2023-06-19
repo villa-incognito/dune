@@ -20,7 +20,7 @@ export const RadioButtonGroup = forwardRef<
   }
 >((props, ref) => {
   return (
-    <fieldset className={styles.group} role="radiogroup">
+    <fieldset className={styles.group} role="radiogroup" ref={ref}>
       {props.children.map((child, index) =>
         React.cloneElement(child as ReactElement<any>, {
           key: index,

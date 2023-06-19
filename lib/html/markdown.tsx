@@ -15,7 +15,7 @@ export const renderMarkdown = (raw: string, validateLinks = true) => {
 };
 
 // A helper that removes href attrs with disallowed values.
-const replaceLink = (link: string, env: unknown, token: Token) => {
+const replaceLink = (link: string, _env: unknown, token: Token) => {
   if (token.tag === "a" && isDeniedLink(link)) {
     logger.debug("removed disallowed link:", link);
     token.attrs = [];
