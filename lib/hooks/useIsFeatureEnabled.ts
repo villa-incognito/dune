@@ -20,7 +20,6 @@ type FeatureFlag =
   | "apisix"
   | "feature-flag-test"
   | "disabled-flag"
-  | "version-history"
   | "show-migrate-button"
   | "query-refresh"
   | "matviews"

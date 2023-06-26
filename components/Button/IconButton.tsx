@@ -17,7 +17,7 @@ type Size = "XS" | "S" | "M" | "L";
  * out what size/theme a specific button has, since they will always be
  * specified.
  */
-interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   theme: Theme;
   size: Size;
   // Expect a single element as children.

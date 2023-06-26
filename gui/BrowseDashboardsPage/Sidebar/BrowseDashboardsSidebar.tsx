@@ -166,11 +166,13 @@ export default function BrowseDashboardsSidebar(props: Props) {
       <aside className={styles.tags}>
         <BoxList title="Popular dashboard tags" border>
           {props.tags.map(({ tag, popularity }: Tag) => (
-            <BoxListItem key={tag} icon="tag" count={popularity}>
-              <Link prefetch={false} href={getTagUrl(tag)}>
-                <a aria-current={tag === selectedTag}>{tag}</a>
-              </Link>
-            </BoxListItem>
+            <Link prefetch={false} href={getTagUrl(tag)} key={tag}>
+              <a aria-current={tag === selectedTag}>
+                <BoxListItem icon="tag" count={popularity}>
+                  {tag}
+                </BoxListItem>
+              </a>
+            </Link>
           ))}
         </BoxList>
       </aside>

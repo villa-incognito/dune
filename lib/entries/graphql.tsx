@@ -235,7 +235,7 @@ const BaseQuery = gql`
   }
 `;
 
-export const Query = gql`
+const Query = gql`
   fragment Query on queries {
     ...BaseQuery
     ...QueryVisualizations

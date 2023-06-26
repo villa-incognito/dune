@@ -296,6 +296,7 @@ export type ExecutionSucceeded = {
   execution_id: Scalars['String'];
   generated_at: Scalars['timestamptz'];
   max_result_size_reached_bytes?: Maybe<Scalars['Int']>;
+  request_max_result_size_bytes?: Maybe<Scalars['Int']>;
   runtime_seconds: Scalars['Int'];
 };
 
@@ -554,6 +555,17 @@ export type ResendInviteResponse = {
 export type RestoreQueryResponse = {
   __typename?: 'RestoreQueryResponse';
   query_id: Scalars['Int'];
+};
+
+export type SearchContractsProject = {
+  __typename?: 'SearchContractsProject';
+  blockchains: Array<Scalars['String']>;
+  namespace: Scalars['String'];
+};
+
+export type SearchContractsResponse = {
+  __typename?: 'SearchContractsResponse';
+  projects: Array<SearchContractsProject>;
 };
 
 export type SetMaxExecutionsOverageCostCentsResponse = {
@@ -6580,6 +6592,7 @@ export type Membership_Statuses_Comparison_Exp = {
 export type Memberships = {
   __typename?: 'memberships';
   created_at: Scalars['timestamptz'];
+  email?: Maybe<Scalars['String']>;
   id: Scalars['uuid'];
   /** An object relationship */
   private_details?: Maybe<Memberships_Private_Details>;
@@ -6590,8 +6603,8 @@ export type Memberships = {
   team_id: Scalars['Int'];
   updated_at: Scalars['timestamptz'];
   /** An object relationship */
-  user: Users;
-  user_id: Scalars['Int'];
+  user?: Maybe<Users>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 /** aggregated selection of "memberships" */
@@ -6676,6 +6689,7 @@ export type Memberships_Bool_Exp = {
   _not?: Maybe<Memberships_Bool_Exp>;
   _or?: Maybe<Array<Memberships_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  email?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   private_details?: Maybe<Memberships_Private_Details_Bool_Exp>;
   role?: Maybe<Membership_Roles_Comparison_Exp>;
@@ -6689,6 +6703,8 @@ export type Memberships_Bool_Exp = {
 
 /** unique or primary key constraints on table "memberships" */
 export enum Memberships_Constraint {
+  /** unique or primary key constraint on columns "email" */
+  MembershipsEmailIx = 'memberships_email_ix',
   /** unique or primary key constraint on columns "id" */
   MembershipsPkey = 'memberships_pkey',
   /** unique or primary key constraint on columns "user_id", "team_id" */
@@ -6704,6 +6720,7 @@ export type Memberships_Inc_Input = {
 /** input type for inserting data into table "memberships" */
 export type Memberships_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   private_details?: Maybe<Memberships_Private_Details_Obj_Rel_Insert_Input>;
   role?: Maybe<Scalars['membership_roles']>;
@@ -6719,6 +6736,7 @@ export type Memberships_Insert_Input = {
 export type Memberships_Max_Fields = {
   __typename?: 'memberships_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6730,6 +6748,7 @@ export type Memberships_Max_Fields = {
 /** order by max() on columns of table "memberships" */
 export type Memberships_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   role?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
@@ -6742,6 +6761,7 @@ export type Memberships_Max_Order_By = {
 export type Memberships_Min_Fields = {
   __typename?: 'memberships_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6753,6 +6773,7 @@ export type Memberships_Min_Fields = {
 /** order by min() on columns of table "memberships" */
 export type Memberships_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   role?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
@@ -6780,6 +6801,7 @@ export type Memberships_On_Conflict = {
 /** Ordering options when selecting data from "memberships". */
 export type Memberships_Order_By = {
   created_at?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   private_details?: Maybe<Memberships_Private_Details_Order_By>;
   role?: Maybe<Order_By>;
@@ -6800,6 +6822,7 @@ export type Memberships_Pk_Columns_Input = {
 export type Memberships_Private_Details = {
   __typename?: 'memberships_private_details';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6855,6 +6878,7 @@ export type Memberships_Private_Details_Bool_Exp = {
   _not?: Maybe<Memberships_Private_Details_Bool_Exp>;
   _or?: Maybe<Array<Memberships_Private_Details_Bool_Exp>>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  email?: Maybe<String_Comparison_Exp>;
   id?: Maybe<Uuid_Comparison_Exp>;
   role?: Maybe<Membership_Roles_Comparison_Exp>;
   status?: Maybe<Membership_Statuses_Comparison_Exp>;
@@ -6874,6 +6898,7 @@ export type Memberships_Private_Details_Inc_Input = {
 /** input type for inserting data into table "memberships_private_details" */
 export type Memberships_Private_Details_Insert_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6888,6 +6913,7 @@ export type Memberships_Private_Details_Insert_Input = {
 export type Memberships_Private_Details_Max_Fields = {
   __typename?: 'memberships_private_details_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6900,6 +6926,7 @@ export type Memberships_Private_Details_Max_Fields = {
 export type Memberships_Private_Details_Min_Fields = {
   __typename?: 'memberships_private_details_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6925,6 +6952,7 @@ export type Memberships_Private_Details_Obj_Rel_Insert_Input = {
 /** Ordering options when selecting data from "memberships_private_details". */
 export type Memberships_Private_Details_Order_By = {
   created_at?: Maybe<Order_By>;
+  email?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   role?: Maybe<Order_By>;
   status?: Maybe<Order_By>;
@@ -6939,6 +6967,8 @@ export type Memberships_Private_Details_Order_By = {
 export enum Memberships_Private_Details_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   Id = 'id',
   /** column name */
@@ -6956,6 +6986,7 @@ export enum Memberships_Private_Details_Select_Column {
 /** input type for updating data in table "memberships_private_details" */
 export type Memberships_Private_Details_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -6996,6 +7027,7 @@ export type Memberships_Private_Details_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Memberships_Private_Details_Stream_Cursor_Value_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -7045,6 +7077,8 @@ export enum Memberships_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
+  Email = 'email',
+  /** column name */
   Id = 'id',
   /** column name */
   Role = 'role',
@@ -7061,6 +7095,7 @@ export enum Memberships_Select_Column {
 /** input type for updating data in table "memberships" */
 export type Memberships_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -7119,6 +7154,7 @@ export type Memberships_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Memberships_Stream_Cursor_Value_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  email?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['uuid']>;
   role?: Maybe<Scalars['membership_roles']>;
   status?: Maybe<Scalars['membership_statuses']>;
@@ -7144,6 +7180,8 @@ export type Memberships_Sum_Order_By = {
 export enum Memberships_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  Email = 'email',
   /** column name */
   Id = 'id',
   /** column name */
@@ -16614,6 +16652,7 @@ export type Query_Root = {
   /** fetch data from the table: "query_results" using primary key columns */
   query_results_by_pk?: Maybe<Query_Results>;
   query_schedules: QuerySchedulesResponse;
+  search_contracts: SearchContractsResponse;
   stripe_default_card: StripeDefaultCardResponse;
   team_api_keys: ListTeamApiKeysResponse;
   team_billable_usage: TeamBillableUsageResponse;
@@ -17654,6 +17693,11 @@ export type Query_RootQuery_Results_By_PkArgs = {
 
 export type Query_RootQuery_SchedulesArgs = {
   query_id: Scalars['Int'];
+};
+
+
+export type Query_RootSearch_ContractsArgs = {
+  contract_address: Scalars['String'];
 };
 
 
@@ -27519,10 +27563,10 @@ export type TeamItemFragment = (
     & Pick<Team_Received_Stars, 'sum'>
   )>, members: Array<(
     { __typename?: 'memberships' }
-    & { user: (
+    & { user?: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name' | 'profile_image_url'>
-    ) }
+    )> }
   )> }
 );
 
@@ -28017,10 +28061,10 @@ export type StaticTeamProfileDataQuery = (
     ), memberships: Array<(
       { __typename?: 'memberships' }
       & Pick<Memberships, 'id'>
-      & { user: (
+      & { user?: Maybe<(
         { __typename?: 'users' }
         & Pick<Users, 'id' | 'name' | 'profile_image_url'>
-      ) }
+      )> }
     )> }
   )> }
 );
@@ -28653,29 +28697,6 @@ export type InsertVisualMutation = (
   )> }
 );
 
-export type UpsertQueryMutationVariables = Exact<{
-  session_id: Scalars['Int'];
-  object: Queries_Insert_Input;
-  on_conflict: Queries_On_Conflict;
-  favs_last_24h?: Scalars['Boolean'];
-  favs_last_7d?: Scalars['Boolean'];
-  favs_last_30d?: Scalars['Boolean'];
-  favs_all_time?: Scalars['Boolean'];
-}>;
-
-
-export type UpsertQueryMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_queries_one?: Maybe<(
-    { __typename?: 'queries' }
-    & { favorite_queries: Array<(
-      { __typename?: 'favorite_queries' }
-      & Pick<Favorite_Queries, 'created_at'>
-    )> }
-    & QueryFragment
-  )> }
-);
-
 export type CreateQueryMutationVariables = Exact<{
   query: CreateQueryInput;
 }>;
@@ -28830,62 +28851,6 @@ export type ListColumnsQuery = (
   & { blockchain_schemas: Array<(
     { __typename?: 'blockchain_schemas' }
     & Pick<Blockchain_Schemas, 'column_name' | 'data_type'>
-  )> }
-);
-
-export type TransferQueriesMutationVariables = Exact<{
-  query_ids: Array<Scalars['Int']> | Scalars['Int'];
-  team_id?: Maybe<Scalars['Int']>;
-  user_id?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type TransferQueriesMutation = (
-  { __typename?: 'mutation_root' }
-  & { transfer_queries?: Maybe<Array<Maybe<(
-    { __typename?: 'TransferQueriesResponse' }
-    & Pick<TransferQueriesResponse, 'ok'>
-    & { query?: Maybe<(
-      { __typename?: 'queries' }
-      & Pick<Queries, 'id'>
-      & { team?: Maybe<(
-        { __typename?: 'teams' }
-        & Pick<Teams, 'id' | 'name' | 'handle' | 'profile_image_url'>
-      )>, user?: Maybe<(
-        { __typename?: 'users' }
-        & Pick<Users, 'id' | 'name' | 'profile_image_url'>
-      )> }
-    )> }
-  )>>> }
-);
-
-export type PatchQuerySettingsMutationVariables = Exact<{
-  id: Scalars['Int'];
-  name?: Maybe<Scalars['String']>;
-  user_id?: Maybe<Scalars['Int']>;
-  team_id?: Maybe<Scalars['Int']>;
-  is_private?: Maybe<Scalars['Boolean']>;
-  is_archived?: Maybe<Scalars['Boolean']>;
-  description?: Maybe<Scalars['String']>;
-  code?: Maybe<Scalars['String']>;
-  tags?: Maybe<Scalars['jsonb']>;
-}>;
-
-
-export type PatchQuerySettingsMutation = (
-  { __typename?: 'mutation_root' }
-  & { patch_query_settings?: Maybe<(
-    { __typename?: 'PatchQuerySettingsResponse' }
-    & { query?: Maybe<(
-      { __typename?: 'queries' }
-      & Pick<Queries, 'id' | 'name' | 'is_private' | 'is_archived' | 'user_id' | 'team_id'>
-    )> }
-  )>, update_queries?: Maybe<(
-    { __typename?: 'queries_mutation_response' }
-    & { returning: Array<(
-      { __typename?: 'queries' }
-      & Pick<Queries, 'id' | 'description' | 'tags' | 'query'>
-    )> }
   )> }
 );
 
@@ -29757,10 +29722,10 @@ export type GetTeamForOverageQuery = (
     ), admins: Array<(
       { __typename?: 'memberships' }
       & Pick<Memberships, 'id'>
-      & { user: (
+      & { user?: Maybe<(
         { __typename?: 'users' }
         & Pick<Users, 'id' | 'name' | 'email'>
-      ) }
+      )> }
     )> }
   )> }
 );
@@ -31361,10 +31326,10 @@ export type UpdateTeamMemberRoleMutation = (
     & { private_details?: Maybe<(
       { __typename?: 'memberships_private_details' }
       & Pick<Memberships_Private_Details, 'id' | 'role' | 'status'>
-    )>, user: (
+    )>, user?: Maybe<(
       { __typename?: 'users' }
       & Pick<Users, 'id' | 'name' | 'profile_image_url'>
-    ), team: (
+    )>, team: (
       { __typename?: 'teams' }
       & Pick<Teams, 'id' | 'name'>
     ) }
@@ -31442,7 +31407,7 @@ export type ListTeamMembersQuery = (
   { __typename?: 'query_root' }
   & { memberships_private_details: Array<(
     { __typename?: 'memberships_private_details' }
-    & Pick<Memberships_Private_Details, 'id' | 'role' | 'status'>
+    & Pick<Memberships_Private_Details, 'id' | 'role' | 'status' | 'email'>
     & { team?: Maybe<(
       { __typename?: 'teams' }
       & Pick<Teams, 'id' | 'name'>
@@ -31531,7 +31496,7 @@ export const TeamItemFragmentDoc = gql`
   received_stars {
     sum
   }
-  members: memberships {
+  members: memberships(where: {user_id: {_is_null: false}}) {
     user {
       id
       name
@@ -35601,47 +35566,6 @@ export function useInsertVisualMutation(baseOptions?: Apollo.MutationHookOptions
 export type InsertVisualMutationHookResult = ReturnType<typeof useInsertVisualMutation>;
 export type InsertVisualMutationResult = Apollo.MutationResult<InsertVisualMutation>;
 export type InsertVisualMutationOptions = Apollo.BaseMutationOptions<InsertVisualMutation, InsertVisualMutationVariables>;
-export const UpsertQueryDocument = gql`
-    mutation UpsertQuery($session_id: Int!, $object: queries_insert_input!, $on_conflict: queries_on_conflict!, $favs_last_24h: Boolean! = false, $favs_last_7d: Boolean! = false, $favs_last_30d: Boolean! = false, $favs_all_time: Boolean! = true) {
-  insert_queries_one(object: $object, on_conflict: $on_conflict) {
-    ...Query
-    favorite_queries(where: {user_id: {_eq: $session_id}}, limit: 1) {
-      created_at
-    }
-  }
-}
-    ${QueryFragmentDoc}`;
-export type UpsertQueryMutationFn = Apollo.MutationFunction<UpsertQueryMutation, UpsertQueryMutationVariables>;
-
-/**
- * __useUpsertQueryMutation__
- *
- * To run a mutation, you first call `useUpsertQueryMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpsertQueryMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upsertQueryMutation, { data, loading, error }] = useUpsertQueryMutation({
- *   variables: {
- *      session_id: // value for 'session_id'
- *      object: // value for 'object'
- *      on_conflict: // value for 'on_conflict'
- *      favs_last_24h: // value for 'favs_last_24h'
- *      favs_last_7d: // value for 'favs_last_7d'
- *      favs_last_30d: // value for 'favs_last_30d'
- *      favs_all_time: // value for 'favs_all_time'
- *   },
- * });
- */
-export function useUpsertQueryMutation(baseOptions?: Apollo.MutationHookOptions<UpsertQueryMutation, UpsertQueryMutationVariables>) {
-        return Apollo.useMutation<UpsertQueryMutation, UpsertQueryMutationVariables>(UpsertQueryDocument, baseOptions);
-      }
-export type UpsertQueryMutationHookResult = ReturnType<typeof useUpsertQueryMutation>;
-export type UpsertQueryMutationResult = Apollo.MutationResult<UpsertQueryMutation>;
-export type UpsertQueryMutationOptions = Apollo.BaseMutationOptions<UpsertQueryMutation, UpsertQueryMutationVariables>;
 export const CreateQueryDocument = gql`
     mutation CreateQuery($query: CreateQueryInput!) {
   create_query(query: $query) {
@@ -36043,115 +35967,6 @@ export function useListColumnsLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ListColumnsQueryHookResult = ReturnType<typeof useListColumnsQuery>;
 export type ListColumnsLazyQueryHookResult = ReturnType<typeof useListColumnsLazyQuery>;
 export type ListColumnsQueryResult = Apollo.QueryResult<ListColumnsQuery, ListColumnsQueryVariables>;
-export const TransferQueriesDocument = gql`
-    mutation TransferQueries($query_ids: [Int!]!, $team_id: Int, $user_id: Int) {
-  transfer_queries(query_ids: $query_ids, team_id: $team_id, user_id: $user_id) {
-    ok
-    query {
-      id
-      id
-      team {
-        id
-        name
-        handle
-        profile_image_url
-      }
-      user {
-        id
-        name
-        profile_image_url
-      }
-    }
-  }
-}
-    `;
-export type TransferQueriesMutationFn = Apollo.MutationFunction<TransferQueriesMutation, TransferQueriesMutationVariables>;
-
-/**
- * __useTransferQueriesMutation__
- *
- * To run a mutation, you first call `useTransferQueriesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTransferQueriesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [transferQueriesMutation, { data, loading, error }] = useTransferQueriesMutation({
- *   variables: {
- *      query_ids: // value for 'query_ids'
- *      team_id: // value for 'team_id'
- *      user_id: // value for 'user_id'
- *   },
- * });
- */
-export function useTransferQueriesMutation(baseOptions?: Apollo.MutationHookOptions<TransferQueriesMutation, TransferQueriesMutationVariables>) {
-        return Apollo.useMutation<TransferQueriesMutation, TransferQueriesMutationVariables>(TransferQueriesDocument, baseOptions);
-      }
-export type TransferQueriesMutationHookResult = ReturnType<typeof useTransferQueriesMutation>;
-export type TransferQueriesMutationResult = Apollo.MutationResult<TransferQueriesMutation>;
-export type TransferQueriesMutationOptions = Apollo.BaseMutationOptions<TransferQueriesMutation, TransferQueriesMutationVariables>;
-export const PatchQuerySettingsDocument = gql`
-    mutation PatchQuerySettings($id: Int!, $name: String, $user_id: Int, $team_id: Int, $is_private: Boolean, $is_archived: Boolean, $description: String, $code: String, $tags: jsonb) {
-  patch_query_settings(
-    query_settings: {name: $name, id: $id, is_archived: $is_archived, is_private: $is_private, team_id: $team_id, user_id: $user_id}
-  ) {
-    query {
-      id
-      name
-      is_private
-      is_archived
-      user_id
-      team_id
-    }
-  }
-  update_queries(
-    where: {id: {_eq: $id}}
-    _set: {description: $description, tags: $tags, query: $code}
-  ) {
-    returning {
-      id
-      description
-      tags
-      query
-    }
-  }
-}
-    `;
-export type PatchQuerySettingsMutationFn = Apollo.MutationFunction<PatchQuerySettingsMutation, PatchQuerySettingsMutationVariables>;
-
-/**
- * __usePatchQuerySettingsMutation__
- *
- * To run a mutation, you first call `usePatchQuerySettingsMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `usePatchQuerySettingsMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [patchQuerySettingsMutation, { data, loading, error }] = usePatchQuerySettingsMutation({
- *   variables: {
- *      id: // value for 'id'
- *      name: // value for 'name'
- *      user_id: // value for 'user_id'
- *      team_id: // value for 'team_id'
- *      is_private: // value for 'is_private'
- *      is_archived: // value for 'is_archived'
- *      description: // value for 'description'
- *      code: // value for 'code'
- *      tags: // value for 'tags'
- *   },
- * });
- */
-export function usePatchQuerySettingsMutation(baseOptions?: Apollo.MutationHookOptions<PatchQuerySettingsMutation, PatchQuerySettingsMutationVariables>) {
-        return Apollo.useMutation<PatchQuerySettingsMutation, PatchQuerySettingsMutationVariables>(PatchQuerySettingsDocument, baseOptions);
-      }
-export type PatchQuerySettingsMutationHookResult = ReturnType<typeof usePatchQuerySettingsMutation>;
-export type PatchQuerySettingsMutationResult = Apollo.MutationResult<PatchQuerySettingsMutation>;
-export type PatchQuerySettingsMutationOptions = Apollo.BaseMutationOptions<PatchQuerySettingsMutation, PatchQuerySettingsMutationVariables>;
 export const RestoreQueryDocument = gql`
     mutation RestoreQuery($query_event_id: String!) {
   restore_query(query_event_id: $query_event_id) {
@@ -41584,6 +41399,7 @@ export const ListTeamMembersDocument = gql`
     id
     role
     status
+    email
     team {
       id
       name
