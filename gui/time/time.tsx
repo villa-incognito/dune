@@ -28,10 +28,16 @@ export const TimeRelative = (props: Props) => {
   );
 };
 
+export interface TimeRelative {
+  rel: string;
+  abs: string;
+  iso: Date;
+}
+
 export const useTimeRelative = (
   value: Nullable<DateValue>,
   counter?: boolean
-) => {
+): TimeRelative | undefined => {
   const now = useCurrentDate();
 
   if (!now || !value) {

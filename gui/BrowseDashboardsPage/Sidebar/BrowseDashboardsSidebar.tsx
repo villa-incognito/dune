@@ -1,5 +1,7 @@
 import styles from "gui/BrowseDashboardsPage/BrowsePage.module.css";
+import listStyles from "gui/box/list.module.css";
 import searchStyles from "gui/browse-shared/search.module.css";
+import cn from "classnames";
 
 import { FieldLabel } from "gui/input/fields";
 import { InputText } from "gui/input/input";
@@ -7,7 +9,7 @@ import { RadioLinkGroup, RadioButtonLink } from "gui/radio-buttons/radio-links";
 import Link from "next/link";
 import { Icon } from "gui/icon/icon";
 import { DashboardCreateButton } from "gui/dashboard/create";
-import { BoxList, BoxListItem } from "gui/box/list";
+import { BoxList } from "gui/box/list";
 import { HelperDashboardsQueries } from "gui/helper/helper";
 
 import { useActiveContext } from "shared/ContextSwitcher/store";
@@ -165,14 +167,36 @@ export default function BrowseDashboardsSidebar(props: Props) {
 
       <aside className={styles.tags}>
         <BoxList title="Popular dashboard tags" border>
-          {props.tags.map(({ tag, popularity }: Tag) => (
-            <Link prefetch={false} href={getTagUrl(tag)} key={tag}>
-              <a aria-current={tag === selectedTag}>
-                <BoxListItem icon="tag" count={popularity}>
-                  {tag}
-                </BoxListItem>
-              </a>
-            </Link>
+          {props.tags.map(({ tag, popularity }: Tag, index) => (
+            <li>
+              <Link prefetch={false} href={getTagUrl(tag)} key={tag}>
+                <a aria-current={tag === selectedTag}>
+                  <div className={cn(listStyles.item)}>
+                    <span className={listStyles.icon}>
+                      <Icon icon="tag" />
+                    </span>
+                    <span
+                      className={listStyles.text}
+                      style={{
+                        borderTop:
+                          index === 0 ? "" : "1px solid var(--gray-300)",
+                      }}
+                    >
+                      <span>{tag}</span>
+                    </span>
+                    <span
+                      className={listStyles.count}
+                      style={{
+                        borderTop:
+                          index === 0 ? "" : "1px solid var(--gray-300)",
+                      }}
+                    >
+                      <span>{popularity}</span>
+                    </span>
+                  </div>
+                </a>
+              </Link>
+            </li>
           ))}
         </BoxList>
       </aside>

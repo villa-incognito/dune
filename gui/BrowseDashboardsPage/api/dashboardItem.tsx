@@ -7,6 +7,7 @@ export const dashboardItemGqlFragment = gql`
     name
     slug
     created_at
+    updated_at
     tags
     user {
       name
@@ -45,6 +46,7 @@ export type DashboardType = {
   name: string;
   slug: string;
   created_at: string;
+  updated_at: string;
   tags: string[];
   owner: {
     type: "user" | "team";
@@ -65,6 +67,7 @@ export function toDashboardType(
     name: dashboard.name ?? "",
     slug: dashboard.slug,
     created_at: dashboard.created_at,
+    updated_at: dashboard.updated_at,
     tags: dashboard.tags ?? [],
     owner: dashboard.team
       ? {

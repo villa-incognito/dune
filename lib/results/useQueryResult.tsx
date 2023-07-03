@@ -471,6 +471,9 @@ const getMeta = (
       max_result_size_reached_bytes: convertNull<number>(
         result.get_execution.execution_succeeded.max_result_size_reached_bytes
       ),
+      request_max_result_size_bytes: convertNull<number>(
+        result.get_execution.execution_succeeded.request_max_result_size_bytes
+      ),
     });
   }
 };

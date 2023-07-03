@@ -72,7 +72,7 @@ export function HeaderDesktop(props: Props) {
             {session && <ContextSwitcher />}
             <ul className={styles.group}>
               <li>
-                <MyCreationsLink />
+                <LibraryLink />
               </li>
               {session && (
                 <li>
@@ -236,7 +236,7 @@ function FavoritesLink() {
     </PageLink>
   );
 }
-function MyCreationsLink() {
+function LibraryLink() {
   return (
     <PageLink
       href="/browse/queries/authored"
@@ -245,7 +245,7 @@ function MyCreationsLink() {
         pathRegex.browseAuthored.test(router.asPath.split("?")[0])
       }
     >
-      My Creations
+      Library
     </PageLink>
   );
 }

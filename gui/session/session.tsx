@@ -204,14 +204,14 @@ class UserUnauthenticatedError extends Error {}
 // Returns `{ session: undefined }` if the user is logged out so that
 // we can distinguish between pending data and logged out users.
 const fetchSession = async () => {
-  let session;
+  let session: Session | undefined;
   const emptySession = { session: undefined };
   if (!shouldFetchSession()) {
     return emptySession;
   }
 
   try {
-    session = await httpPost<Session>("/api/auth/session");
+    session = await globalSession.fetchSessionWithRetry();
   } catch (err: any) {
     if (err instanceof HTTPError && err.statusCode === 401) {
       throw new UserUnauthenticatedError();

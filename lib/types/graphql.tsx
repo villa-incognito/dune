@@ -131,6 +131,14 @@ export type ContextOwner = {
   type: Scalars['String'];
 };
 
+export type CreateFolderInput = {
+  color: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  name: Scalars['String'];
+  team_id?: Maybe<Scalars['Int']>;
+};
+
 export type CreateQueryInput = {
   dataset_id: Scalars['Int'];
   description: Scalars['String'];
@@ -305,6 +313,20 @@ export type ExportCsvResponse = {
   url: Scalars['String'];
 };
 
+export type Folder = {
+  __typename?: 'Folder';
+  color: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  description?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at: Scalars['timestamptz'];
+  user_id?: Maybe<Scalars['Int']>;
+};
+
 export type ForkDashboardResponse = {
   __typename?: 'ForkDashboardResponse';
   slug: Scalars['String'];
@@ -405,11 +427,12 @@ export type InteractiveExecutions = {
 
 export type InviteMemberResponse = {
   __typename?: 'InviteMemberResponse';
-  id: Scalars['Int'];
+  email?: Maybe<Scalars['String']>;
+  id: Scalars['String'];
   role: Scalars['String'];
   status: Scalars['String'];
   team_id: Scalars['Int'];
-  user_id: Scalars['Int'];
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 export type Invoice = {
@@ -3865,6 +3888,7 @@ export type Dashboards = {
   favorite_dashboards: Array<Favorite_Dashboards>;
   /** An aggregate relationship */
   favorite_dashboards_aggregate: Favorite_Dashboards_Aggregate;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
   forked_dashboard?: Maybe<Dashboards>;
@@ -4126,6 +4150,7 @@ export type Dashboards_Bool_Exp = {
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Bool_Exp>;
   favorite_dashboards?: Maybe<Favorite_Dashboards_Bool_Exp>;
   favorite_dashboards_aggregate?: Maybe<Favorite_Dashboards_Aggregate_Bool_Exp>;
+  folder_id?: Maybe<String_Comparison_Exp>;
   fork_of_id?: Maybe<Int_Comparison_Exp>;
   forked_dashboard?: Maybe<Dashboards_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
@@ -4192,6 +4217,7 @@ export type Dashboards_Insert_Input = {
   dashboard_favorite_count_last_30d?: Maybe<Dashboard_Favorite_Count_Last_30d_Obj_Rel_Insert_Input>;
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Obj_Rel_Insert_Input>;
   favorite_dashboards?: Maybe<Favorite_Dashboards_Arr_Rel_Insert_Input>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   forked_dashboard?: Maybe<Dashboards_Obj_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
@@ -4217,6 +4243,7 @@ export type Dashboards_Insert_Input = {
 export type Dashboards_Max_Fields = {
   __typename?: 'dashboards_max_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4230,6 +4257,7 @@ export type Dashboards_Max_Fields = {
 /** order by max() on columns of table "dashboards" */
 export type Dashboards_Max_Order_By = {
   created_at?: Maybe<Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -4244,6 +4272,7 @@ export type Dashboards_Max_Order_By = {
 export type Dashboards_Min_Fields = {
   __typename?: 'dashboards_min_fields';
   created_at?: Maybe<Scalars['timestamptz']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
@@ -4257,6 +4286,7 @@ export type Dashboards_Min_Fields = {
 /** order by min() on columns of table "dashboards" */
 export type Dashboards_Min_Order_By = {
   created_at?: Maybe<Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
@@ -4299,6 +4329,7 @@ export type Dashboards_Order_By = {
   dashboard_favorite_count_last_30d?: Maybe<Dashboard_Favorite_Count_Last_30d_Order_By>;
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Order_By>;
   favorite_dashboards_aggregate?: Maybe<Favorite_Dashboards_Aggregate_Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   forked_dashboard?: Maybe<Dashboards_Order_By>;
   id?: Maybe<Order_By>;
@@ -4334,6 +4365,8 @@ export type Dashboards_Prepend_Input = {
 export enum Dashboards_Select_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  FolderId = 'folder_id',
   /** column name */
   ForkOfId = 'fork_of_id',
   /** column name */
@@ -4379,6 +4412,7 @@ export enum Dashboards_Select_Column_Dashboards_Aggregate_Bool_Exp_Bool_Or_Argum
 /** input type for updating data in table "dashboards" */
 export type Dashboards_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   is_archived?: Maybe<Scalars['Boolean']>;
@@ -4455,6 +4489,7 @@ export type Dashboards_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Dashboards_Stream_Cursor_Value_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   is_archived?: Maybe<Scalars['Boolean']>;
@@ -4490,6 +4525,8 @@ export type Dashboards_Sum_Order_By = {
 export enum Dashboards_Update_Column {
   /** column name */
   CreatedAt = 'created_at',
+  /** column name */
+  FolderId = 'folder_id',
   /** column name */
   ForkOfId = 'fork_of_id',
   /** column name */
@@ -6703,10 +6740,10 @@ export type Memberships_Bool_Exp = {
 
 /** unique or primary key constraints on table "memberships" */
 export enum Memberships_Constraint {
-  /** unique or primary key constraint on columns "email" */
-  MembershipsEmailIx = 'memberships_email_ix',
   /** unique or primary key constraint on columns "id" */
   MembershipsPkey = 'memberships_pkey',
+  /** unique or primary key constraint on columns "email", "team_id" */
+  MembershipsUniqueEmailTeamIdIx = 'memberships_unique_email_team_id_ix',
   /** unique or primary key constraint on columns "user_id", "team_id" */
   MembershipsUniqueUserIdTeamIdIx = 'memberships_unique_user_id_team_id_ix'
 }
@@ -7247,6 +7284,7 @@ export type Memberships_Variance_Order_By = {
 export type Mutation_Root = {
   __typename?: 'mutation_root';
   accept_invite?: Maybe<AcceptInviteResponse>;
+  accept_invite_v2?: Maybe<AcceptInviteResponse>;
   cancel_api_user_pending_subscription_change: CancelApiUserPendingSubscriptionChangeResponse;
   cancel_api_user_subscription: CancelApiUserSubscriptionResponse;
   cancel_execution?: Maybe<CancelExecutionResponse>;
@@ -7257,6 +7295,7 @@ export type Mutation_Root = {
   change_password?: Maybe<ChangePasswordResult>;
   complete_nlq_model: CompleteNlqModelResponse;
   complete_stripe_checkout_session: CompleteStripeCheckoutSessionResponse;
+  create_folder: Folder;
   create_query: CreateQueryResponse;
   create_query_schedule: CreateQueryScheduleResponse;
   create_team?: Maybe<CreateTeamResponse>;
@@ -7584,6 +7623,7 @@ export type Mutation_Root = {
   /** insert a single row into the table: "wand_completions" */
   insert_wand_completions_one?: Maybe<Wand_Completions>;
   invite_member?: Maybe<InviteMemberResponse>;
+  invite_member_v2?: Maybe<InviteMemberResponse>;
   migrate_content: MigrateContentResponse;
   migrate_legacy_plan: MigrateLegacyPlanResponse;
   patch_dashboard_settings?: Maybe<PatchDashboardSettingsResponse>;
@@ -7591,6 +7631,7 @@ export type Mutation_Root = {
   remove_member?: Maybe<RemoveMemberResponse>;
   resend_email_verification_code?: Maybe<ResendEmailVerificationCodeOutput>;
   resend_invite?: Maybe<ResendInviteResponse>;
+  resend_invite_v2?: Maybe<ResendInviteResponse>;
   restore_query: RestoreQueryResponse;
   set_max_executions_overage_cost_cents: SetMaxExecutionsOverageCostCentsResponse;
   set_max_overage_cents: SetMaxOverageCentsResponse;
@@ -7845,6 +7886,12 @@ export type Mutation_RootAccept_InviteArgs = {
 
 
 /** mutation root */
+export type Mutation_RootAccept_Invite_V2Args = {
+  membership_id: Scalars['uuid'];
+};
+
+
+/** mutation root */
 export type Mutation_RootCancel_ExecutionArgs = {
   execution_id: Scalars['String'];
   parameters?: Maybe<Array<Parameter>>;
@@ -7882,6 +7929,12 @@ export type Mutation_RootComplete_Nlq_ModelArgs = {
 /** mutation root */
 export type Mutation_RootComplete_Stripe_Checkout_SessionArgs = {
   checkout_session_id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootCreate_FolderArgs = {
+  folder: CreateFolderInput;
 };
 
 
@@ -9013,6 +9066,14 @@ export type Mutation_RootInvite_MemberArgs = {
 
 
 /** mutation root */
+export type Mutation_RootInvite_Member_V2Args = {
+  role: Scalars['String'];
+  team_id: Scalars['Int'];
+  usernameOrEmail: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootMigrate_ContentArgs = {
   redirect?: Maybe<Scalars['Boolean']>;
   team_id: Scalars['Int'];
@@ -9045,6 +9106,12 @@ export type Mutation_RootRemove_MemberArgs = {
 
 /** mutation root */
 export type Mutation_RootResend_InviteArgs = {
+  membership_id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootResend_Invite_V2Args = {
   membership_id: Scalars['uuid'];
 };
 
@@ -12965,6 +13032,7 @@ export type Queries = {
   favorite_queries: Array<Favorite_Queries>;
   /** An aggregate relationship */
   favorite_queries_aggregate: Favorite_Queries_Aggregate;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
   forked_query?: Maybe<Queries>;
@@ -13216,6 +13284,7 @@ export type Queries_Bool_Exp = {
   description?: Maybe<String_Comparison_Exp>;
   favorite_queries?: Maybe<Favorite_Queries_Bool_Exp>;
   favorite_queries_aggregate?: Maybe<Favorite_Queries_Aggregate_Bool_Exp>;
+  folder_id?: Maybe<String_Comparison_Exp>;
   fork_of_id?: Maybe<Int_Comparison_Exp>;
   forked_query?: Maybe<Queries_Bool_Exp>;
   id?: Maybe<Int_Comparison_Exp>;
@@ -13287,6 +13356,7 @@ export type Queries_Insert_Input = {
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   favorite_queries?: Maybe<Favorite_Queries_Arr_Rel_Insert_Input>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   forked_query?: Maybe<Queries_Obj_Rel_Insert_Input>;
   id?: Maybe<Scalars['Int']>;
@@ -13320,6 +13390,7 @@ export type Queries_Max_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   matview_id?: Maybe<Scalars['String']>;
@@ -13336,6 +13407,7 @@ export type Queries_Max_Order_By = {
   created_at?: Maybe<Order_By>;
   dataset_id?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   matview_id?: Maybe<Order_By>;
@@ -13353,6 +13425,7 @@ export type Queries_Min_Fields = {
   created_at?: Maybe<Scalars['timestamptz']>;
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   matview_id?: Maybe<Scalars['String']>;
@@ -13369,6 +13442,7 @@ export type Queries_Min_Order_By = {
   created_at?: Maybe<Order_By>;
   dataset_id?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   matview_id?: Maybe<Order_By>;
@@ -13411,6 +13485,7 @@ export type Queries_Order_By = {
   dataset_id?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   favorite_queries_aggregate?: Maybe<Favorite_Queries_Aggregate_Order_By>;
+  folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   forked_query?: Maybe<Queries_Order_By>;
   id?: Maybe<Order_By>;
@@ -13457,6 +13532,8 @@ export enum Queries_Select_Column {
   DatasetId = 'dataset_id',
   /** column name */
   Description = 'description',
+  /** column name */
+  FolderId = 'folder_id',
   /** column name */
   ForkOfId = 'fork_of_id',
   /** column name */
@@ -13516,6 +13593,7 @@ export type Queries_Set_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   is_archived?: Maybe<Scalars['Boolean']>;
@@ -13610,6 +13688,7 @@ export type Queries_Stream_Cursor_Value_Input = {
   created_at?: Maybe<Scalars['timestamptz']>;
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
+  folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
   is_archived?: Maybe<Scalars['Boolean']>;
@@ -13657,6 +13736,8 @@ export enum Queries_Update_Column {
   DatasetId = 'dataset_id',
   /** column name */
   Description = 'description',
+  /** column name */
+  FolderId = 'folder_id',
   /** column name */
   ForkOfId = 'fork_of_id',
   /** column name */
@@ -20821,6 +20902,7 @@ export type Team_Service_Tiers = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents: Scalars['Int'];
   can_hide_members: Scalars['Boolean'];
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at: Scalars['timestamptz'];
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -20830,6 +20912,7 @@ export type Team_Service_Tiers = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name: Scalars['String'];
   is_public: Scalars['Boolean'];
+  max_folders: Scalars['Int'];
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days: Scalars['Int'];
@@ -20932,6 +21015,7 @@ export type Team_Service_Tiers_Avg_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -20948,6 +21032,7 @@ export type Team_Service_Tiers_Bool_Exp = {
   allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   can_hide_members?: Maybe<Boolean_Comparison_Exp>;
+  can_use_crud_endpoints?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   csv_downloads_per_month?: Maybe<Int_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
@@ -20957,6 +21042,7 @@ export type Team_Service_Tiers_Bool_Exp = {
   included_query_executions?: Maybe<Int_Comparison_Exp>;
   internal_tier_name?: Maybe<String_Comparison_Exp>;
   is_public?: Maybe<Boolean_Comparison_Exp>;
+  max_folders?: Maybe<Int_Comparison_Exp>;
   max_private_dashboards?: Maybe<Int_Comparison_Exp>;
   max_private_queries?: Maybe<Int_Comparison_Exp>;
   max_query_event_retention_days?: Maybe<Int_Comparison_Exp>;
@@ -20978,6 +21064,8 @@ export type Team_Service_Tiers_Bool_Exp = {
 
 /** unique or primary key constraints on table "team_service_tiers" */
 export enum Team_Service_Tiers_Constraint {
+  /** unique or primary key constraint on columns "name" */
+  TeamServiceTiersNameKey = 'team_service_tiers_name_key',
   /** unique or primary key constraint on columns "id" */
   TeamServiceTiersPkey = 'team_service_tiers_pkey'
 }
@@ -20990,6 +21078,7 @@ export type Team_Service_Tiers_Inc_Input = {
   included_datapoints?: Maybe<Scalars['Int']>;
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21003,6 +21092,7 @@ export type Team_Service_Tiers_Insert_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21012,6 +21102,7 @@ export type Team_Service_Tiers_Insert_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21041,6 +21132,7 @@ export type Team_Service_Tiers_Max_Fields = {
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21067,6 +21159,7 @@ export type Team_Service_Tiers_Min_Fields = {
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21109,6 +21202,7 @@ export type Team_Service_Tiers_Order_By = {
   allow_private_queries_as_views?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   can_hide_members?: Maybe<Order_By>;
+  can_use_crud_endpoints?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   csv_downloads_per_month?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
@@ -21118,6 +21212,7 @@ export type Team_Service_Tiers_Order_By = {
   included_query_executions?: Maybe<Order_By>;
   internal_tier_name?: Maybe<Order_By>;
   is_public?: Maybe<Order_By>;
+  max_folders?: Maybe<Order_By>;
   max_private_dashboards?: Maybe<Order_By>;
   max_private_queries?: Maybe<Order_By>;
   max_query_event_retention_days?: Maybe<Order_By>;
@@ -21149,6 +21244,8 @@ export enum Team_Service_Tiers_Select_Column {
   /** column name */
   CanHideMembers = 'can_hide_members',
   /** column name */
+  CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CsvDownloadsPerMonth = 'csv_downloads_per_month',
@@ -21166,6 +21263,8 @@ export enum Team_Service_Tiers_Select_Column {
   InternalTierName = 'internal_tier_name',
   /** column name */
   IsPublic = 'is_public',
+  /** column name */
+  MaxFolders = 'max_folders',
   /** column name */
   MaxPrivateDashboards = 'max_private_dashboards',
   /** column name */
@@ -21199,6 +21298,7 @@ export type Team_Service_Tiers_Set_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21208,6 +21308,7 @@ export type Team_Service_Tiers_Set_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21232,6 +21333,7 @@ export type Team_Service_Tiers_Stddev_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -21249,6 +21351,7 @@ export type Team_Service_Tiers_Stddev_Pop_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -21266,6 +21369,7 @@ export type Team_Service_Tiers_Stddev_Samp_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -21287,6 +21391,7 @@ export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21296,6 +21401,7 @@ export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21320,6 +21426,7 @@ export type Team_Service_Tiers_Sum_Fields = {
   included_datapoints?: Maybe<Scalars['Int']>;
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -21336,6 +21443,8 @@ export enum Team_Service_Tiers_Update_Column {
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
   CanHideMembers = 'can_hide_members',
+  /** column name */
+  CanUseCrudEndpoints = 'can_use_crud_endpoints',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -21354,6 +21463,8 @@ export enum Team_Service_Tiers_Update_Column {
   InternalTierName = 'internal_tier_name',
   /** column name */
   IsPublic = 'is_public',
+  /** column name */
+  MaxFolders = 'max_folders',
   /** column name */
   MaxPrivateDashboards = 'max_private_dashboards',
   /** column name */
@@ -21399,6 +21510,7 @@ export type Team_Service_Tiers_Var_Pop_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -21416,6 +21528,7 @@ export type Team_Service_Tiers_Var_Samp_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -21433,6 +21546,7 @@ export type Team_Service_Tiers_Variance_Fields = {
   included_datapoints?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -23811,6 +23925,7 @@ export type User_Service_Tiers = {
   __typename?: 'user_service_tiers';
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents: Scalars['Int'];
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at: Scalars['timestamptz'];
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -23819,6 +23934,7 @@ export type User_Service_Tiers = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name: Scalars['String'];
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders: Scalars['Int'];
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days: Scalars['Int'];
@@ -23920,6 +24036,7 @@ export type User_Service_Tiers_Avg_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -23935,6 +24052,7 @@ export type User_Service_Tiers_Bool_Exp = {
   _or?: Maybe<Array<User_Service_Tiers_Bool_Exp>>;
   allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
+  can_use_crud_endpoints?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   csv_downloads_per_month?: Maybe<Int_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
@@ -23943,6 +24061,7 @@ export type User_Service_Tiers_Bool_Exp = {
   included_query_executions?: Maybe<Int_Comparison_Exp>;
   internal_tier_name?: Maybe<String_Comparison_Exp>;
   is_public?: Maybe<Boolean_Comparison_Exp>;
+  max_folders?: Maybe<Int_Comparison_Exp>;
   max_private_dashboards?: Maybe<Int_Comparison_Exp>;
   max_private_queries?: Maybe<Int_Comparison_Exp>;
   max_query_event_retention_days?: Maybe<Int_Comparison_Exp>;
@@ -23964,6 +24083,8 @@ export type User_Service_Tiers_Bool_Exp = {
 
 /** unique or primary key constraints on table "user_service_tiers" */
 export enum User_Service_Tiers_Constraint {
+  /** unique or primary key constraint on columns "name" */
+  UserServiceTiersNameKey = 'user_service_tiers_name_key',
   /** unique or primary key constraint on columns "id" */
   UserServiceTiersPkey = 'user_service_tiers_pkey'
 }
@@ -23975,6 +24096,7 @@ export type User_Service_Tiers_Inc_Input = {
   id?: Maybe<Scalars['Int']>;
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -23987,6 +24109,7 @@ export type User_Service_Tiers_Inc_Input = {
 export type User_Service_Tiers_Insert_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -23995,6 +24118,7 @@ export type User_Service_Tiers_Insert_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24023,6 +24147,7 @@ export type User_Service_Tiers_Max_Fields = {
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24048,6 +24173,7 @@ export type User_Service_Tiers_Min_Fields = {
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24089,6 +24215,7 @@ export type User_Service_Tiers_On_Conflict = {
 export type User_Service_Tiers_Order_By = {
   allow_private_queries_as_views?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
+  can_use_crud_endpoints?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   csv_downloads_per_month?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
@@ -24097,6 +24224,7 @@ export type User_Service_Tiers_Order_By = {
   included_query_executions?: Maybe<Order_By>;
   internal_tier_name?: Maybe<Order_By>;
   is_public?: Maybe<Order_By>;
+  max_folders?: Maybe<Order_By>;
   max_private_dashboards?: Maybe<Order_By>;
   max_private_queries?: Maybe<Order_By>;
   max_query_event_retention_days?: Maybe<Order_By>;
@@ -24126,6 +24254,8 @@ export enum User_Service_Tiers_Select_Column {
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
+  CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
   CreatedAt = 'created_at',
   /** column name */
   CsvDownloadsPerMonth = 'csv_downloads_per_month',
@@ -24141,6 +24271,8 @@ export enum User_Service_Tiers_Select_Column {
   InternalTierName = 'internal_tier_name',
   /** column name */
   IsPublic = 'is_public',
+  /** column name */
+  MaxFolders = 'max_folders',
   /** column name */
   MaxPrivateDashboards = 'max_private_dashboards',
   /** column name */
@@ -24173,6 +24305,7 @@ export enum User_Service_Tiers_Select_Column {
 export type User_Service_Tiers_Set_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24181,6 +24314,7 @@ export type User_Service_Tiers_Set_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24204,6 +24338,7 @@ export type User_Service_Tiers_Stddev_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -24220,6 +24355,7 @@ export type User_Service_Tiers_Stddev_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -24236,6 +24372,7 @@ export type User_Service_Tiers_Stddev_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -24256,6 +24393,7 @@ export type User_Service_Tiers_Stream_Cursor_Input = {
 export type User_Service_Tiers_Stream_Cursor_Value_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
+  can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24264,6 +24402,7 @@ export type User_Service_Tiers_Stream_Cursor_Value_Input = {
   included_query_executions?: Maybe<Scalars['Int']>;
   internal_tier_name?: Maybe<Scalars['String']>;
   is_public?: Maybe<Scalars['Boolean']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24287,6 +24426,7 @@ export type User_Service_Tiers_Sum_Fields = {
   id?: Maybe<Scalars['Int']>;
   included_nanocredits?: Maybe<Scalars['bigint']>;
   included_query_executions?: Maybe<Scalars['Int']>;
+  max_folders?: Maybe<Scalars['Int']>;
   max_private_dashboards?: Maybe<Scalars['Int']>;
   max_private_queries?: Maybe<Scalars['Int']>;
   max_query_event_retention_days?: Maybe<Scalars['Int']>;
@@ -24301,6 +24441,8 @@ export enum User_Service_Tiers_Update_Column {
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
+  /** column name */
+  CanUseCrudEndpoints = 'can_use_crud_endpoints',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -24317,6 +24459,8 @@ export enum User_Service_Tiers_Update_Column {
   InternalTierName = 'internal_tier_name',
   /** column name */
   IsPublic = 'is_public',
+  /** column name */
+  MaxFolders = 'max_folders',
   /** column name */
   MaxPrivateDashboards = 'max_private_dashboards',
   /** column name */
@@ -24361,6 +24505,7 @@ export type User_Service_Tiers_Var_Pop_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -24377,6 +24522,7 @@ export type User_Service_Tiers_Var_Samp_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -24393,6 +24539,7 @@ export type User_Service_Tiers_Variance_Fields = {
   id?: Maybe<Scalars['Float']>;
   included_nanocredits?: Maybe<Scalars['Float']>;
   included_query_executions?: Maybe<Scalars['Float']>;
+  max_folders?: Maybe<Scalars['Float']>;
   max_private_dashboards?: Maybe<Scalars['Float']>;
   max_private_queries?: Maybe<Scalars['Float']>;
   max_query_event_retention_days?: Maybe<Scalars['Float']>;
@@ -27363,7 +27510,7 @@ export type RefetchDashboardFavoritesQuery = (
 
 export type DashboardItemFragment = (
   { __typename?: 'dashboards' }
-  & Pick<Dashboards, 'id' | 'name' | 'slug' | 'created_at' | 'tags' | 'is_private'>
+  & Pick<Dashboards, 'id' | 'name' | 'slug' | 'created_at' | 'updated_at' | 'tags' | 'is_private'>
   & { user?: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'name' | 'profile_image_url'>
@@ -27494,7 +27641,7 @@ export type ListBrowseQueriesQuery = (
 
 export type QueryItemFragment = (
   { __typename?: 'queries' }
-  & Pick<Queries, 'id' | 'name' | 'created_at' | 'tags' | 'matview_id' | 'is_private'>
+  & Pick<Queries, 'id' | 'name' | 'created_at' | 'updated_at' | 'tags' | 'matview_id' | 'is_private'>
   & { user?: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id' | 'name' | 'profile_image_url'>
@@ -28402,6 +28549,22 @@ export type HomeSearchQuery = (
     { __typename?: 'arrakis_schemas' }
     & Pick<Arrakis_Schemas, 'namespace' | 'contract_name' | 'abi_name' | 'abi_type' | 'full_name' | 'blockchains'>
   )> }
+);
+
+export type SearchContractsQueryVariables = Exact<{
+  contract_address: Scalars['String'];
+}>;
+
+
+export type SearchContractsQuery = (
+  { __typename?: 'query_root' }
+  & { search_contracts: (
+    { __typename?: 'SearchContractsResponse' }
+    & { projects: Array<(
+      { __typename?: 'SearchContractsProject' }
+      & Pick<SearchContractsProject, 'namespace' | 'blockchains'>
+    )> }
+  ) }
 );
 
 export type ListMaterializedViewsQueryVariables = Exact<{
@@ -29576,7 +29739,7 @@ export type GetExecutionQuery = (
       & Pick<ExecutionRunning, 'execution_id' | 'execution_user_id' | 'execution_type' | 'started_at' | 'created_at'>
     )>, execution_succeeded?: Maybe<(
       { __typename?: 'ExecutionSucceeded' }
-      & Pick<ExecutionSucceeded, 'execution_id' | 'runtime_seconds' | 'generated_at' | 'columns' | 'data' | 'max_result_size_reached_bytes'>
+      & Pick<ExecutionSucceeded, 'execution_id' | 'runtime_seconds' | 'generated_at' | 'columns' | 'data' | 'max_result_size_reached_bytes' | 'request_max_result_size_bytes'>
     )>, execution_failed?: Maybe<(
       { __typename?: 'ExecutionFailed' }
       & Pick<ExecutionFailed, 'execution_id' | 'type' | 'message' | 'runtime_seconds' | 'generated_at'>
@@ -31424,6 +31587,7 @@ export const DashboardItemFragmentDoc = gql`
   name
   slug
   created_at
+  updated_at
   tags
   user {
     name
@@ -31459,6 +31623,7 @@ export const QueryItemFragmentDoc = gql`
   id
   name
   created_at
+  updated_at
   tags
   matview_id
   user {
@@ -34876,6 +35041,42 @@ export function useHomeSearchLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type HomeSearchQueryHookResult = ReturnType<typeof useHomeSearchQuery>;
 export type HomeSearchLazyQueryHookResult = ReturnType<typeof useHomeSearchLazyQuery>;
 export type HomeSearchQueryResult = Apollo.QueryResult<HomeSearchQuery, HomeSearchQueryVariables>;
+export const SearchContractsDocument = gql`
+    query searchContracts($contract_address: String!) {
+  search_contracts(contract_address: $contract_address) {
+    projects {
+      namespace
+      blockchains
+    }
+  }
+}
+    `;
+
+/**
+ * __useSearchContractsQuery__
+ *
+ * To run a query within a React component, call `useSearchContractsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchContractsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchContractsQuery({
+ *   variables: {
+ *      contract_address: // value for 'contract_address'
+ *   },
+ * });
+ */
+export function useSearchContractsQuery(baseOptions: Apollo.QueryHookOptions<SearchContractsQuery, SearchContractsQueryVariables>) {
+        return Apollo.useQuery<SearchContractsQuery, SearchContractsQueryVariables>(SearchContractsDocument, baseOptions);
+      }
+export function useSearchContractsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchContractsQuery, SearchContractsQueryVariables>) {
+          return Apollo.useLazyQuery<SearchContractsQuery, SearchContractsQueryVariables>(SearchContractsDocument, baseOptions);
+        }
+export type SearchContractsQueryHookResult = ReturnType<typeof useSearchContractsQuery>;
+export type SearchContractsLazyQueryHookResult = ReturnType<typeof useSearchContractsLazyQuery>;
+export type SearchContractsQueryResult = Apollo.QueryResult<SearchContractsQuery, SearchContractsQueryVariables>;
 export const ListMaterializedViewsDocument = gql`
     query ListMaterializedViews($offset: Int) {
   queries(where: {matview_id: {_is_null: false}}, offset: $offset) {
@@ -37083,6 +37284,7 @@ export const GetExecutionDocument = gql`
       columns
       data
       max_result_size_reached_bytes
+      request_max_result_size_bytes
     }
     execution_failed {
       execution_id

@@ -64,7 +64,7 @@ export function HamburgerMenu() {
 
                 <ul>
                   <Menu.ItemLink href="/browse/queries/authored">
-                    My creations
+                    Library
                   </Menu.ItemLink>
 
                   {activeContext?.permissions.canEditContent && (

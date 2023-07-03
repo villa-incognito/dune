@@ -65,7 +65,9 @@ export const MigrationBanner = WithContext(
           Boolean(tryLocalStorageGetItem(STORAGE_DISMISSED_KEY))
     );
 
-    if (dismissed) {
+    const canDismiss = ![3, 4].includes(serviceTierId);
+
+    if (dismissed && canDismiss) {
       return null;
     }
 
@@ -147,10 +149,11 @@ export const MigrationBanner = WithContext(
             fromServiceTier={fromServiceTier ?? undefined}
             trackClick={trackClick}
           />
-
-          <IconButton theme="ghost" size="S" onClick={onDismiss}>
-            <IconCross />
-          </IconButton>
+          {canDismiss && (
+            <IconButton theme="ghost" size="S" onClick={onDismiss}>
+              <IconCross />
+            </IconButton>
+          )}
         </div>
       </div>
     );
@@ -179,7 +182,10 @@ const getDescription = (serviceTierId: number, fromServiceTier?: number) => {
     case 3: // Thug life
     case 4: // Elite
       return (
-        <>Get a more powerful Dune experience by migrating to a new plan.</>
+        <>
+          This is the final month on your current plan. Opt-in before July 24th
+          to access Plus and Premium benefits now!
+        </>
       );
     default:
       return null;
@@ -204,7 +210,7 @@ const ActionButton = ({
       }
     }}
   >
-    Migrate plan
+    Migrate
   </Button>
 );
 

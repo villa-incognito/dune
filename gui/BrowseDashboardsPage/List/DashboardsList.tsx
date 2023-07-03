@@ -53,11 +53,15 @@ export default function DashboardsList(props: Props) {
                   )}
                 </div>
                 <div className={styles.userName}>
-                  Created by{" "}
                   <Link href={`/${dashboard.owner.handle}`}>
                     <a>@{dashboard.owner.handle}</a>
                   </Link>{" "}
-                  <TimeRelative>{dashboard.created_at}</TimeRelative>
+                  <ul>
+                    <li>
+                      <span>updated</span>
+                      <TimeRelative>{dashboard.updated_at}</TimeRelative>
+                    </li>
+                  </ul>
                   {dashboard.is_private && <Icon icon="lock-fill" />}
                 </div>
               </div>

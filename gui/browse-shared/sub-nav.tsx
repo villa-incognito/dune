@@ -2,7 +2,6 @@ import { EntryFilter } from "lib/entries/types";
 import { Icon } from "gui/icon/icon";
 import { Pagenav } from "gui/pagenav/pagenav";
 import { PagenavItem } from "gui/pagenav/pagenav";
-import { useIsFeatureEnabled } from "lib/hooks/useIsFeatureEnabled";
 
 export const BrowseSubNav: React.FC<{
   filter?: EntryFilter;
@@ -18,10 +17,6 @@ export const BrowseSubNav: React.FC<{
    */
   const shouldPrefetch = filter !== undefined;
   const prefetch = shouldPrefetch && undefined;
-
-  const hasAuthoredFilter = filter === "authored";
-  const dataUploadEnabled = useIsFeatureEnabled("data-upload-v1");
-  const showTablesAuthored = hasAuthoredFilter && dataUploadEnabled;
 
   return (
     <Pagenav className={className}>
@@ -44,12 +39,6 @@ export const BrowseSubNav: React.FC<{
             Teams
           </PagenavItem>
         </>
-      )}
-      {showTablesAuthored && (
-        <PagenavItem href="/browse/tables/authored">
-          <Icon icon="list-nested" />
-          Tables
-        </PagenavItem>
       )}
     </Pagenav>
   );
