@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import * as Sentry from "@sentry/react";
 import { Integrations } from "@sentry/tracing";
 

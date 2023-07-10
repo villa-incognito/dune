@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./ToastNotificationsWrapper.module.css";
 
 import { ControlledNotification } from "components/Notification/ControlledNotification";

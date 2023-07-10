@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import flatten from "lodash/flatten";
 import produce from "immer";
 import uniq from "lodash/uniq";
@@ -9,8 +11,6 @@ import { ParameterMapping } from "lib/parameters/types";
 import { isNonNullable } from "lib/types/types";
 import { isQueryVisual } from "lib/visuals/visuals";
 import { VisualQueryDetails } from "lib/visuals/types";
-import { browserQueryString, parseQueryString } from "lib/links/query";
-import { hash } from "./query";
 
 export const defaultKey = "unnamed_parameter";
 export const defaultValue = "default value";
@@ -173,33 +173,4 @@ export const uniqueParam = (p: Parameter): string => {
     value: p.default_value,
     enumOptions: p.type === "enum" ? p.enumOptions?.slice().sort() : undefined,
   });
-};
-
-// Checking if the parameters that come int the browser query string
-// belong to the dashboard (i.e. if they are part of the queries of the dashboard) / query.
-// If there's at least one parameter that belongs, we want to return true,
-// so that the modal is shown.
-export const paramsBelongToResource = (defaults: Parameter[]): boolean => {
-  if (browserQueryString() === "") {
-    return false;
-  }
-
-  const parsed = parseQueryString(browserQueryString());
-
-  for (const key in parsed) {
-    const parameterValue = parsed[key];
-    const param = defaults.find(
-      (d) =>
-        `${d.key}_${d.type[0]}${hash(
-          `${d.type[0]}${d.query_id}${d.default_value}`
-        )}` === key || `${d.key}` === key
-    );
-
-    const defaultValue = param?.default_value;
-    if (param !== undefined && parameterValue !== defaultValue) {
-      return true;
-    }
-  }
-
-  return false;
 };

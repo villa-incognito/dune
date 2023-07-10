@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { AnchorButton } from "components/Button/AnchorButton";
 import { IconButton } from "components/Button/IconButton";
 import { IconCross } from "components/Icons/IconCross";

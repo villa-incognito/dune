@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./buttonThemes.module.css";
 import cn from "classnames";
 

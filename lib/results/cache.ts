@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { Mutex } from "async-mutex";
 
 export class QueryResultsCache<T extends Object | undefined> {

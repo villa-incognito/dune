@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import PostHogSDK from "posthog-js";
 import type { PostHog } from "posthog-js";
 import React from "react";

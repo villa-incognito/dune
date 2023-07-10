@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { IconGauge } from "components/Icons/IconGauge";
 import styles from "./UsageTracker.module.css";
 import { HoverPopover } from "components/HoverPopover/HoverPopover";

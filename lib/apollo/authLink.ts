@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { setContext } from "@apollo/client/link/context";
 import { isServerSide } from "lib/env/env";
 

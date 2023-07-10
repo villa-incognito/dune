@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { assertUnreachable } from "lib/assertUnreachable";
 import { EntryFilter } from "lib/entries/types";
 import { EntryType } from "lib/entries/types";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { dashboardPath, queryPath } from "lib/links/links";
 import React, { useMemo } from "react";
 

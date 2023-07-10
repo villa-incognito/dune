@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { useRequiredSessionWithUser } from "gui/session/session";
 import { useGetTeamUsageQuery } from "lib/types/graphql";
 import { gql } from "@apollo/client";

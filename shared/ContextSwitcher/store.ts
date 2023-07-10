@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import createStore from "zustand";
 import { useSessionWithUser } from "gui/session/session";
 import { useMyTeamsIfLoggedIn } from "shared/teams/useMyTeams";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { Dashboards_Constraint } from "lib/types/graphql";
 import { Dashboards_Update_Column } from "lib/types/graphql";
 import { FullDashboard } from "lib/entries/types";

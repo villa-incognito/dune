@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import produce from "immer";
 import { CodeHelpers } from "gui/code/code";
 import { Theme } from "gui/code/theme";

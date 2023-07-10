@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { logger } from "lib/logger/browser";
 import { frontend } from "lib/env/env";
 import { hasOwnProperty } from "lib/types/types";

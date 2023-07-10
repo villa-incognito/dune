@@ -1,7 +1,6 @@
 import styles from "./DashboardsList.module.css";
 
 import Link from "next/link";
-import { Avatar } from "gui/avatar/avatar";
 import { TimeRelative } from "gui/time/time";
 import { Icon } from "gui/icon/icon";
 import Star from "./DashboardStar";
@@ -10,9 +9,11 @@ import useDashboardsFavorites from "../api/useDashboardsFavorites";
 
 import type { DashboardType } from "../api/dashboardItem";
 import { Tags } from "gui/tags/tags";
+import { AvatarOrIcon } from "gui/browse-shared/AvatarOrIcon";
 
 interface Props {
   dashboards: DashboardType[];
+  origin?: "creations";
 }
 
 export default function DashboardsList(props: Props) {
@@ -25,15 +26,13 @@ export default function DashboardsList(props: Props) {
         {props.dashboards.map((dashboard) => (
           <tr key={dashboard.id}>
             <td className={styles.avatarColumn}>
-              <Link href={`/${dashboard.owner.handle}`}>
-                <a>
-                  <Avatar
-                    src={dashboard.owner.profile_image_url}
-                    alt={dashboard.owner.handle}
-                    size={25}
-                  />
-                </a>
-              </Link>
+              <AvatarOrIcon
+                handle={dashboard.owner.handle}
+                href={`/${dashboard.owner.handle}/${dashboard.slug}`}
+                resource="dashboard"
+                origin={props.origin}
+                profile_image_url={dashboard.owner.profile_image_url}
+              />
             </td>
             <td>
               <div className={styles.multiline}>

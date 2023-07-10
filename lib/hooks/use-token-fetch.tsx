@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import useSWR from "swr";
 import { CSRFContext } from "gui/csrf/csrf";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { DeleteFavoriteDashboardMutation } from "lib/types/graphql";
 import { DeleteFavoriteDashboardMutationVariables } from "lib/types/graphql";
 import { DeleteFavoriteQueryMutation } from "lib/types/graphql";
@@ -36,7 +38,6 @@ import { Session } from "lib/users/types";
 import { apolloCore } from "lib/apollo/apollo";
 import { assert } from "lib/assert/assert";
 import { assertUnreachable } from "lib/assertUnreachable";
-import { convertNull } from "lib/types/types";
 import { deleteFavoriteDashboard } from "lib/entries/graphql";
 import { deleteFavoriteQuery } from "lib/entries/graphql";
 import { findDashboard } from "lib/entries/graphql";
@@ -534,7 +535,7 @@ const parseEntryDashboardResponse = (
     created_at: data.created_at,
     updated_at: data.updated_at,
     owner: parseOwner(data),
-    tags: convertNull<string[]>(data.tags || []),
+    tags: data.tags ?? [],
     num_favorites_in_period: favsInPeriod(),
     is_favorite: data.favorite_dashboards.length > 0,
     is_private: data.is_private,
@@ -587,7 +588,7 @@ const parseDashboardResponse = (
     updated_at: data.updated_at,
     owner: parseOwner(data),
     forked_dashboard: forkedDashboard(),
-    tags: convertNull<string[]>(data.tags || []),
+    tags: data.tags ?? [],
     num_favorites_in_period:
       data.dashboard_favorite_count_all?.favorite_count ?? 0,
     is_favorite: data.favorite_dashboards.length > 0,
@@ -655,7 +656,7 @@ const parseQueryResponse = (
     created_at: data.created_at,
     updated_at: data.updated_at,
     owner: parseOwner(data),
-    tags: convertNull<string[]>(data.tags || []),
+    tags: data.tags ?? [],
     num_favorites_in_period: favsInPeriod(),
     is_favorite: data.favorite_queries.length > 0,
     is_private: data.is_private,

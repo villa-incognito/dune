@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import capitalize from "lodash/capitalize";
 import isEqual from "lodash/isEqual";
 import { apolloCore } from "lib/apollo/apollo";

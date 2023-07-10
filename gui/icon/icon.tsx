@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import { AiOutlineAreaChart } from "react-icons/ai";
 import { AiOutlineDotChart } from "react-icons/ai";

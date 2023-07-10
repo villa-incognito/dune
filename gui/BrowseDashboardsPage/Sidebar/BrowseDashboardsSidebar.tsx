@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "gui/BrowseDashboardsPage/BrowsePage.module.css";
 import listStyles from "gui/box/list.module.css";
 import searchStyles from "gui/browse-shared/search.module.css";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { QueryResultColumn } from "lib/results/types";
 import { QueryResultRow } from "lib/results/types";
 import { QueryResultValue } from "lib/results/types";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import numeral from "numeral";
 
 // Format a number using a Numeral.js number format string.

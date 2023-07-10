@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import modalOverlay from "components/Modal/ModalOverlay.module.css";
 import React, { ReactElement, useState } from "react";
 import { DialogOverlay } from "@reach/dialog";

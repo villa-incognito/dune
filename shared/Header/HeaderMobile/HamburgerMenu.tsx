@@ -148,6 +148,9 @@ export function HamburgerMenu() {
             <Menu.ItemLink href="https://discord.gg/ErrzwBz" target="_blank">
               Discord
             </Menu.ItemLink>
+            <Menu.ItemLink href="https://t.me/dune_updates" target="_blank">
+              Telegram
+            </Menu.ItemLink>
             <Menu.ItemLink href="https://feedback.dune.com/" target="_blank">
               Give feedback
             </Menu.ItemLink>

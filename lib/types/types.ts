@@ -2,10 +2,6 @@ import isPlainObject from "lodash/isObject";
 import transform from "lodash/transform";
 
 export type NoId<T> = Omit<T, "id">;
-export type PartialId<T extends { id: unknown }> = Optional<T, "id">;
-
-// Make some attributes optional
-export type Optional<T, K extends keyof T> = Pick<Partial<T>, K> & Omit<T, K>;
 
 // recursively make all properties optional
 export type NestedPartial<T> = {
@@ -25,14 +21,22 @@ export const isNumber = (value: any): value is number => {
   return typeof value === "number";
 };
 
-// Check that a value is not `null` and not `undefined`.
-export const isNonNullable = <T,>(value: T): value is NonNullable<T> => {
-  return value !== null && typeof value !== "undefined";
+export const isNull = <T>(value: T | null): value is null => {
+  return value === null;
 };
 
-// Convert a value to `undefined` if it is `null`.
-export const convertNull = <T,>(obj: T | undefined | null): T | undefined => {
-  return obj === null ? undefined : obj;
+export const isUndefined = <T>(value: T | undefined): value is undefined => {
+  return value === undefined;
+};
+
+export const isNullable = <T>(
+  value: T | null | undefined
+): value is null | undefined => {
+  return isNull(value) || isUndefined(value);
+};
+
+export const isNonNullable = <T>(value: T | null | undefined): value is T => {
+  return !isNullable(value);
 };
 
 // Recursively remove all fields that have `null` or `undefined` values.

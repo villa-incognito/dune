@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import {
   useListUserMembershipsQuery,
   ListUserMembershipsDocument,
@@ -42,6 +44,7 @@ export function useMyTeamsQuery(
     context: { session },
     variables: {
       user_id: session.user.id,
+      user_email: session.email,
     },
   });
 
@@ -68,7 +71,8 @@ export function useMyTeamsIfLoggedIn(
     skip: !session?.user?.id,
     context: { session },
     variables: {
-      user_id: session?.user?.id ?? -1,
+      user_id: session?.user?.id,
+      user_email: session?.email,
     },
   });
 
@@ -95,7 +99,7 @@ export function useMyTeamsAndInvites({
 
   return useListUserMembershipsQuery({
     skip: !session || !session.user,
-    variables: { user_id: session?.user?.id },
+    variables: { user_id: session?.user?.id, user_email: session?.email },
     context: { session },
     fetchPolicy,
   });
@@ -108,15 +112,21 @@ export function refetchMyTeams(session: SessionWithUser) {
   >({
     context: { session },
     query: ListUserMembershipsDocument,
-    variables: { user_id: session.user.id },
+    variables: { user_id: session.user.id, user_email: session.email },
     fetchPolicy: "network-only",
   });
 }
 
 gql`
-  query ListUserMemberships($user_id: Int) {
+  query ListUserMemberships($user_id: Int, $user_email: String) {
     memberships_private_details(
-      where: { user_id: { _eq: $user_id } }
+      where: {
+        _or: [
+          { user_id: { _eq: $user_id } }
+          # Sometimes a user is invited to a team by email before they have an account
+          { email: { _eq: $user_email } }
+        ]
+      }
       order_by: [{ status: desc }, { role: desc }]
     ) {
       id

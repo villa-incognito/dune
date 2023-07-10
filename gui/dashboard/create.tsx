@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import { ButtonOld } from "components/ButtonOld/ButtonOld";
 import { ButtonGroup } from "components/ButtonOld/ButtonGroup";

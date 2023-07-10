@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./ButtonOld.module.css";
 
 import Link from "next/link";

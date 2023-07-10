@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import cn from "classnames";
 import styles from "../Usage.module.css";
 import { formatNumber } from "lib/intl/number";

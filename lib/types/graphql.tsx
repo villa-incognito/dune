@@ -131,12 +131,25 @@ export type ContextOwner = {
   type: Scalars['String'];
 };
 
+export type CreateDashboardScheduleResponse = {
+  __typename?: 'CreateDashboardScheduleResponse';
+  cron_job: CronJob;
+  dashboard_id: Scalars['Int'];
+};
+
 export type CreateFolderInput = {
   color: Scalars['String'];
   description?: Maybe<Scalars['String']>;
   icon: Scalars['String'];
   name: Scalars['String'];
   team_id?: Maybe<Scalars['Int']>;
+};
+
+export type CreateMaterializedViewResponse = {
+  __typename?: 'CreateMaterializedViewResponse';
+  creation_execution_id: Scalars['String'];
+  id: Scalars['String'];
+  sql_names: Array<Scalars['String']>;
 };
 
 export type CreateQueryInput = {
@@ -191,6 +204,12 @@ export type CreateUserCheckoutSessionResponse = {
   checkout_session_id: Scalars['String'];
 };
 
+export type CreateWandQueryResponse = {
+  __typename?: 'CreateWandQueryResponse';
+  query: Scalars['String'];
+  response_id: Scalars['String'];
+};
+
 export type CronJob = {
   __typename?: 'CronJob';
   cron_expression?: Maybe<Scalars['String']>;
@@ -208,6 +227,12 @@ export type CronJobMetadata = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+export type DashboardSchedulesResponse = {
+  __typename?: 'DashboardSchedulesResponse';
+  cron_jobs: Array<CronJob>;
+  dashboard_id: Scalars['Int'];
+};
+
 export type DashboardSettings = {
   id: Scalars['Int'];
   is_private?: Maybe<Scalars['Boolean']>;
@@ -217,9 +242,20 @@ export type DashboardSettings = {
   user_id?: Maybe<Scalars['Int']>;
 };
 
+export type DebugWandQueryResponse = {
+  __typename?: 'DebugWandQueryResponse';
+  query: Scalars['String'];
+  response_id: Scalars['String'];
+};
+
 export type DeleteAccountResult = {
   __typename?: 'DeleteAccountResult';
   ok: Scalars['Boolean'];
+};
+
+export type DeleteDashboardScheduleResponse = {
+  __typename?: 'DeleteDashboardScheduleResponse';
+  cron_job_id: Scalars['String'];
 };
 
 export type DeleteQueryScheduleResponse = {
@@ -255,6 +291,12 @@ export type DowngradeTeamSubscriptionResponse = {
 export type DowngradeUserSubscriptionResponse = {
   __typename?: 'DowngradeUserSubscriptionResponse';
   ok: Scalars['Boolean'];
+};
+
+export type EditWandQueryResponse = {
+  __typename?: 'EditWandQueryResponse';
+  query: Scalars['String'];
+  response_id: Scalars['String'];
 };
 
 export type ErrorMetadata = {
@@ -732,6 +774,20 @@ export type UpdateAccountForServiceTierResponse = {
   __typename?: 'UpdateAccountForServiceTierResponse';
   archived_dashboards_count: Scalars['Int'];
   archived_queries_count: Scalars['Int'];
+};
+
+export type UpdateDashboardScheduleResponse = {
+  __typename?: 'UpdateDashboardScheduleResponse';
+  cron_job: CronJob;
+  dashboard_id: Scalars['Int'];
+};
+
+export type UpdateFolderInput = {
+  color: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
 };
 
 export type UpdateQueryInput = {
@@ -7295,7 +7351,9 @@ export type Mutation_Root = {
   change_password?: Maybe<ChangePasswordResult>;
   complete_nlq_model: CompleteNlqModelResponse;
   complete_stripe_checkout_session: CompleteStripeCheckoutSessionResponse;
+  create_dashboard_schedule: CreateDashboardScheduleResponse;
   create_folder: Folder;
+  create_materialized_view: CreateMaterializedViewResponse;
   create_query: CreateQueryResponse;
   create_query_schedule: CreateQueryScheduleResponse;
   create_team?: Maybe<CreateTeamResponse>;
@@ -7304,6 +7362,8 @@ export type Mutation_Root = {
   create_team_checkout_session: CreateTeamCheckoutSessionResponse;
   create_user_api_key: CreateUserApiKeyResponse;
   create_user_checkout_session: CreateUserCheckoutSessionResponse;
+  create_wand_query: CreateWandQueryResponse;
+  debug_wand_query: DebugWandQueryResponse;
   delete_account?: Maybe<DeleteAccountResult>;
   /** delete data from the table: "api_keys" */
   delete_api_keys?: Maybe<Api_Keys_Mutation_Response>;
@@ -7325,6 +7385,7 @@ export type Mutation_Root = {
   delete_contract_submissions?: Maybe<Contract_Submissions_Mutation_Response>;
   /** delete single row from the table: "contract_submissions" */
   delete_contract_submissions_by_pk?: Maybe<Contract_Submissions>;
+  delete_dashboard_schedule: DeleteDashboardScheduleResponse;
   /** delete data from the table: "dashboard_trending_scores" */
   delete_dashboard_trending_scores?: Maybe<Dashboard_Trending_Scores_Mutation_Response>;
   /** delete single row from the table: "dashboard_trending_scores" */
@@ -7459,6 +7520,7 @@ export type Mutation_Root = {
   /** downgrade_team_subscription */
   downgrade_team_subscription: DowngradeTeamSubscriptionResponse;
   downgrade_user_subscription: DowngradeUserSubscriptionResponse;
+  edit_wand_query: EditWandQueryResponse;
   execute_query_v3?: Maybe<ExecuteQueryResponse>;
   fork_dashboard_v2?: Maybe<ForkDashboardResponse>;
   fork_query?: Maybe<Fork_Query_Response>;
@@ -7672,6 +7734,7 @@ export type Mutation_Root = {
   update_contract_submissions_by_pk?: Maybe<Contract_Submissions>;
   /** update multiples rows of table: "contract_submissions" */
   update_contract_submissions_many?: Maybe<Array<Maybe<Contract_Submissions_Mutation_Response>>>;
+  update_dashboard_schedule: UpdateDashboardScheduleResponse;
   /** update data of the table: "dashboard_trending_scores" */
   update_dashboard_trending_scores?: Maybe<Dashboard_Trending_Scores_Mutation_Response>;
   /** update single row of the table: "dashboard_trending_scores" */
@@ -7708,6 +7771,7 @@ export type Mutation_Root = {
   update_favourited_schemas_by_pk?: Maybe<Favourited_Schemas>;
   /** update multiples rows of table: "favourited_schemas" */
   update_favourited_schemas_many?: Maybe<Array<Maybe<Favourited_Schemas_Mutation_Response>>>;
+  update_folder: Folder;
   /** update data of the table: "get_result_template" */
   update_get_result_template?: Maybe<Get_Result_Template_Mutation_Response>;
   /** update multiples rows of table: "get_result_template" */
@@ -7933,8 +7997,26 @@ export type Mutation_RootComplete_Stripe_Checkout_SessionArgs = {
 
 
 /** mutation root */
+export type Mutation_RootCreate_Dashboard_ScheduleArgs = {
+  cron_expression: Scalars['String'];
+  dashboard_id: Scalars['Int'];
+  performance: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootCreate_FolderArgs = {
   folder: CreateFolderInput;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreate_Materialized_ViewArgs = {
+  creator: ContextOwner;
+  is_private: Scalars['Boolean'];
+  name?: Maybe<Scalars['String']>;
+  performance: Scalars['String'];
+  query_id: Scalars['Int'];
 };
 
 
@@ -7983,6 +8065,19 @@ export type Mutation_RootCreate_User_Api_KeyArgs = {
 /** mutation root */
 export type Mutation_RootCreate_User_Checkout_SessionArgs = {
   redirect_path?: Maybe<Scalars['String']>;
+};
+
+
+/** mutation root */
+export type Mutation_RootCreate_Wand_QueryArgs = {
+  prompt: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDebug_Wand_QueryArgs = {
+  error: Scalars['String'];
+  query: Scalars['String'];
 };
 
 
@@ -8043,6 +8138,12 @@ export type Mutation_RootDelete_Contract_SubmissionsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Contract_Submissions_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Dashboard_ScheduleArgs = {
+  cron_job_id: Scalars['String'];
 };
 
 
@@ -8465,6 +8566,13 @@ export type Mutation_RootDowngrade_Team_SubscriptionArgs = {
 /** mutation root */
 export type Mutation_RootDowngrade_User_SubscriptionArgs = {
   service_tier_name: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootEdit_Wand_QueryArgs = {
+  prompt: Scalars['String'];
+  query: Scalars['String'];
 };
 
 
@@ -9308,6 +9416,14 @@ export type Mutation_RootUpdate_Contract_Submissions_ManyArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_Dashboard_ScheduleArgs = {
+  cron_expression: Scalars['String'];
+  cron_job_id: Scalars['String'];
+  performance: Scalars['String'];
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Dashboard_Trending_ScoresArgs = {
   _inc?: Maybe<Dashboard_Trending_Scores_Inc_Input>;
   _set?: Maybe<Dashboard_Trending_Scores_Set_Input>;
@@ -9446,6 +9562,12 @@ export type Mutation_RootUpdate_Favourited_Schemas_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Favourited_Schemas_ManyArgs = {
   updates: Array<Favourited_Schemas_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_FolderArgs = {
+  folder: UpdateFolderInput;
 };
 
 
@@ -16540,6 +16662,7 @@ export type Query_Root = {
   dashboard_favorite_count_last_7d: Array<Dashboard_Favorite_Count_Last_7d>;
   /** fetch aggregated fields from the table: "dashboard_favorite_count_last_7d" */
   dashboard_favorite_count_last_7d_aggregate: Dashboard_Favorite_Count_Last_7d_Aggregate;
+  dashboard_schedules: DashboardSchedulesResponse;
   /** fetch data from the table: "dashboard_trending_scores" */
   dashboard_trending_scores: Array<Dashboard_Trending_Scores>;
   /** fetch aggregated fields from the table: "dashboard_trending_scores" */
@@ -17011,6 +17134,11 @@ export type Query_RootDashboard_Favorite_Count_Last_7d_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Dashboard_Favorite_Count_Last_7d_Order_By>>;
   where?: Maybe<Dashboard_Favorite_Count_Last_7d_Bool_Exp>;
+};
+
+
+export type Query_RootDashboard_SchedulesArgs = {
+  dashboard_id: Scalars['Int'];
 };
 
 
@@ -30335,6 +30463,23 @@ export type GenerateDataUploadUrlMutation = (
   )> }
 );
 
+export type CreateFolderMutationVariables = Exact<{
+  name: Scalars['String'];
+  icon: Scalars['String'];
+  color: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type CreateFolderMutation = (
+  { __typename?: 'mutation_root' }
+  & { create_folder: (
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id'>
+  ) }
+);
+
 export type UploadedTablesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -30681,28 +30826,15 @@ export type SetUserMaxDatapointsPerRequestMutation = (
 export type InviteMemberMutationVariables = Exact<{
   team_id: Scalars['Int'];
   role: Scalars['String'];
-  user_id: Scalars['Int'];
+  usernameOrEmail: Scalars['String'];
 }>;
 
 
 export type InviteMemberMutation = (
   { __typename?: 'mutation_root' }
-  & { invite_member?: Maybe<(
+  & { invite_member_v2?: Maybe<(
     { __typename?: 'InviteMemberResponse' }
     & Pick<InviteMemberResponse, 'id'>
-  )> }
-);
-
-export type GetUserIdQueryVariables = Exact<{
-  name: Scalars['String'];
-}>;
-
-
-export type GetUserIdQuery = (
-  { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
   )> }
 );
 
@@ -30779,7 +30911,7 @@ export type ResendInviteMutationVariables = Exact<{
 
 export type ResendInviteMutation = (
   { __typename?: 'mutation_root' }
-  & { resend_invite?: Maybe<(
+  & { resend_invite_v2?: Maybe<(
     { __typename?: 'ResendInviteResponse' }
     & Pick<ResendInviteResponse, 'ok'>
   )> }
@@ -31469,7 +31601,7 @@ export type AcceptInviteMutationVariables = Exact<{
 
 export type AcceptInviteMutation = (
   { __typename?: 'mutation_root' }
-  & { accept_invite?: Maybe<(
+  & { accept_invite_v2?: Maybe<(
     { __typename?: 'AcceptInviteResponse' }
     & Pick<AcceptInviteResponse, 'ok'>
   )> }
@@ -31542,6 +31674,7 @@ export type DeleteMembershipMutation = (
 
 export type ListUserMembershipsQueryVariables = Exact<{
   user_id?: Maybe<Scalars['Int']>;
+  user_email?: Maybe<Scalars['String']>;
 }>;
 
 
@@ -38645,6 +38778,44 @@ export function useGenerateDataUploadUrlMutation(baseOptions?: Apollo.MutationHo
 export type GenerateDataUploadUrlMutationHookResult = ReturnType<typeof useGenerateDataUploadUrlMutation>;
 export type GenerateDataUploadUrlMutationResult = Apollo.MutationResult<GenerateDataUploadUrlMutation>;
 export type GenerateDataUploadUrlMutationOptions = Apollo.BaseMutationOptions<GenerateDataUploadUrlMutation, GenerateDataUploadUrlMutationVariables>;
+export const CreateFolderDocument = gql`
+    mutation CreateFolder($name: String!, $icon: String!, $color: String!, $description: String, $team_id: Int) {
+  create_folder(
+    folder: {name: $name, icon: $icon, color: $color, description: $description, team_id: $team_id}
+  ) {
+    id
+  }
+}
+    `;
+export type CreateFolderMutationFn = Apollo.MutationFunction<CreateFolderMutation, CreateFolderMutationVariables>;
+
+/**
+ * __useCreateFolderMutation__
+ *
+ * To run a mutation, you first call `useCreateFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createFolderMutation, { data, loading, error }] = useCreateFolderMutation({
+ *   variables: {
+ *      name: // value for 'name'
+ *      icon: // value for 'icon'
+ *      color: // value for 'color'
+ *      description: // value for 'description'
+ *      team_id: // value for 'team_id'
+ *   },
+ * });
+ */
+export function useCreateFolderMutation(baseOptions?: Apollo.MutationHookOptions<CreateFolderMutation, CreateFolderMutationVariables>) {
+        return Apollo.useMutation<CreateFolderMutation, CreateFolderMutationVariables>(CreateFolderDocument, baseOptions);
+      }
+export type CreateFolderMutationHookResult = ReturnType<typeof useCreateFolderMutation>;
+export type CreateFolderMutationResult = Apollo.MutationResult<CreateFolderMutation>;
+export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<CreateFolderMutation, CreateFolderMutationVariables>;
 export const UploadedTablesDocument = gql`
     query UploadedTables {
   uploaded_tables {
@@ -39510,8 +39681,12 @@ export type SetUserMaxDatapointsPerRequestMutationHookResult = ReturnType<typeof
 export type SetUserMaxDatapointsPerRequestMutationResult = Apollo.MutationResult<SetUserMaxDatapointsPerRequestMutation>;
 export type SetUserMaxDatapointsPerRequestMutationOptions = Apollo.BaseMutationOptions<SetUserMaxDatapointsPerRequestMutation, SetUserMaxDatapointsPerRequestMutationVariables>;
 export const InviteMemberDocument = gql`
-    mutation InviteMember($team_id: Int!, $role: String!, $user_id: Int!) {
-  invite_member(team_id: $team_id, role: $role, user_id: $user_id) {
+    mutation InviteMember($team_id: Int!, $role: String!, $usernameOrEmail: String!) {
+  invite_member_v2(
+    team_id: $team_id
+    role: $role
+    usernameOrEmail: $usernameOrEmail
+  ) {
     id
   }
 }
@@ -39533,7 +39708,7 @@ export type InviteMemberMutationFn = Apollo.MutationFunction<InviteMemberMutatio
  *   variables: {
  *      team_id: // value for 'team_id'
  *      role: // value for 'role'
- *      user_id: // value for 'user_id'
+ *      usernameOrEmail: // value for 'usernameOrEmail'
  *   },
  * });
  */
@@ -39543,39 +39718,6 @@ export function useInviteMemberMutation(baseOptions?: Apollo.MutationHookOptions
 export type InviteMemberMutationHookResult = ReturnType<typeof useInviteMemberMutation>;
 export type InviteMemberMutationResult = Apollo.MutationResult<InviteMemberMutation>;
 export type InviteMemberMutationOptions = Apollo.BaseMutationOptions<InviteMemberMutation, InviteMemberMutationVariables>;
-export const GetUserIdDocument = gql`
-    query GetUserId($name: String!) {
-  users(where: {name: {_eq: $name}}) {
-    id
-  }
-}
-    `;
-
-/**
- * __useGetUserIdQuery__
- *
- * To run a query within a React component, call `useGetUserIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetUserIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetUserIdQuery({
- *   variables: {
- *      name: // value for 'name'
- *   },
- * });
- */
-export function useGetUserIdQuery(baseOptions: Apollo.QueryHookOptions<GetUserIdQuery, GetUserIdQueryVariables>) {
-        return Apollo.useQuery<GetUserIdQuery, GetUserIdQueryVariables>(GetUserIdDocument, baseOptions);
-      }
-export function useGetUserIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetUserIdQuery, GetUserIdQueryVariables>) {
-          return Apollo.useLazyQuery<GetUserIdQuery, GetUserIdQueryVariables>(GetUserIdDocument, baseOptions);
-        }
-export type GetUserIdQueryHookResult = ReturnType<typeof useGetUserIdQuery>;
-export type GetUserIdLazyQueryHookResult = ReturnType<typeof useGetUserIdLazyQuery>;
-export type GetUserIdQueryResult = Apollo.QueryResult<GetUserIdQuery, GetUserIdQueryVariables>;
 export const CreateTeamApiKeyDocument = gql`
     mutation CreateTeamApiKey($name: String!, $teamId: Int!) {
   create_team_api_key(name: $name, team_id: $teamId) {
@@ -39742,7 +39884,7 @@ export type GetTeamLazyQueryHookResult = ReturnType<typeof useGetTeamLazyQuery>;
 export type GetTeamQueryResult = Apollo.QueryResult<GetTeamQuery, GetTeamQueryVariables>;
 export const ResendInviteDocument = gql`
     mutation ResendInvite($membership_id: uuid!) {
-  resend_invite(membership_id: $membership_id) {
+  resend_invite_v2(membership_id: $membership_id) {
     ok
   }
 }
@@ -41364,7 +41506,7 @@ export type ExecuteQueryV3MutationResult = Apollo.MutationResult<ExecuteQueryV3M
 export type ExecuteQueryV3MutationOptions = Apollo.BaseMutationOptions<ExecuteQueryV3Mutation, ExecuteQueryV3MutationVariables>;
 export const AcceptInviteDocument = gql`
     mutation AcceptInvite($id: uuid!) {
-  accept_invite(membership_id: $id) {
+  accept_invite_v2(membership_id: $id) {
     ok
   }
 }
@@ -41540,9 +41682,9 @@ export type DeleteMembershipMutationHookResult = ReturnType<typeof useDeleteMemb
 export type DeleteMembershipMutationResult = Apollo.MutationResult<DeleteMembershipMutation>;
 export type DeleteMembershipMutationOptions = Apollo.BaseMutationOptions<DeleteMembershipMutation, DeleteMembershipMutationVariables>;
 export const ListUserMembershipsDocument = gql`
-    query ListUserMemberships($user_id: Int) {
+    query ListUserMemberships($user_id: Int, $user_email: String) {
   memberships_private_details(
-    where: {user_id: {_eq: $user_id}}
+    where: {_or: [{user_id: {_eq: $user_id}}, {email: {_eq: $user_email}}]}
     order_by: [{status: desc}, {role: desc}]
   ) {
     id
@@ -41580,6 +41722,7 @@ export const ListUserMembershipsDocument = gql`
  * const { data, loading, error } = useListUserMembershipsQuery({
  *   variables: {
  *      user_id: // value for 'user_id'
+ *      user_email: // value for 'user_email'
  *   },
  * });
  */

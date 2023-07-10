@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { EntryFilter } from "lib/entries/types";
 import { Icon } from "gui/icon/icon";
 import { Pagenav } from "gui/pagenav/pagenav";

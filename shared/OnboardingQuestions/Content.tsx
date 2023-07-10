@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import modal from "components/Modal/ModalContent.module.css";
 import styles from "./OnboardingQuestions.module.css";
 import { Question, Questions, questions } from "./questions";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./styles/SelectBox.module.css";
 import cn from "classnames";
 import { ReactNode, forwardRef, useMemo } from "react";

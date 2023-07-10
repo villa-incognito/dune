@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { ButtonOld } from "components/ButtonOld/ButtonOld";
 import { frontend } from "lib/env/env";
 import { hasura } from "lib/env/env";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import cn from "classnames";
 import styles from "./GlobalSearch.module.css";
 import panelStyles from "./MenuPanel.module.css";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import debounce from "lodash/debounce";
 import React from "react";
 import {
@@ -36,7 +38,6 @@ import {
 } from "lib/permissions/permissions";
 import type { Datasets } from "lib/types/graphql";
 import type { ActiveContext } from "shared/ContextSwitcher/store";
-import { ParameterDialogContainer } from "gui/dashboard/ParameterDialogContainer";
 
 interface Props {
   session?: Session;
@@ -130,15 +131,9 @@ const EditorProviderValue: React.FC<Props> = (props) => {
   }, [refresh]);
 
   return (
-    <>
-      <ParameterDialogContainer
-        defaultParameters={parameters.defaults}
-        origin="queries"
-      />
-      <EditorContext.Provider value={{ editor: state, parameters, dispatch }}>
-        {props.children}
-      </EditorContext.Provider>
-    </>
+    <EditorContext.Provider value={{ editor: state, parameters, dispatch }}>
+      {props.children}
+    </EditorContext.Provider>
   );
 };
 

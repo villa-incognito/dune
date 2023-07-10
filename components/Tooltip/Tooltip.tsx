@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./Tooltip.module.css";
 import "@reach/tooltip/styles.css";
 import cn from "classnames";

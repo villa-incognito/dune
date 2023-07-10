@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { gql } from "@apollo/client";
 import { useRequiredSessionWithUser } from "gui/session/session";
 import { MAX_VALUE_HIGH } from "gui/SettingsPage/Subscription/UsageSection/components";

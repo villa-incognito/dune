@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import cn from "classnames";
 import styles from "gui/avatar/avatar.module.css";
 import { Nullable } from "lib/types/types";

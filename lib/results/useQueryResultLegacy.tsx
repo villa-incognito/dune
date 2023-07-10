@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import {
   GetExecutionQuery,
@@ -13,12 +15,10 @@ import { QueryResultsCache } from "./cache";
 import { QueryResultMeta } from "lib/results/types";
 import { SessionContext } from "gui/session/session";
 import { apolloCore, apolloCoreHack } from "lib/apollo/apollo";
-import { convertNull } from "lib/types/types";
 import { delayBeforeRefreshJob } from "lib/results/utils";
 import { gql } from "@apollo/client";
 import { guessResultColumnTypes } from "lib/results/values";
 import { isNonNullable } from "lib/types/types";
-import { removeNullable } from "lib/types/types";
 import { sortColumns } from "lib/results/values";
 import { useEffect } from "react";
 import { useGetExecutionQuery } from "lib/types/graphql";
@@ -55,7 +55,7 @@ interface TemporaryJob {
 // If a query is updated then you can simply call the refresh function to get the updated results.
 // If you provide a job_id then the passed job_id is used instead of the job_id returned by the
 // get_result_v4.
-export const useQueryResult = (
+export const useQueryResultLegacy = (
   queryId: number | undefined,
   parameters: Parameter[] | undefined,
   {
@@ -140,11 +140,11 @@ export const useQueryResult = (
 
   // Memoize the result to prevent unnecessary re-renders.
   const result = React.useMemo(() => {
-    const apolloError = error && transformError(error);
+    const fetchError = error && transformError(error);
 
     const result: QueryResult = {
       refresh,
-      apolloError,
+      fetchError,
       ...resultData,
     };
     return result;
@@ -278,9 +278,9 @@ const useGetResult = (
   );
   const details = useMemo(
     () => ({
-      jobId: convertNull<string>(res?.data?.get_result_v4?.job_id),
-      resultId: convertNull<string>(res?.data?.get_result_v4?.result_id),
-      errorId: convertNull<string>(res?.data?.get_result_v4?.error_id),
+      jobId: res?.data?.get_result_v4?.job_id ?? undefined,
+      resultId: res?.data?.get_result_v4?.result_id ?? undefined,
+      errorId: res?.data?.get_result_v4?.error_id ?? undefined,
       refresh: res.refetch,
     }),
     [res.data, res.refetch]
@@ -454,27 +454,19 @@ const getMeta = (
   if (!result) return;
 
   if (result.get_execution && result.get_execution.execution_succeeded) {
-    return removeNullable<QueryResultMeta>({
+    return {
       query_id: queryId,
-      job_id: convertNull<string>(
-        result.get_execution.execution_succeeded.execution_id
-      ),
-      result_id: convertNull<string>(
-        result.get_execution.execution_succeeded.execution_id
-      ),
-      runtime: convertNull<number>(
-        result.get_execution.execution_succeeded.runtime_seconds
-      ),
-      generated_at: convertNull<string>(
-        result.get_execution.execution_succeeded.generated_at
-      ),
-      max_result_size_reached_bytes: convertNull<number>(
-        result.get_execution.execution_succeeded.max_result_size_reached_bytes
-      ),
-      request_max_result_size_bytes: convertNull<number>(
-        result.get_execution.execution_succeeded.request_max_result_size_bytes
-      ),
-    });
+      job_id: result.get_execution.execution_succeeded.execution_id,
+      result_id: result.get_execution.execution_succeeded.execution_id,
+      runtime: result.get_execution.execution_succeeded.runtime_seconds,
+      generated_at: result.get_execution.execution_succeeded.generated_at,
+      max_result_size_reached_bytes:
+        result.get_execution.execution_succeeded
+          .max_result_size_reached_bytes ?? undefined,
+      request_max_result_size_bytes:
+        result.get_execution.execution_succeeded
+          .request_max_result_size_bytes ?? undefined,
+    };
   }
 };
 
@@ -510,23 +502,20 @@ function generateJob(
 
   if (res.get_execution) {
     return {
-      id: convertNull<string>(
-        res.get_execution.execution_queued?.execution_id ||
-          res.get_execution.execution_running?.execution_id
-      ),
+      id:
+        res.get_execution.execution_queued?.execution_id ??
+        res.get_execution.execution_running?.execution_id,
       query_id: queryId,
-      category: convertNull<string>(
-        res.get_execution.execution_queued?.execution_type ||
-          res.get_execution.execution_running?.execution_type
-      ),
-      user_id: convertNull(
-        res.get_execution.execution_queued?.execution_user_id ||
-          res.get_execution.execution_running?.execution_user_id
-      ),
-      created_at: convertNull<string>(
-        res.get_execution.execution_queued?.created_at ||
-          res.get_execution.execution_running?.created_at
-      ),
+      category:
+        res.get_execution.execution_queued?.execution_type ??
+        res.get_execution.execution_running?.execution_type,
+      user_id:
+        res.get_execution.execution_queued?.execution_user_id ??
+        res.get_execution.execution_running?.execution_user_id ??
+        undefined,
+      created_at:
+        res.get_execution.execution_queued?.created_at ??
+        res.get_execution.execution_running?.created_at,
       is_running: Boolean(res.get_execution.execution_running),
       queue_position: res.get_execution.execution_queued?.position,
       done:
@@ -573,7 +562,7 @@ function generateError(res?: GetExecutionQuery): QueryResult["error"] {
       type: queryErr.type,
       generated_at: queryErr.generated_at,
       metadata: metadata,
-      runtime: convertNull(queryErr.runtime_seconds),
+      runtime: queryErr.runtime_seconds,
     };
   }
 }

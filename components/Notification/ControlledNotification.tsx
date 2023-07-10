@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./Notification.module.css";
 import cn from "classnames";
 import { IconButton } from "components/Button/IconButton";

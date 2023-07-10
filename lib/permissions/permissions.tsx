@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { useSession } from "gui/session/session";
 import { useTeamRole } from "lib/teams/teams";
 import React from "react";

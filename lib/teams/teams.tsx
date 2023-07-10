@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { gql } from "@apollo/client";
 import { useSession } from "gui/session/session";
 import {

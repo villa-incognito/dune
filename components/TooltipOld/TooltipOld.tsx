@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React, { useRef } from "react";
 import { Portal } from "@reach/portal";
 import { TooltipPopup, useTooltip, Position } from "@reach/tooltip";

@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import { Nullable } from "lib/types/types";
 import { differenceInSeconds } from "date-fns";

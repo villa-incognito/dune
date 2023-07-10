@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import styles from "./HeaderDesktop.module.css";
 import cn from "classnames";
 import GlobalSearch from "gui/GlobalSearch/GlobalSearch";
@@ -11,7 +13,6 @@ import * as Menu from "components/MenuPanel/MenuPanel";
 
 import { IconFileDoc } from "components/Icons/IconFileDoc";
 import { IconDiscord } from "components/Icons/IconDiscord";
-import { IconMegaphone } from "components/Icons/IconMegaphone";
 import { IconThreeDots } from "components/Icons/IconThreeDots";
 
 import { useRouter, NextRouter } from "next/router";
@@ -23,6 +24,7 @@ import { MigrationBanner } from "shared/MigrationBanner/MigrationBanner";
 import { UsageTracker } from "shared/UsageTracker/UsageTracker";
 import { MigrationDialogV2 } from "../../MigrationDialogV2/MigrationDialogV2";
 import { Button } from "components/Button/Button";
+import { IconTelegram } from "components/Icons/IconTelegram";
 
 interface Props {
   className?: string;
@@ -127,13 +129,13 @@ export function HeaderDesktop(props: Props) {
                 <IconDiscord />
               </a>
             </Item>
-            <Item tooltip="Give feedback">
+            <Item tooltip="Telegram">
               <a
                 className={styles.iconButton}
-                href="https://feedback.dune.com/"
+                href="https://t.me/dune_updates"
                 target="_blank"
               >
-                <IconMegaphone />
+                <IconTelegram />
               </a>
             </Item>
             <li>
@@ -142,6 +144,12 @@ export function HeaderDesktop(props: Props) {
                 content={() => (
                   <Menu.Panel>
                     <Menu.Section>
+                      <Menu.ItemLink
+                        href="https://feedback.dune.com/"
+                        target="_blank"
+                      >
+                        Give feedback
+                      </Menu.ItemLink>
                       <Menu.ItemLink href="/projects">Projects</Menu.ItemLink>
                       <Menu.ItemLink href="/blog">Blog</Menu.ItemLink>
                       <Menu.ItemLink href="/pricing">

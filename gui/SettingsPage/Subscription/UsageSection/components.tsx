@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import cn from "classnames";
 import styles from "../Subscription.module.css";
 import { Maybe } from "lib/types/graphql";

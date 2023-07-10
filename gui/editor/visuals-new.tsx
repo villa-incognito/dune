@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import styles from "gui/editor/visuals-new.module.css";
 import { Box } from "gui/box/box";

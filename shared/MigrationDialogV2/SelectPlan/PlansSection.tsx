@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { Notification } from "components/Notification/Notification";
 import styles from "./PlansSection.module.css";
 import { IconLoading } from "components/Icons/IconLoading";

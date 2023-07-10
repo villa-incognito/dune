@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import { Parameter } from "lib/parameters/types";
 import { parseQueryString } from "lib/links/query";
 import qs from "qs";

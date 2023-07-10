@@ -1,3 +1,5 @@
+/* eslint @typescript-eslint/strict-boolean-expressions: off */
+
 import React from "react";
 import { FullDashboard } from "lib/entries/types";
 import { Parameter } from "lib/parameters/types";
@@ -14,7 +16,6 @@ import { mergeDashboardParameters } from "lib/parameters/parameters";
 import { mergeParameters } from "lib/parameters/parameters";
 import { parseParametersQuery } from "lib/parameters/query";
 import { useRouter } from "next/router";
-import { useSession } from "gui/session/session";
 
 // Some queries have custom parameters that can be set by the user.
 // This hook enables managing the state. See type ParametersState for
@@ -22,35 +23,15 @@ import { useSession } from "gui/session/session";
 export const useParameters = (defaults: Parameter[]): ParametersState => {
   const router = useRouter();
 
-  // If the user is not logged in, we don't want the query
-  // string parameters to override the default values
-  const session = useSession();
-
   // Get the initial list of overrides from the browser query string.
-  const [overrides, setOverrides] = React.useState(() => {
-    if (!session) {
-      return defaults;
-    }
-
-    return parseParametersQuery(defaults, browserQueryString());
-  });
+  const [overrides, setOverrides] = React.useState(() =>
+    parseParametersQuery(defaults, browserQueryString())
+  );
 
   // Keep track of which values we have in the browser query string.
-  const [applied, setApplied] = React.useState(() => {
-    if (!session) {
-      return defaults;
-    }
-
-    return parseParametersQuery(defaults, browserQueryString());
-  });
-
-  React.useEffect(() => {
-    if (!session) {
-      return;
-    }
-    setApplied(parseParametersQuery(defaults, browserQueryString()));
-    setOverrides(parseParametersQuery(defaults, browserQueryString()));
-  }, [!session]);
+  const [applied, setApplied] = React.useState(() =>
+    parseParametersQuery(defaults, browserQueryString())
+  );
 
   // Create the initial list of merged parameters,
   // including any overrides from the query string.
@@ -71,7 +52,8 @@ export const useParameters = (defaults: Parameter[]): ParametersState => {
     return mergeParameters(defaults, applied);
   }, [defaults, applied]);
 
-  // Called when the user clicks the Apply parameters button.
+  // Called after editing parameters, or when pressing enter when
+  // parameter input is focused.
   // Stores the overriden parameters in the browser query string.
   const onApply = React.useCallback(() => {
     const queryParams = parameterQueryParams(overrides);
@@ -158,7 +140,7 @@ export const useParameterMapping = (
 
 // appliedParametersForQuery gets a unique set of parameters that have been applied
 // for a given query
-function appliedParametersForQuery(
+export function appliedParametersForQuery(
   queryId: number,
   parametersMerg: ParameterMerge
 ) {
