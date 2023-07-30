@@ -10,10 +10,12 @@ export const dashboardItemGqlFragment = gql`
     updated_at
     tags
     user {
+      id
       name
       profile_image_url
     }
     team {
+      id
       handle
       profile_image_url
     }
@@ -50,6 +52,7 @@ export type DashboardType = {
   tags: string[];
   owner: {
     type: "user" | "team";
+    id: number;
     handle: string;
     profile_image_url?: string;
   };
@@ -72,11 +75,13 @@ export function toDashboardType(
     owner: dashboard.team
       ? {
           type: "team",
+          id: dashboard.team.id,
           handle: dashboard.team.handle,
           profile_image_url: dashboard.team.profile_image_url ?? undefined,
         }
       : {
           type: "user",
+          id: dashboard.user?.id ?? 0,
           handle: dashboard.user?.name ?? "",
           profile_image_url: dashboard.user?.profile_image_url ?? undefined,
         },

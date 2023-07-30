@@ -3,14 +3,6 @@ import { frontend } from "lib/env/env";
 import { isDashboard } from "lib/entries/entries";
 import { isNonNullable } from "lib/types/types";
 
-export const loginPath = (next?: string) => {
-  if (typeof next === "string") {
-    return `/auth/login?next=${encodeURIComponent(next)}`;
-  }
-
-  return "/auth/login";
-};
-
 export const entryPath = (entry: Entry) => {
   return isDashboard(entry)
     ? dashboardPath(entry.owner.handle, entry.slug)

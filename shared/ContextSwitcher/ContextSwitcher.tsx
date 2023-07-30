@@ -1,8 +1,9 @@
 import styles from "./ContextSwitcher.module.css";
 
-import { ClickPopover } from "components/ClickPopover/ClickPopover";
+import { ClickPopover } from "components/ClickPopover";
 import * as Menu from "components/MenuPanel/MenuPanel";
 import { Avatar } from "gui/avatar/avatar";
+import { Identity } from "components/Identity/Identity";
 import { IconAnchorButton } from "components/Button/IconAnchorButton";
 import { BadgeUserPlan } from "./BadgeUserPlan";
 import { BadgeTeamPlan } from "./BadgeTeamPlan";
@@ -153,12 +154,7 @@ export function ContextSwitcher() {
   return (
     <ClickPopover position="below-align-left" content={menu}>
       <button className={styles.button}>
-        <Avatar
-          size={16}
-          src={activeContext.profile_image_url}
-          alt={activeContext.handle}
-        />
-        <span>@{activeContext.handle}</span>
+        <Identity size="M" color="inherit" owner={activeContext} />
         <IconChevronUpDown />
       </button>
     </ClickPopover>

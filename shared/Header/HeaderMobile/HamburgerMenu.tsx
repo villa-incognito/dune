@@ -6,14 +6,16 @@ import GlobalSearch from "gui/GlobalSearch/GlobalSearch";
 import * as Menu from "components/MenuPanel/MenuPanel";
 import { CreateDashboardDialog } from "gui/dashboard/create";
 
-import { Avatar } from "gui/avatar/avatar";
+import { Identity } from "components/Identity";
 import { IconList } from "components/Icons/IconList";
 import { IconCross } from "components/Icons/IconCross";
 
-import { loginPath } from "lib/links/links";
 import { useContext, useState } from "react";
 import { SessionContext } from "gui/session/session";
 import { useActiveContext } from "shared/ContextSwitcher/store";
+import { useIsDataUploadEnabledForActiveContext } from "page-components/DataUpload/useIsDataUploadEnabledForActiveContext";
+import { useLoginUrl, getLoginUrlWithNextUrl } from "lib/hooks/useLoginUrl";
+import { useSignupUrl } from "lib/hooks/useSignupUrl";
 
 export function HamburgerMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -25,7 +27,10 @@ export function HamburgerMenu() {
 
   const { session, sessionLoading } = useContext(SessionContext);
   const isLoggedOut = !session && !sessionLoading;
+  const loginUrl = useLoginUrl();
+  const signupUrl = useSignupUrl();
   const activeContext = useActiveContext();
+  const dataUploadEnabled = useIsDataUploadEnabledForActiveContext();
 
   return (
     <>
@@ -54,16 +59,16 @@ export function HamburgerMenu() {
 
               <nav className={styles.context}>
                 <h2>
-                  <Avatar
-                    size={20}
-                    src={activeContext.profile_image_url}
-                    alt={activeContext.handle}
+                  <Identity
+                    size="L"
+                    color="inherit"
+                    inline={false}
+                    owner={activeContext}
                   />
-                  <span>@{activeContext.handle}</span>
                 </h2>
 
                 <ul>
-                  <Menu.ItemLink href="/browse/queries/authored">
+                  <Menu.ItemLink href="/workspace/library">
                     Library
                   </Menu.ItemLink>
 
@@ -74,7 +79,11 @@ export function HamburgerMenu() {
                           <AnchorButton
                             theme="primary-light"
                             size="M"
-                            href={session ? "/queries" : loginPath("/queries")}
+                            href={
+                              session
+                                ? "/queries"
+                                : getLoginUrlWithNextUrl("/queries")
+                            }
                             onClick={() => {
                               setIsMenuOpen(false);
                             }}
@@ -115,7 +124,7 @@ export function HamburgerMenu() {
                         <AnchorButton
                           theme="secondary"
                           size="M"
-                          href="/auth/register"
+                          href={signupUrl}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <span>Sign up</span>
@@ -126,7 +135,7 @@ export function HamburgerMenu() {
                         <AnchorButton
                           theme="secondary-light"
                           size="M"
-                          href="/auth/login"
+                          href={loginUrl}
                           onClick={() => setIsMenuOpen(false)}
                         >
                           <span>Sign in</span>
@@ -163,6 +172,11 @@ export function HamburgerMenu() {
             <Menu.ItemLink href="/contracts/new">
               Submit a contract
             </Menu.ItemLink>
+            {dataUploadEnabled && (
+              <Menu.ItemLink href="/data/upload">
+                Upload a dataset
+              </Menu.ItemLink>
+            )}
           </ul>
         </nav>
       )}

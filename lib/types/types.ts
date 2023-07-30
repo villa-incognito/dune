@@ -39,6 +39,8 @@ export const isNonNullable = <T>(value: T | null | undefined): value is T => {
   return !isNullable(value);
 };
 
+export { isNonNullable as isDefined };
+
 // Recursively remove all fields that have `null` or `undefined` values.
 export const removeNullable = <T extends any>(obj: Nullable<object>) => {
   if (isNonNullable(obj)) {

@@ -47,6 +47,7 @@ export function useQueryResultNew(
   }
 ): QueryResult {
   const { sessionLoading, session } = useContext(SessionContext);
+  const [loading, setLoading] = useState(true);
 
   // The execution result for 'result_id'
   const [resultQueryResult, setResultQueryResult] = useState<QueryResult>();
@@ -80,6 +81,7 @@ export function useQueryResultNew(
 
       const controller = createAbortController();
 
+      setLoading(true);
       setResultQueryResult(undefined);
       setErrorQueryResult(undefined);
       setJobQueryResult(undefined);
@@ -117,6 +119,8 @@ export function useQueryResultNew(
         }
 
         setFetchError(transformError(error));
+      } finally {
+        setLoading(false);
       }
     },
     [
@@ -195,6 +199,7 @@ export function useQueryResultNew(
     const done = jobQueryResult?.job?.done ?? false;
 
     return {
+      loading,
       error: done ? jobQueryResult?.error : errorQueryResult?.error,
       matrix: jobQueryResult?.matrix ?? resultQueryResult?.matrix,
       meta: jobQueryResult?.meta ?? resultQueryResult?.meta,
@@ -203,6 +208,7 @@ export function useQueryResultNew(
       refresh,
     };
   }, [
+    loading,
     resultQueryResult,
     errorQueryResult,
     jobQueryResult,

@@ -21,6 +21,7 @@ import { CSRFProvider } from "gui/csrf/csrf";
 import { ErrorBoundary } from "gui/error/boundary";
 import { SessionProvider } from "gui/session/session";
 import { ToastNotificationWrapper } from "shared/Toasts/ToastNotificationWrapper";
+import { Web3Provider } from "shared/web3/Web3Provider";
 
 import { apolloCore } from "lib/apollo/apollo";
 import sentryInit from "lib/sentry/init";
@@ -56,13 +57,15 @@ export const App = ({ Component, pageProps }: AppProps) => {
         <ApolloProvider client={apolloCore}>
           <CSRFProvider>
             <SessionProvider>
-              <AppHead />
-              <AnalyticsProvider>
-                <PromptDialogs />
-                <Component {...pageProps} />
-                <ToastNotificationWrapper />
-                <CookieNotification />
-              </AnalyticsProvider>
+              <Web3Provider>
+                <AppHead />
+                <AnalyticsProvider>
+                  <PromptDialogs />
+                  <Component {...pageProps} />
+                  <ToastNotificationWrapper />
+                  <CookieNotification />
+                </AnalyticsProvider>
+              </Web3Provider>
             </SessionProvider>
           </CSRFProvider>
         </ApolloProvider>

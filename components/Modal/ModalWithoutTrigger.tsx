@@ -2,13 +2,11 @@ import modalOverlay from "./ModalOverlay.module.css";
 import modalContent from "./ModalContent.module.css";
 import cn from "classnames";
 
-import { DialogOverlay, DialogContent } from "@reach/dialog";
-
-import React from "react";
+import { DialogContent, DialogOverlay } from "@reach/dialog";
 
 import type { ReactElement } from "react";
 
-interface Props {
+export interface ModalWithoutTriggerProps {
   size: "S" | "M" | "L";
   label: string;
   content: ReactElement;
@@ -18,7 +16,7 @@ interface Props {
   onDismiss: (() => void) | undefined;
 }
 
-export function ModalWithoutTrigger(props: Props) {
+export function ModalWithoutTrigger(props: ModalWithoutTriggerProps) {
   const { size, label, content, isOpen, onDismiss } = props;
 
   return (

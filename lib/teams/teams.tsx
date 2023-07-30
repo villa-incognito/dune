@@ -57,6 +57,17 @@ export function useTeamRole(owner?: {
   }
 }
 
+export function useCanInviteMembers(owner?: {
+  type: "team" | "user";
+  id: number;
+}): boolean {
+  const { role, loading } = useTeamRole(owner);
+  const canInviteMembers =
+    !loading && owner?.type === "team" && role === "admin";
+
+  return canInviteMembers;
+}
+
 function useTeamMembersDetails(id: number | undefined) {
   const session = useSession();
   const { data } = useTeamMembersDetailsQuery({

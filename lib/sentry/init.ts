@@ -73,7 +73,7 @@ function shouldLog(event: Sentry.Event, hint?: Sentry.EventHint) {
         // https://dune-analytics.sentry.io/issues/3934152754/?project=6138642&query=is%3Aunresolved&referrer=issue-stream
         return probability(1 / 1000);
 
-      case "TypeError: Failed to fetch":
+      case errorMessage.match(/Failed to fetch/)?.input:
         // These errors are not yet actionable by us since the users network could cause the error.
         // However, it is still interesting to have some idea of how much this is happening to our users.
         // https://sentry.io/organizations/dune-analytics/issues/3496115944

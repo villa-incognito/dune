@@ -1,6 +1,7 @@
 import { useSession } from "gui/session/session";
 import { MigrationDialogV2 } from "shared/MigrationDialogV2/MigrationDialogV2";
 import { OnboardingQuestions } from "shared/OnboardingQuestions/OnboardingQuestions";
+import { TeamsAnnouncementModal } from "../TeamsAnnouncement/TeamsAnnouncementModal";
 
 // This component is used to prompt users with different dialogs
 export function PromptDialogs() {
@@ -18,6 +19,11 @@ export function PromptDialogs() {
   ) {
     return <MigrationDialogV2 persistInStorage />;
   } else {
-    return <OnboardingQuestions />;
+    return (
+      <>
+        <OnboardingQuestions />
+        <TeamsAnnouncementModal />
+      </>
+    );
   }
 }

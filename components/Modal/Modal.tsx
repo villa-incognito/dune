@@ -1,18 +1,10 @@
-import { ControlledModal, ContentProps, TriggerProps } from "./ControlledModal";
+import { ControlledModal, ControlledModalProps } from "./ControlledModal";
 
 import { useState } from "react";
 
-import type { ReactElement } from "react";
+type ModalProps = Omit<ControlledModalProps, "isOpen" | "setIsOpen">;
 
-interface Props {
-  size: "S" | "M" | "L";
-  label: string;
-  content: (props: ContentProps) => ReactElement;
-  trigger: (props: TriggerProps) => ReactElement;
-  onDismiss?: () => void;
-}
-
-export function Modal(props: Props) {
+export function Modal(props: ModalProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return <ControlledModal {...props} isOpen={isOpen} setIsOpen={setIsOpen} />;

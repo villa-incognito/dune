@@ -5,7 +5,7 @@ import modal from "components/Modal/ModalContent.module.css";
 import { Team } from "../../teams/useMyTeams";
 import { IconButton } from "components/Button/IconButton";
 import { IconCross } from "components/Icons/IconCross";
-import { Avatar } from "gui/avatar/avatar";
+import { Identity } from "components/Identity";
 import { AnchorButtonTextOnly } from "components/ButtonTextOnly/AnchorButtonTextOnly";
 import { IconArrowRight } from "components/Icons/IconArrowRight";
 import styles from "./SelectTeam.module.css";
@@ -39,9 +39,15 @@ export const SelectTeam = (props: Props) => {
         <ul>
           {teams.map((team) => (
             <li key={team.id}>
-              <span className={styles.team}>
-                <Avatar size={20} src={team.profile_image_url} />@{team.handle}
-              </span>
+              <Identity
+                size="L"
+                color="text-primary"
+                owner={{
+                  type: "team",
+                  handle: team.handle,
+                  profile_image_url: team.profile_image_url ?? undefined,
+                }}
+              />
 
               <AnchorButtonTextOnly
                 size="M"

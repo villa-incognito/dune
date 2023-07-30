@@ -10,7 +10,7 @@ import { IconInformation } from "components/Icons/IconInformation";
 
 import type { ReactNode } from "react";
 
-interface Props {
+export interface ControlledNotificationProps {
   // Appearance:
   //      blue     gray        red       yellow      green
   level: "info" | "neutral" | "error" | "warning" | "success";
@@ -30,7 +30,7 @@ interface Props {
   setIsOpen: (open: boolean) => void;
 }
 
-export function ControlledNotification(props: Props) {
+export function ControlledNotification(props: ControlledNotificationProps) {
   const { isOpen, setIsOpen, dismissable = true, showIcon = true } = props;
 
   if (!isOpen) {
@@ -75,7 +75,7 @@ export function ControlledNotification(props: Props) {
   );
 }
 
-function NotificationIcon(props: Pick<Props, "level">) {
+function NotificationIcon(props: Pick<ControlledNotificationProps, "level">) {
   switch (props.level) {
     case "info":
     case "neutral":

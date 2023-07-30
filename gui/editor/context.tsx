@@ -169,7 +169,16 @@ const createEmptyQuery = (
     const param = Router.query.d;
     const parsedId = param ? Number(param) : undefined;
     const datasetId = datasets.datasets.find(
-      (ds) => ds.id === parsedId && !isDeprecated(ds)
+      (ds) =>
+        ds.id === parsedId &&
+        !isDeprecated(ds, {
+          // Assume user is not a spellbook contributor, since we don't
+          // have access to that information at page load.
+          // If they are a spellbook contributor, they can still select
+          // Spark SQL in the dropdown, but it won't be selected from
+          // the query param.
+          isSpellbookContributor: false,
+        })
     )?.id;
 
     if (typeof datasetId === "number") {
@@ -482,15 +491,25 @@ export const useEditorVisual = () => {
 };
 
 // Utils
-export function isDeprecated(dataset: Pick<Datasets, "name">) {
+export function isDeprecated(
+  dataset: Pick<Datasets, "name">,
+  options: { isSpellbookContributor: boolean }
+) {
+  if (dataset.name.includes("Spark SQL")) {
+    return !options.isSpellbookContributor;
+  }
+
   return dataset.name.includes("[deprecated]");
 }
 
-export function isEditingDisabled(dataset: Pick<Datasets, "name">) {
-  if (dataset.name.includes("v1 Ethereum")) {
-    // Allow editing "v1 Ethereum [deprecated]"
-    return false;
+export function isEditingDisabled(
+  dataset: Pick<Datasets, "name">,
+  options: { isSpellbookContributor: boolean }
+) {
+  if (dataset.name.includes("Spark SQL")) {
+    return !options.isSpellbookContributor;
   }
+
   return dataset.name.includes("[deprecated]");
 }
 

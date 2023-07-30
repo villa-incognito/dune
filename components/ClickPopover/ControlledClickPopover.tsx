@@ -21,7 +21,7 @@ export interface ContentProps {
   close: () => void;
 }
 
-interface Props {
+export interface ControlledClickPopoverProps {
   content: (props: ContentProps) => ReactNode;
   children: ReactElement<any>;
   position: Position;
@@ -33,7 +33,7 @@ interface Props {
   setIsOpen: (isOpen: boolean) => void;
 }
 
-export function ControlledClickPopover(props: Props) {
+export function ControlledClickPopover(props: ControlledClickPopoverProps) {
   const { position, distancePx = 4, isOpen, setIsOpen } = props;
 
   const triggerRef = useRef<HTMLDivElement>(null);

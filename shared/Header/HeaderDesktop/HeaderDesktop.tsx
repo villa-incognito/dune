@@ -8,7 +8,7 @@ import { HeaderCreateButton } from "./HeaderCreateButton";
 import Link from "next/link";
 import { AnchorButton } from "components/Button/AnchorButton";
 import { Tooltip } from "components/Tooltip/Tooltip";
-import { ClickPopover } from "components/ClickPopover/ClickPopover";
+import { ClickPopover } from "components/ClickPopover";
 import * as Menu from "components/MenuPanel/MenuPanel";
 
 import { IconFileDoc } from "components/Icons/IconFileDoc";
@@ -17,6 +17,9 @@ import { IconThreeDots } from "components/Icons/IconThreeDots";
 
 import { useRouter, NextRouter } from "next/router";
 import { useActiveContext } from "shared/ContextSwitcher/store";
+import { useIsDataUploadEnabledForActiveContext } from "page-components/DataUpload/useIsDataUploadEnabledForActiveContext";
+import { useLoginUrl } from "lib/hooks/useLoginUrl";
+import { useSignupUrl } from "lib/hooks/useSignupUrl";
 
 import { ReactNode, useContext } from "react";
 import { SessionContext } from "gui/session/session";
@@ -33,8 +36,11 @@ interface Props {
 export function HeaderDesktop(props: Props) {
   const { session, sessionLoading, logout } = useContext(SessionContext);
   const isLoggedOut = !session && !sessionLoading;
+  const loginUrl = useLoginUrl();
+  const signupUrl = useSignupUrl();
   const activeContext = useActiveContext();
   const currentPlanId = activeContext?.serviceTier?.id;
+  const dataUploadEnabled = useIsDataUploadEnabledForActiveContext();
 
   return (
     <header className={cn(styles.header, props.className)}>
@@ -163,6 +169,11 @@ export function HeaderDesktop(props: Props) {
                         <Menu.ItemLink href="/contracts/new">
                           Submit a contract
                         </Menu.ItemLink>
+                        {dataUploadEnabled && (
+                          <Menu.ItemLink href="/data/upload">
+                            Upload a dataset
+                          </Menu.ItemLink>
+                        )}
                         <Menu.ItemLink href="/settings/profile">
                           Settings
                         </Menu.ItemLink>
@@ -185,17 +196,13 @@ export function HeaderDesktop(props: Props) {
                   <AnchorButton
                     theme="secondary-light"
                     size="M"
-                    href="/auth/login"
+                    href={loginUrl}
                   >
                     Sign in
                   </AnchorButton>
                 </li>
                 <li>
-                  <AnchorButton
-                    theme="secondary"
-                    size="M"
-                    href="/auth/register"
-                  >
+                  <AnchorButton theme="secondary" size="M" href={signupUrl}>
                     Sign up
                   </AnchorButton>
                 </li>
@@ -247,10 +254,10 @@ function FavoritesLink() {
 function LibraryLink() {
   return (
     <PageLink
-      href="/browse/queries/authored"
+      href="/workspace/library"
       isActive={(router) =>
         // Compare to path only – omit query params
-        pathRegex.browseAuthored.test(router.asPath.split("?")[0])
+        pathRegex.library.test(router.asPath.split("?")[0])
       }
     >
       Library
@@ -268,7 +275,7 @@ function CommunityLink() {
 export const pathRegex = {
   browse: /^\/browse\/[a-z]+$/,
   browseFavorites: /^\/browse\/[a-z]+\/favorite$/,
-  browseAuthored: /^\/browse\/[a-z]+\/authored$/,
+  library: /\/workspace\/library$/,
 };
 
 const PageLink: React.FC<

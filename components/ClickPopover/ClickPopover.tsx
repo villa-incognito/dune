@@ -1,21 +1,16 @@
-import { ControlledClickPopover, ContentProps } from "./ControlledClickPopover";
+import {
+  ControlledClickPopover,
+  ControlledClickPopoverProps,
+} from "./ControlledClickPopover";
 
 import { useState } from "react";
 
-import type { ReactNode, ReactElement } from "react";
-import type { Position } from "shared/getPosition/getPosition";
+type ClickPopoverProps = Omit<
+  ControlledClickPopoverProps,
+  "isOpen" | "setIsOpen"
+>;
 
-export type { ContentProps };
-
-interface Props {
-  content: (props: ContentProps) => ReactNode;
-  children: ReactElement<any>;
-  position: Position;
-  distancePx?: number;
-  closeOnClickOutside?: boolean;
-}
-
-export function ClickPopover(props: Props) {
+export function ClickPopover(props: ClickPopoverProps) {
   const [isOpen, setIsOpen] = useState(false);
 
   return (

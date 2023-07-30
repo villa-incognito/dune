@@ -7,7 +7,7 @@ import { Loading } from "gui/loading/loading";
 import List from "gui/BrowseDashboardsPage/List/DashboardsList";
 import { Empty } from "gui/empty/empty";
 import Link from "next/link";
-import { loginPath } from "lib/links/links";
+import { useLoginUrl } from "lib/hooks/useLoginUrl";
 import EmptyBecausePageIsOutOfBounds from "gui/browse-shared/EmptyBecausePageIsOutOfBounds";
 import BrowsePagination, {
   usePaginationState,
@@ -137,6 +137,7 @@ function Results(props: {
 
 function NoResults() {
   const session = useSession();
+  const loginUrl = useLoginUrl();
 
   return (
     <Empty icon="circle-fill" title="No matching dashboards">
@@ -147,7 +148,7 @@ function NoResults() {
       </p>
       {!session && (
         <p>
-          Or, <a href={loginPath()}>sign up to create your own dashboards</a>.
+          Or, <a href={loginUrl}>sign up to create your own dashboards</a>.
         </p>
       )}
     </Empty>

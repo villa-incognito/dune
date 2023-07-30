@@ -2,7 +2,7 @@
 
 import styles from "./ToastNotificationsWrapper.module.css";
 
-import { ControlledNotification } from "components/Notification/ControlledNotification";
+import { ControlledNotification } from "components/Notification";
 
 import {
   useToastNotifications,

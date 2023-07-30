@@ -4,34 +4,24 @@ import { useSession } from "gui/session/session";
 import { useTeamRole } from "lib/teams/teams";
 import React from "react";
 
-export function useHasAdminPermission(owner?: {
+export interface Owner {
   type: "team" | "user";
   id: number;
-}): boolean {
+}
+
+export function useHasAdminPermission(owner: Owner | undefined): boolean {
   return useHasRole(["admin"], owner);
 }
 
-export function useHasEditPermission(owner?: {
-  type: "team" | "user";
-  id: number;
-}): boolean {
+export function useHasEditPermission(owner: Owner | undefined): boolean {
   return useHasRole(["admin", "editor"], owner);
 }
 
-export function useHasViewPermission(owner?: {
-  type: "team" | "user";
-  id: number;
-}): boolean {
+export function useHasViewPermission(owner: Owner | undefined): boolean {
   return useHasRole(["admin", "editor", "view"], owner);
 }
 
-function useHasRole(
-  roles: string[],
-  owner?: {
-    type: "team" | "user";
-    id: number;
-  }
-): boolean {
+function useHasRole(roles: string[], owner: Owner | undefined): boolean {
   const previousResult = React.useRef<boolean>();
   const session = useSession();
   const { role: teamRole, loading } = useTeamRole(owner);

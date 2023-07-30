@@ -1,7 +1,7 @@
 import createStore from "zustand";
 import produce from "immer";
 
-import { Props as NotificationProps } from "components/Notification/Notification";
+import { NotificationProps } from "components/Notification";
 
 interface NotificationItem {
   id: number;

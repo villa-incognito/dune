@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/strict-boolean-expressions: off */
 
-import { Notification } from "components/Notification/Notification";
+import { Notification } from "components/Notification";
 import styles from "./PlansSection.module.css";
 import { IconLoading } from "components/Icons/IconLoading";
 import React from "react";

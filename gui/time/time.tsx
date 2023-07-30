@@ -8,6 +8,7 @@ import { formatRFC7231 } from "date-fns";
 import { formatTimer } from "lib/dates/dates";
 import { fromUnixTime } from "date-fns";
 import { parseISO } from "date-fns";
+import { useForceUpdate } from "lib/hooks/useForceUpdate";
 
 type DateValue = string | number | Date;
 
@@ -17,7 +18,11 @@ type Props = {
 };
 
 export const TimeRelative = (props: Props) => {
-  const time = useTimeRelative(props.children, props.counter);
+  const time = getTimeRelative({
+    now: useCurrentDate(),
+    time: props.children,
+    counter: props.counter,
+  });
 
   if (!time) {
     return null;
@@ -36,17 +41,20 @@ export interface TimeRelative {
   iso: Date;
 }
 
-export const useTimeRelative = (
-  value: Nullable<DateValue>,
-  counter?: boolean
-): TimeRelative | undefined => {
-  const now = useCurrentDate();
-
-  if (!now || !value) {
+export function getTimeRelative({
+  now,
+  time,
+  counter,
+}: {
+  now: ReturnType<typeof Date.now>;
+  time: Nullable<DateValue>;
+  counter?: boolean;
+}): TimeRelative | undefined {
+  if (!time) {
     return;
   }
 
-  const iso = parseInputDate(value);
+  const iso = parseInputDate(time);
   const abs = formatRFC7231(iso);
 
   if (counter) {
@@ -65,19 +73,43 @@ export const useTimeRelative = (
     abs,
     iso,
   };
-};
+}
 
-const useCurrentDate = () => {
-  const [now, setNow] = React.useState<number>();
+export function formatDistanceStrictMinimal({
+  now,
+  date,
+}: {
+  now: ReturnType<typeof Date.now>;
+  date: Date;
+}) {
+  const fmt = formatDistanceStrict(date, now);
+
+  if (fmt.includes("second")) {
+    return "Now";
+  }
+
+  return fmt
+    .replace(" minutes", "min")
+    .replace(" minute", "min")
+    .replace(" hours", "h")
+    .replace(" hour", "h")
+    .replace(" days", "d")
+    .replace(" day", "d")
+    .replace(" months", "mo")
+    .replace(" month", "mo")
+    .replace(" years", "y")
+    .replace(" year", "y");
+}
+
+export const useCurrentDate = () => {
+  const forceUpdate = useForceUpdate();
 
   React.useEffect(() => {
-    const fn = () => setNow(Date.now());
-    fn();
-    const id = setInterval(fn, 1000);
+    const id = setInterval(forceUpdate, 1000);
     return () => clearInterval(id);
-  }, []);
+  }, [forceUpdate]);
 
-  return now;
+  return Date.now();
 };
 
 const parseInputDate = (date: DateValue) => {

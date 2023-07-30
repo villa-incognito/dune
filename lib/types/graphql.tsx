@@ -126,6 +126,28 @@ export type CompleteStripeCheckoutSessionResponse = {
   card: StripeCard;
 };
 
+export type ContentFilterByInput = {
+  archived?: Maybe<Scalars['Boolean']>;
+  folder_id?: Maybe<FolderFilterOperatorInput>;
+  materialized_view?: Maybe<Scalars['Boolean']>;
+  name?: Maybe<Scalars['String']>;
+  private?: Maybe<Scalars['Boolean']>;
+  type?: Maybe<Scalars['String']>;
+};
+
+export type ContentResult = {
+  __typename?: 'ContentResult';
+  dashboard?: Maybe<DashboardResult>;
+  id: Scalars['Int'];
+  query?: Maybe<QueryResult>;
+  type: ContentType;
+};
+
+export enum ContentType {
+  Dashboard = 'dashboard',
+  Query = 'query'
+}
+
 export type ContextOwner = {
   id: Scalars['Int'];
   type: Scalars['String'];
@@ -145,10 +167,22 @@ export type CreateFolderInput = {
   team_id?: Maybe<Scalars['Int']>;
 };
 
+export type CreateMaterializedViewInput = {
+  creator: ContextOwner;
+  cron_expression: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  name: Scalars['String'];
+  performance: Scalars['String'];
+  query_id: Scalars['Int'];
+};
+
 export type CreateMaterializedViewResponse = {
   __typename?: 'CreateMaterializedViewResponse';
-  creation_execution_id: Scalars['String'];
-  id: Scalars['String'];
+  execution_id: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  matview_id: Scalars['String'];
+  query_id: Scalars['Int'];
+  schedule: CronJob;
   sql_names: Array<Scalars['String']>;
 };
 
@@ -227,6 +261,32 @@ export type CronJobMetadata = {
   updated_at?: Maybe<Scalars['timestamptz']>;
 };
 
+export type DashboardResult = {
+  __typename?: 'DashboardResult';
+  created_at: Scalars['String'];
+  favorites: Scalars['Int'];
+  favorites_24h: Scalars['Int'];
+  favorites_30d: Scalars['Int'];
+  favorites_7d: Scalars['Int'];
+  favorites_all: Scalars['Int'];
+  folder?: Maybe<Folder>;
+  folder_id?: Maybe<Scalars['String']>;
+  fork_of_id?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  is_archived: Scalars['Boolean'];
+  is_private: Scalars['Boolean'];
+  is_trending: Scalars['Boolean'];
+  name: Scalars['String'];
+  owner: Owner;
+  redirect_from?: Maybe<Scalars['String']>;
+  slug: Scalars['String'];
+  tags?: Maybe<Scalars['json']>;
+  team_id?: Maybe<Scalars['Int']>;
+  trending_scores?: Maybe<DashboardTrendingScores>;
+  updated_at: Scalars['String'];
+  user_id?: Maybe<Scalars['Int']>;
+};
+
 export type DashboardSchedulesResponse = {
   __typename?: 'DashboardSchedulesResponse';
   cron_jobs: Array<CronJob>;
@@ -240,6 +300,14 @@ export type DashboardSettings = {
   slug?: Maybe<Scalars['String']>;
   team_id?: Maybe<Scalars['Int']>;
   user_id?: Maybe<Scalars['Int']>;
+};
+
+export type DashboardTrendingScores = {
+  __typename?: 'DashboardTrendingScores';
+  score_1h: Scalars['Float'];
+  score_24h: Scalars['Float'];
+  score_4h: Scalars['Float'];
+  updated_at: Scalars['String'];
 };
 
 export type DebugWandQueryResponse = {
@@ -256,6 +324,11 @@ export type DeleteAccountResult = {
 export type DeleteDashboardScheduleResponse = {
   __typename?: 'DeleteDashboardScheduleResponse';
   cron_job_id: Scalars['String'];
+};
+
+export type DeleteFolderResult = {
+  __typename?: 'DeleteFolderResult';
+  id: Scalars['String'];
 };
 
 export type DeleteQueryScheduleResponse = {
@@ -369,6 +442,30 @@ export type Folder = {
   user_id?: Maybe<Scalars['Int']>;
 };
 
+export type FolderFilterByInput = {
+  name?: Maybe<Scalars['String']>;
+};
+
+export type FolderFilterOperatorInput = {
+  eq?: Maybe<Scalars['String']>;
+  ne?: Maybe<Scalars['String']>;
+};
+
+export type FolderResult = {
+  __typename?: 'FolderResult';
+  color: Scalars['String'];
+  content_count: Scalars['Int'];
+  created_at: Scalars['timestamptz'];
+  description?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  id: Scalars['String'];
+  name: Scalars['String'];
+  path: Scalars['String'];
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at: Scalars['timestamptz'];
+  user_id?: Maybe<Scalars['Int']>;
+};
+
 export type ForkDashboardResponse = {
   __typename?: 'ForkDashboardResponse';
   slug: Scalars['String'];
@@ -384,6 +481,20 @@ export type GetApiUpcomingInvoiceResponse = {
   invoice: UpcomingInvoice;
 };
 
+export type GetContentInput = {
+  filter_by?: Maybe<ContentFilterByInput>;
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  order_by?: Maybe<Array<OrderByInput>>;
+  team_id?: Maybe<Scalars['Int']>;
+};
+
+export type GetContentResponse = {
+  __typename?: 'GetContentResponse';
+  results: Array<ContentResult>;
+  total_count: Scalars['Int'];
+};
+
 export type GetExecutionResponse = {
   __typename?: 'GetExecutionResponse';
   execution_failed?: Maybe<ExecutionFailed>;
@@ -392,9 +503,44 @@ export type GetExecutionResponse = {
   execution_succeeded?: Maybe<ExecutionSucceeded>;
 };
 
+export type GetExecutionStatusResponse = {
+  __typename?: 'GetExecutionStatusResponse';
+  error_message?: Maybe<Scalars['String']>;
+  execution_ended_at?: Maybe<Scalars['timestamptz']>;
+  execution_id: Scalars['String'];
+  execution_started_at?: Maybe<Scalars['timestamptz']>;
+  state: Scalars['String'];
+};
+
+export type GetFoldersInput = {
+  filter_by?: Maybe<FolderFilterByInput>;
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  order_by?: Maybe<Array<OrderByInput>>;
+  team_id?: Maybe<Scalars['Int']>;
+};
+
+export type GetFoldersResponse = {
+  __typename?: 'GetFoldersResponse';
+  results: Array<FolderResult>;
+};
+
 export type GetInvoiceResponse = {
   __typename?: 'GetInvoiceResponse';
   invoices: Array<Invoice>;
+};
+
+export type GetMaterializedViewResponse = {
+  __typename?: 'GetMaterializedViewResponse';
+  id: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  last_execution_ids: Array<Scalars['String']>;
+  query_id: Scalars['String'];
+  schedule: CronJob;
+  sql_names: Array<Scalars['String']>;
+  table_size_bytes?: Maybe<Scalars['Int']>;
+  team_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
 };
 
 export type GetQueryContributorsResponse = {
@@ -407,13 +553,6 @@ export type GetQueryEventsResponse = {
   past_retention_window: Scalars['Boolean'];
   results: Array<QueryEvent>;
   retention_days: Scalars['Int'];
-};
-
-export type GetResultV3Response = {
-  __typename?: 'GetResultV3Response';
-  error_id?: Maybe<Scalars['String']>;
-  job_id?: Maybe<Scalars['String']>;
-  result_id?: Maybe<Scalars['String']>;
 };
 
 export type GetResultV4Response = {
@@ -516,11 +655,40 @@ export type MigrateLegacyPlanResponse = {
   ok: Scalars['Boolean'];
 };
 
+export type MoveContentInput = {
+  dashboard_ids: Array<Scalars['Int']>;
+  query_ids: Array<Scalars['Int']>;
+  target_folder_id?: Maybe<Scalars['String']>;
+};
+
+export type MoveContentResult = {
+  __typename?: 'MoveContentResult';
+  ok: Scalars['Boolean'];
+};
+
 export type OperationCosts = {
   __typename?: 'OperationCosts';
   interactive_executions: Array<InteractiveExecutions>;
   key: Scalars['String'];
 };
+
+export type OrderByInput = {
+  key: Scalars['String'];
+  sort: Sort;
+};
+
+export type Owner = {
+  __typename?: 'Owner';
+  handle: Scalars['String'];
+  id: Scalars['Int'];
+  profile_image_url?: Maybe<Scalars['String']>;
+  type: OwnerType;
+};
+
+export enum OwnerType {
+  Team = 'team',
+  User = 'user'
+}
 
 export type Parameter = {
   enumOptions?: Maybe<Array<Scalars['String']>>;
@@ -585,6 +753,35 @@ export type QueryEventMetadata = {
   query_event_id: Scalars['String'];
   updated_at: Scalars['timestamptz'];
   user_id: Scalars['Int'];
+};
+
+export type QueryResult = {
+  __typename?: 'QueryResult';
+  created_at: Scalars['String'];
+  dataset_id: Scalars['Int'];
+  description?: Maybe<Scalars['String']>;
+  favorites: Scalars['Int'];
+  favorites_24h: Scalars['Int'];
+  favorites_30d: Scalars['Int'];
+  favorites_7d: Scalars['Int'];
+  favorites_all: Scalars['Int'];
+  folder?: Maybe<Folder>;
+  folder_id?: Maybe<Scalars['String']>;
+  fork_of_id?: Maybe<Scalars['Int']>;
+  id: Scalars['Int'];
+  is_archived: Scalars['Boolean'];
+  is_private: Scalars['Boolean'];
+  is_temp: Scalars['Boolean'];
+  matview_id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  owner: Owner;
+  parameters: Scalars['json'];
+  query: Scalars['String'];
+  tags?: Maybe<Scalars['json']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at: Scalars['String'];
+  user_id?: Maybe<Scalars['Int']>;
+  version: Scalars['Int'];
 };
 
 export type QuerySchedulesResponse = {
@@ -672,6 +869,11 @@ export type SetTeamMaxOverageCentsUpdatedTeam = {
   id: Scalars['Int'];
   max_overage_cents?: Maybe<Scalars['Int']>;
 };
+
+export enum Sort {
+  Asc = 'ASC',
+  Desc = 'DESC'
+}
 
 /** Boolean expression to compare columns of type "String". All fields are combined with logical 'AND'. */
 export type String_Comparison_Exp = {
@@ -788,6 +990,24 @@ export type UpdateFolderInput = {
   icon: Scalars['String'];
   id: Scalars['String'];
   name: Scalars['String'];
+};
+
+export type UpdateMaterializedViewInput = {
+  cron_expression: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  performance: Scalars['String'];
+  query_id: Scalars['Int'];
+  updater: ContextOwner;
+};
+
+export type UpdateMaterializedViewResponse = {
+  __typename?: 'UpdateMaterializedViewResponse';
+  execution_id: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  matview_id: Scalars['String'];
+  query_id: Scalars['Int'];
+  schedule: CronJob;
+  sql_names: Array<Scalars['String']>;
 };
 
 export type UpdateQueryInput = {
@@ -3944,6 +4164,8 @@ export type Dashboards = {
   favorite_dashboards: Array<Favorite_Dashboards>;
   /** An aggregate relationship */
   favorite_dashboards_aggregate: Favorite_Dashboards_Aggregate;
+  /** An object relationship */
+  folder?: Maybe<Folders>;
   folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
@@ -4206,6 +4428,7 @@ export type Dashboards_Bool_Exp = {
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Bool_Exp>;
   favorite_dashboards?: Maybe<Favorite_Dashboards_Bool_Exp>;
   favorite_dashboards_aggregate?: Maybe<Favorite_Dashboards_Aggregate_Bool_Exp>;
+  folder?: Maybe<Folders_Bool_Exp>;
   folder_id?: Maybe<String_Comparison_Exp>;
   fork_of_id?: Maybe<Int_Comparison_Exp>;
   forked_dashboard?: Maybe<Dashboards_Bool_Exp>;
@@ -4273,6 +4496,7 @@ export type Dashboards_Insert_Input = {
   dashboard_favorite_count_last_30d?: Maybe<Dashboard_Favorite_Count_Last_30d_Obj_Rel_Insert_Input>;
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Obj_Rel_Insert_Input>;
   favorite_dashboards?: Maybe<Favorite_Dashboards_Arr_Rel_Insert_Input>;
+  folder?: Maybe<Folders_Obj_Rel_Insert_Input>;
   folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   forked_dashboard?: Maybe<Dashboards_Obj_Rel_Insert_Input>;
@@ -4385,6 +4609,7 @@ export type Dashboards_Order_By = {
   dashboard_favorite_count_last_30d?: Maybe<Dashboard_Favorite_Count_Last_30d_Order_By>;
   dashboard_favorite_count_last_7d?: Maybe<Dashboard_Favorite_Count_Last_7d_Order_By>;
   favorite_dashboards_aggregate?: Maybe<Favorite_Dashboards_Aggregate_Order_By>;
+  folder?: Maybe<Folders_Order_By>;
   folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   forked_dashboard?: Maybe<Dashboards_Order_By>;
@@ -5875,6 +6100,314 @@ export type Float8_Comparison_Exp = {
   _lte?: Maybe<Scalars['float8']>;
   _neq?: Maybe<Scalars['float8']>;
   _nin?: Maybe<Array<Scalars['float8']>>;
+};
+
+/** columns and relationships of "folders" */
+export type Folders = {
+  __typename?: 'folders';
+  color: Scalars['String'];
+  created_at: Scalars['timestamptz'];
+  description?: Maybe<Scalars['String']>;
+  icon: Scalars['String'];
+  id: Scalars['String'];
+  name?: Maybe<Scalars['String']>;
+  path: Scalars['String'];
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at: Scalars['timestamptz'];
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregated selection of "folders" */
+export type Folders_Aggregate = {
+  __typename?: 'folders_aggregate';
+  aggregate?: Maybe<Folders_Aggregate_Fields>;
+  nodes: Array<Folders>;
+};
+
+/** aggregate fields of "folders" */
+export type Folders_Aggregate_Fields = {
+  __typename?: 'folders_aggregate_fields';
+  avg?: Maybe<Folders_Avg_Fields>;
+  count: Scalars['Int'];
+  max?: Maybe<Folders_Max_Fields>;
+  min?: Maybe<Folders_Min_Fields>;
+  stddev?: Maybe<Folders_Stddev_Fields>;
+  stddev_pop?: Maybe<Folders_Stddev_Pop_Fields>;
+  stddev_samp?: Maybe<Folders_Stddev_Samp_Fields>;
+  sum?: Maybe<Folders_Sum_Fields>;
+  var_pop?: Maybe<Folders_Var_Pop_Fields>;
+  var_samp?: Maybe<Folders_Var_Samp_Fields>;
+  variance?: Maybe<Folders_Variance_Fields>;
+};
+
+
+/** aggregate fields of "folders" */
+export type Folders_Aggregate_FieldsCountArgs = {
+  columns?: Maybe<Array<Folders_Select_Column>>;
+  distinct?: Maybe<Scalars['Boolean']>;
+};
+
+/** aggregate avg on columns */
+export type Folders_Avg_Fields = {
+  __typename?: 'folders_avg_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** Boolean expression to filter rows from the table "folders". All fields are combined with a logical 'AND'. */
+export type Folders_Bool_Exp = {
+  _and?: Maybe<Array<Folders_Bool_Exp>>;
+  _not?: Maybe<Folders_Bool_Exp>;
+  _or?: Maybe<Array<Folders_Bool_Exp>>;
+  color?: Maybe<String_Comparison_Exp>;
+  created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  description?: Maybe<String_Comparison_Exp>;
+  icon?: Maybe<String_Comparison_Exp>;
+  id?: Maybe<String_Comparison_Exp>;
+  name?: Maybe<String_Comparison_Exp>;
+  path?: Maybe<String_Comparison_Exp>;
+  team_id?: Maybe<Int_Comparison_Exp>;
+  updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user_id?: Maybe<Int_Comparison_Exp>;
+};
+
+/** unique or primary key constraints on table "folders" */
+export enum Folders_Constraint {
+  /** unique or primary key constraint on columns "id" */
+  FoldersPkey = 'folders_pkey',
+  /** unique or primary key constraint on columns "path", "team_id" */
+  TeamIdPathIx = 'team_id_path_ix',
+  /** unique or primary key constraint on columns "path", "user_id" */
+  UserIdPathIx = 'user_id_path_ix'
+}
+
+/** input type for incrementing numeric columns in table "folders" */
+export type Folders_Inc_Input = {
+  team_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** input type for inserting data into table "folders" */
+export type Folders_Insert_Input = {
+  color?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate max on columns */
+export type Folders_Max_Fields = {
+  __typename?: 'folders_max_fields';
+  color?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate min on columns */
+export type Folders_Min_Fields = {
+  __typename?: 'folders_min_fields';
+  color?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** response of any mutation on the table "folders" */
+export type Folders_Mutation_Response = {
+  __typename?: 'folders_mutation_response';
+  /** number of rows affected by the mutation */
+  affected_rows: Scalars['Int'];
+  /** data from the rows affected by the mutation */
+  returning: Array<Folders>;
+};
+
+/** input type for inserting object relation for remote table "folders" */
+export type Folders_Obj_Rel_Insert_Input = {
+  data: Folders_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<Folders_On_Conflict>;
+};
+
+/** on_conflict condition type for table "folders" */
+export type Folders_On_Conflict = {
+  constraint: Folders_Constraint;
+  update_columns: Array<Folders_Update_Column>;
+  where?: Maybe<Folders_Bool_Exp>;
+};
+
+/** Ordering options when selecting data from "folders". */
+export type Folders_Order_By = {
+  color?: Maybe<Order_By>;
+  created_at?: Maybe<Order_By>;
+  description?: Maybe<Order_By>;
+  icon?: Maybe<Order_By>;
+  id?: Maybe<Order_By>;
+  name?: Maybe<Order_By>;
+  path?: Maybe<Order_By>;
+  team_id?: Maybe<Order_By>;
+  updated_at?: Maybe<Order_By>;
+  user_id?: Maybe<Order_By>;
+};
+
+/** primary key columns input for table: folders */
+export type Folders_Pk_Columns_Input = {
+  id: Scalars['String'];
+};
+
+/** select columns of table "folders" */
+export enum Folders_Select_Column {
+  /** column name */
+  Color = 'color',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Icon = 'icon',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Name = 'name',
+  /** column name */
+  Path = 'path',
+  /** column name */
+  TeamId = 'team_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+/** input type for updating data in table "folders" */
+export type Folders_Set_Input = {
+  color?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate stddev on columns */
+export type Folders_Stddev_Fields = {
+  __typename?: 'folders_stddev_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_pop on columns */
+export type Folders_Stddev_Pop_Fields = {
+  __typename?: 'folders_stddev_pop_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate stddev_samp on columns */
+export type Folders_Stddev_Samp_Fields = {
+  __typename?: 'folders_stddev_samp_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** Streaming cursor of the table "folders" */
+export type Folders_Stream_Cursor_Input = {
+  /** Stream column input with initial value */
+  initial_value: Folders_Stream_Cursor_Value_Input;
+  /** cursor ordering */
+  ordering?: Maybe<Cursor_Ordering>;
+};
+
+/** Initial value of the column from where the streaming should start */
+export type Folders_Stream_Cursor_Value_Input = {
+  color?: Maybe<Scalars['String']>;
+  created_at?: Maybe<Scalars['timestamptz']>;
+  description?: Maybe<Scalars['String']>;
+  icon?: Maybe<Scalars['String']>;
+  id?: Maybe<Scalars['String']>;
+  name?: Maybe<Scalars['String']>;
+  path?: Maybe<Scalars['String']>;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at?: Maybe<Scalars['timestamptz']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** aggregate sum on columns */
+export type Folders_Sum_Fields = {
+  __typename?: 'folders_sum_fields';
+  team_id?: Maybe<Scalars['Int']>;
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+/** update columns of table "folders" */
+export enum Folders_Update_Column {
+  /** column name */
+  Color = 'color',
+  /** column name */
+  CreatedAt = 'created_at',
+  /** column name */
+  Description = 'description',
+  /** column name */
+  Icon = 'icon',
+  /** column name */
+  Id = 'id',
+  /** column name */
+  Path = 'path',
+  /** column name */
+  TeamId = 'team_id',
+  /** column name */
+  UpdatedAt = 'updated_at',
+  /** column name */
+  UserId = 'user_id'
+}
+
+export type Folders_Updates = {
+  /** increments the numeric columns with given value of the filtered values */
+  _inc?: Maybe<Folders_Inc_Input>;
+  /** sets the columns of the filtered rows to the given values */
+  _set?: Maybe<Folders_Set_Input>;
+  where: Folders_Bool_Exp;
+};
+
+/** aggregate var_pop on columns */
+export type Folders_Var_Pop_Fields = {
+  __typename?: 'folders_var_pop_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate var_samp on columns */
+export type Folders_Var_Samp_Fields = {
+  __typename?: 'folders_var_samp_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
+};
+
+/** aggregate variance on columns */
+export type Folders_Variance_Fields = {
+  __typename?: 'folders_variance_fields';
+  team_id?: Maybe<Scalars['Float']>;
+  user_id?: Maybe<Scalars['Float']>;
 };
 
 export type Fork_Query_Response = {
@@ -7410,6 +7943,11 @@ export type Mutation_Root = {
   delete_favourited_schemas?: Maybe<Favourited_Schemas_Mutation_Response>;
   /** delete single row from the table: "favourited_schemas" */
   delete_favourited_schemas_by_pk?: Maybe<Favourited_Schemas>;
+  delete_folder: DeleteFolderResult;
+  /** delete data from the table: "folders" */
+  delete_folders?: Maybe<Folders_Mutation_Response>;
+  /** delete single row from the table: "folders" */
+  delete_folders_by_pk?: Maybe<Folders>;
   /** delete data from the table: "get_result_template" */
   delete_get_result_template?: Maybe<Get_Result_Template_Mutation_Response>;
   /** delete data from the table: "jobs" */
@@ -7572,6 +8110,10 @@ export type Mutation_Root = {
   insert_favourited_schemas?: Maybe<Favourited_Schemas_Mutation_Response>;
   /** insert a single row into the table: "favourited_schemas" */
   insert_favourited_schemas_one?: Maybe<Favourited_Schemas>;
+  /** insert data into the table: "folders" */
+  insert_folders?: Maybe<Folders_Mutation_Response>;
+  /** insert a single row into the table: "folders" */
+  insert_folders_one?: Maybe<Folders>;
   /** insert data into the table: "get_result_template" */
   insert_get_result_template?: Maybe<Get_Result_Template_Mutation_Response>;
   /** insert a single row into the table: "get_result_template" */
@@ -7688,6 +8230,7 @@ export type Mutation_Root = {
   invite_member_v2?: Maybe<InviteMemberResponse>;
   migrate_content: MigrateContentResponse;
   migrate_legacy_plan: MigrateLegacyPlanResponse;
+  move_content: MoveContentResult;
   patch_dashboard_settings?: Maybe<PatchDashboardSettingsResponse>;
   patch_query_settings?: Maybe<PatchQuerySettingsResponse>;
   remove_member?: Maybe<RemoveMemberResponse>;
@@ -7772,6 +8315,12 @@ export type Mutation_Root = {
   /** update multiples rows of table: "favourited_schemas" */
   update_favourited_schemas_many?: Maybe<Array<Maybe<Favourited_Schemas_Mutation_Response>>>;
   update_folder: Folder;
+  /** update data of the table: "folders" */
+  update_folders?: Maybe<Folders_Mutation_Response>;
+  /** update single row of the table: "folders" */
+  update_folders_by_pk?: Maybe<Folders>;
+  /** update multiples rows of table: "folders" */
+  update_folders_many?: Maybe<Array<Maybe<Folders_Mutation_Response>>>;
   /** update data of the table: "get_result_template" */
   update_get_result_template?: Maybe<Get_Result_Template_Mutation_Response>;
   /** update multiples rows of table: "get_result_template" */
@@ -7782,6 +8331,7 @@ export type Mutation_Root = {
   update_jobs_by_pk?: Maybe<Jobs>;
   /** update multiples rows of table: "jobs" */
   update_jobs_many?: Maybe<Array<Maybe<Jobs_Mutation_Response>>>;
+  update_materialized_view: UpdateMaterializedViewResponse;
   /** update data of the table: "memberships" */
   update_memberships?: Maybe<Memberships_Mutation_Response>;
   /** update single row of the table: "memberships" */
@@ -8012,11 +8562,7 @@ export type Mutation_RootCreate_FolderArgs = {
 
 /** mutation root */
 export type Mutation_RootCreate_Materialized_ViewArgs = {
-  creator: ContextOwner;
-  is_private: Scalars['Boolean'];
-  name?: Maybe<Scalars['String']>;
-  performance: Scalars['String'];
-  query_id: Scalars['Int'];
+  input: CreateMaterializedViewInput;
 };
 
 
@@ -8216,6 +8762,24 @@ export type Mutation_RootDelete_Favourited_SchemasArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Favourited_Schemas_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_FolderArgs = {
+  id: Scalars['String'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_FoldersArgs = {
+  where: Folders_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Folders_By_PkArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -8611,6 +9175,7 @@ export type Mutation_RootFork_Query_V3Args = {
 /** mutation root */
 export type Mutation_RootGenerate_Data_Upload_UrlArgs = {
   content_length: Scalars['Int'];
+  context_owner?: Maybe<ContextOwner>;
   file_name: Scalars['String'];
 };
 
@@ -8780,6 +9345,20 @@ export type Mutation_RootInsert_Favourited_SchemasArgs = {
 export type Mutation_RootInsert_Favourited_Schemas_OneArgs = {
   object: Favourited_Schemas_Insert_Input;
   on_conflict?: Maybe<Favourited_Schemas_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_FoldersArgs = {
+  objects: Array<Folders_Insert_Input>;
+  on_conflict?: Maybe<Folders_On_Conflict>;
+};
+
+
+/** mutation root */
+export type Mutation_RootInsert_Folders_OneArgs = {
+  object: Folders_Insert_Input;
+  on_conflict?: Maybe<Folders_On_Conflict>;
 };
 
 
@@ -9195,6 +9774,12 @@ export type Mutation_RootMigrate_Legacy_PlanArgs = {
 
 
 /** mutation root */
+export type Mutation_RootMove_ContentArgs = {
+  input: MoveContentInput;
+};
+
+
+/** mutation root */
 export type Mutation_RootPatch_Dashboard_SettingsArgs = {
   dashboard_settings: DashboardSettings;
 };
@@ -9572,6 +10157,28 @@ export type Mutation_RootUpdate_FolderArgs = {
 
 
 /** mutation root */
+export type Mutation_RootUpdate_FoldersArgs = {
+  _inc?: Maybe<Folders_Inc_Input>;
+  _set?: Maybe<Folders_Set_Input>;
+  where: Folders_Bool_Exp;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Folders_By_PkArgs = {
+  _inc?: Maybe<Folders_Inc_Input>;
+  _set?: Maybe<Folders_Set_Input>;
+  pk_columns: Folders_Pk_Columns_Input;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Folders_ManyArgs = {
+  updates: Array<Folders_Updates>;
+};
+
+
+/** mutation root */
 export type Mutation_RootUpdate_Get_Result_TemplateArgs = {
   _set?: Maybe<Get_Result_Template_Set_Input>;
   where: Get_Result_Template_Bool_Exp;
@@ -9613,6 +10220,12 @@ export type Mutation_RootUpdate_Jobs_By_PkArgs = {
 /** mutation root */
 export type Mutation_RootUpdate_Jobs_ManyArgs = {
   updates: Array<Jobs_Updates>;
+};
+
+
+/** mutation root */
+export type Mutation_RootUpdate_Materialized_ViewArgs = {
+  input: UpdateMaterializedViewInput;
 };
 
 
@@ -13154,6 +13767,8 @@ export type Queries = {
   favorite_queries: Array<Favorite_Queries>;
   /** An aggregate relationship */
   favorite_queries_aggregate: Favorite_Queries_Aggregate;
+  /** An object relationship */
+  folder?: Maybe<Folders>;
   folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   /** An object relationship */
@@ -13406,6 +14021,7 @@ export type Queries_Bool_Exp = {
   description?: Maybe<String_Comparison_Exp>;
   favorite_queries?: Maybe<Favorite_Queries_Bool_Exp>;
   favorite_queries_aggregate?: Maybe<Favorite_Queries_Aggregate_Bool_Exp>;
+  folder?: Maybe<Folders_Bool_Exp>;
   folder_id?: Maybe<String_Comparison_Exp>;
   fork_of_id?: Maybe<Int_Comparison_Exp>;
   forked_query?: Maybe<Queries_Bool_Exp>;
@@ -13478,6 +14094,7 @@ export type Queries_Insert_Input = {
   dataset_id?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
   favorite_queries?: Maybe<Favorite_Queries_Arr_Rel_Insert_Input>;
+  folder?: Maybe<Folders_Obj_Rel_Insert_Input>;
   folder_id?: Maybe<Scalars['String']>;
   fork_of_id?: Maybe<Scalars['Int']>;
   forked_query?: Maybe<Queries_Obj_Rel_Insert_Input>;
@@ -13607,6 +14224,7 @@ export type Queries_Order_By = {
   dataset_id?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
   favorite_queries_aggregate?: Maybe<Favorite_Queries_Aggregate_Order_By>;
+  folder?: Maybe<Folders_Order_By>;
   folder_id?: Maybe<Order_By>;
   fork_of_id?: Maybe<Order_By>;
   forked_query?: Maybe<Queries_Order_By>;
@@ -16700,13 +17318,23 @@ export type Query_Root = {
   favourited_schemas_aggregate: Favourited_Schemas_Aggregate;
   /** fetch data from the table: "favourited_schemas" using primary key columns */
   favourited_schemas_by_pk?: Maybe<Favourited_Schemas>;
+  /** fetch data from the table: "folders" */
+  folders: Array<Folders>;
+  /** fetch aggregated fields from the table: "folders" */
+  folders_aggregate: Folders_Aggregate;
+  /** fetch data from the table: "folders" using primary key columns */
+  folders_by_pk?: Maybe<Folders>;
   /** Get orb API subscription upcoming invoice */
   get_api_upcoming_invoice?: Maybe<GetApiUpcomingInvoiceResponse>;
   get_auth_provider_user?: Maybe<AuthProviderUser>;
+  get_content: GetContentResponse;
   get_execution?: Maybe<GetExecutionResponse>;
+  get_execution_status?: Maybe<GetExecutionStatusResponse>;
+  get_folders: GetFoldersResponse;
   get_initial_query_event?: Maybe<QueryEvent>;
   /** Collect and merge invoices from stripe and orb */
   get_invoices?: Maybe<GetInvoiceResponse>;
+  get_materialized_view: GetMaterializedViewResponse;
   get_query_contributors: GetQueryContributorsResponse;
   get_query_event?: Maybe<QueryEvent>;
   get_query_events: GetQueryEventsResponse;
@@ -16722,7 +17350,6 @@ export type Query_Root = {
   get_result_template: Array<Get_Result_Template>;
   /** fetch aggregated fields from the table: "get_result_template" */
   get_result_template_aggregate: Get_Result_Template_Aggregate;
-  get_result_v3?: Maybe<GetResultV3Response>;
   get_result_v4?: Maybe<GetResultV4Response>;
   /** Collect and merge team invoices from stripe and orb */
   get_team_invoices?: Maybe<GetTeamInvoiceResponse>;
@@ -17288,6 +17915,34 @@ export type Query_RootFavourited_Schemas_By_PkArgs = {
 };
 
 
+export type Query_RootFoldersArgs = {
+  distinct_on?: Maybe<Array<Folders_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Folders_Order_By>>;
+  where?: Maybe<Folders_Bool_Exp>;
+};
+
+
+export type Query_RootFolders_AggregateArgs = {
+  distinct_on?: Maybe<Array<Folders_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Folders_Order_By>>;
+  where?: Maybe<Folders_Bool_Exp>;
+};
+
+
+export type Query_RootFolders_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type Query_RootGet_ContentArgs = {
+  input: GetContentInput;
+};
+
+
 export type Query_RootGet_ExecutionArgs = {
   execution_id: Scalars['String'];
   parameters?: Maybe<Array<Parameter>>;
@@ -17295,8 +17950,23 @@ export type Query_RootGet_ExecutionArgs = {
 };
 
 
+export type Query_RootGet_Execution_StatusArgs = {
+  execution_id: Scalars['String'];
+};
+
+
+export type Query_RootGet_FoldersArgs = {
+  input: GetFoldersInput;
+};
+
+
 export type Query_RootGet_Initial_Query_EventArgs = {
   query_id: Scalars['Int'];
+};
+
+
+export type Query_RootGet_Materialized_ViewArgs = {
+  id: Scalars['String'];
 };
 
 
@@ -17372,12 +18042,6 @@ export type Query_RootGet_Result_Template_AggregateArgs = {
   offset?: Maybe<Scalars['Int']>;
   order_by?: Maybe<Array<Get_Result_Template_Order_By>>;
   where?: Maybe<Get_Result_Template_Bool_Exp>;
-};
-
-
-export type Query_RootGet_Result_V3Args = {
-  parameters?: Maybe<Array<Parameter>>;
-  query_id: Scalars['Int'];
 };
 
 
@@ -18053,6 +18717,11 @@ export type Query_RootText_Widgets_By_PkArgs = {
 };
 
 
+export type Query_RootUploaded_TablesArgs = {
+  context_owner?: Maybe<ContextOwner>;
+};
+
+
 export type Query_RootUser_NonceArgs = {
   distinct_on?: Maybe<Array<User_Nonce_Select_Column>>;
   limit?: Maybe<Scalars['Int']>;
@@ -18390,6 +19059,14 @@ export type Subscription_Root = {
   favourited_schemas_by_pk?: Maybe<Favourited_Schemas>;
   /** fetch data from the table in a streaming manner: "favourited_schemas" */
   favourited_schemas_stream: Array<Favourited_Schemas>;
+  /** fetch data from the table: "folders" */
+  folders: Array<Folders>;
+  /** fetch aggregated fields from the table: "folders" */
+  folders_aggregate: Folders_Aggregate;
+  /** fetch data from the table: "folders" using primary key columns */
+  folders_by_pk?: Maybe<Folders>;
+  /** fetch data from the table in a streaming manner: "folders" */
+  folders_stream: Array<Folders>;
   /** execute function "get_result_by_job_id" which returns "get_result_template" */
   get_result_by_job_id: Array<Get_Result_Template>;
   /** execute function "get_result_by_job_id" and query aggregates on result of table type "get_result_template" */
@@ -19120,6 +19797,36 @@ export type Subscription_RootFavourited_Schemas_StreamArgs = {
   batch_size: Scalars['Int'];
   cursor: Array<Maybe<Favourited_Schemas_Stream_Cursor_Input>>;
   where?: Maybe<Favourited_Schemas_Bool_Exp>;
+};
+
+
+export type Subscription_RootFoldersArgs = {
+  distinct_on?: Maybe<Array<Folders_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Folders_Order_By>>;
+  where?: Maybe<Folders_Bool_Exp>;
+};
+
+
+export type Subscription_RootFolders_AggregateArgs = {
+  distinct_on?: Maybe<Array<Folders_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Folders_Order_By>>;
+  where?: Maybe<Folders_Bool_Exp>;
+};
+
+
+export type Subscription_RootFolders_By_PkArgs = {
+  id: Scalars['String'];
+};
+
+
+export type Subscription_RootFolders_StreamArgs = {
+  batch_size: Scalars['Int'];
+  cursor: Array<Maybe<Folders_Stream_Cursor_Input>>;
+  where?: Maybe<Folders_Bool_Exp>;
 };
 
 
@@ -21028,9 +21735,12 @@ export type Team_Received_Stars_Variance_Fields = {
 export type Team_Service_Tiers = {
   __typename?: 'team_service_tiers';
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute: Scalars['Int'];
   base_monthly_price_dollars_cents: Scalars['Int'];
   can_hide_members: Scalars['Boolean'];
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at: Scalars['timestamptz'];
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21137,6 +21847,7 @@ export type Team_Service_Tiers_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type Team_Service_Tiers_Avg_Fields = {
   __typename?: 'team_service_tiers_avg_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21158,9 +21869,12 @@ export type Team_Service_Tiers_Bool_Exp = {
   _not?: Maybe<Team_Service_Tiers_Bool_Exp>;
   _or?: Maybe<Array<Team_Service_Tiers_Bool_Exp>>;
   allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
+  api_calls_per_minute?: Maybe<Int_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   can_hide_members?: Maybe<Boolean_Comparison_Exp>;
   can_use_crud_endpoints?: Maybe<Boolean_Comparison_Exp>;
+  can_use_dashboard_queries_endpoints?: Maybe<Boolean_Comparison_Exp>;
+  can_use_static_data_uploads?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   csv_downloads_per_month?: Maybe<Int_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
@@ -21200,6 +21914,7 @@ export enum Team_Service_Tiers_Constraint {
 
 /** input type for incrementing numeric columns in table "team_service_tiers" */
 export type Team_Service_Tiers_Inc_Input = {
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -21218,9 +21933,12 @@ export type Team_Service_Tiers_Inc_Input = {
 /** input type for inserting data into table "team_service_tiers" */
 export type Team_Service_Tiers_Insert_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21251,6 +21969,7 @@ export type Team_Service_Tiers_Insert_Input = {
 /** aggregate max on columns */
 export type Team_Service_Tiers_Max_Fields = {
   __typename?: 'team_service_tiers_max_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -21278,6 +21997,7 @@ export type Team_Service_Tiers_Max_Fields = {
 /** aggregate min on columns */
 export type Team_Service_Tiers_Min_Fields = {
   __typename?: 'team_service_tiers_min_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -21328,9 +22048,12 @@ export type Team_Service_Tiers_On_Conflict = {
 /** Ordering options when selecting data from "team_service_tiers". */
 export type Team_Service_Tiers_Order_By = {
   allow_private_queries_as_views?: Maybe<Order_By>;
+  api_calls_per_minute?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   can_hide_members?: Maybe<Order_By>;
   can_use_crud_endpoints?: Maybe<Order_By>;
+  can_use_dashboard_queries_endpoints?: Maybe<Order_By>;
+  can_use_static_data_uploads?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   csv_downloads_per_month?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
@@ -21368,11 +22091,17 @@ export enum Team_Service_Tiers_Select_Column {
   /** column name */
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
+  ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
   CanHideMembers = 'can_hide_members',
   /** column name */
   CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
+  CanUseDashboardQueriesEndpoints = 'can_use_dashboard_queries_endpoints',
+  /** column name */
+  CanUseStaticDataUploads = 'can_use_static_data_uploads',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -21424,9 +22153,12 @@ export enum Team_Service_Tiers_Select_Column {
 /** input type for updating data in table "team_service_tiers" */
 export type Team_Service_Tiers_Set_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21455,6 +22187,7 @@ export type Team_Service_Tiers_Set_Input = {
 /** aggregate stddev on columns */
 export type Team_Service_Tiers_Stddev_Fields = {
   __typename?: 'team_service_tiers_stddev_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21473,6 +22206,7 @@ export type Team_Service_Tiers_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type Team_Service_Tiers_Stddev_Pop_Fields = {
   __typename?: 'team_service_tiers_stddev_pop_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21491,6 +22225,7 @@ export type Team_Service_Tiers_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type Team_Service_Tiers_Stddev_Samp_Fields = {
   __typename?: 'team_service_tiers_stddev_samp_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21517,9 +22252,12 @@ export type Team_Service_Tiers_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -21548,6 +22286,7 @@ export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type Team_Service_Tiers_Sum_Fields = {
   __typename?: 'team_service_tiers_sum_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -21568,11 +22307,17 @@ export enum Team_Service_Tiers_Update_Column {
   /** column name */
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
+  ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
   CanHideMembers = 'can_hide_members',
   /** column name */
   CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
+  CanUseDashboardQueriesEndpoints = 'can_use_dashboard_queries_endpoints',
+  /** column name */
+  CanUseStaticDataUploads = 'can_use_static_data_uploads',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -21632,6 +22377,7 @@ export type Team_Service_Tiers_Updates = {
 /** aggregate var_pop on columns */
 export type Team_Service_Tiers_Var_Pop_Fields = {
   __typename?: 'team_service_tiers_var_pop_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21650,6 +22396,7 @@ export type Team_Service_Tiers_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type Team_Service_Tiers_Var_Samp_Fields = {
   __typename?: 'team_service_tiers_var_samp_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21668,6 +22415,7 @@ export type Team_Service_Tiers_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type Team_Service_Tiers_Variance_Fields = {
   __typename?: 'team_service_tiers_variance_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24052,8 +24800,11 @@ export type User_Received_Stars_Variance_Fields = {
 export type User_Service_Tiers = {
   __typename?: 'user_service_tiers';
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute: Scalars['Int'];
   base_monthly_price_dollars_cents: Scalars['Int'];
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at: Scalars['timestamptz'];
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24159,6 +24910,7 @@ export type User_Service_Tiers_Aggregate_FieldsCountArgs = {
 /** aggregate avg on columns */
 export type User_Service_Tiers_Avg_Fields = {
   __typename?: 'user_service_tiers_avg_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24179,8 +24931,11 @@ export type User_Service_Tiers_Bool_Exp = {
   _not?: Maybe<User_Service_Tiers_Bool_Exp>;
   _or?: Maybe<Array<User_Service_Tiers_Bool_Exp>>;
   allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
+  api_calls_per_minute?: Maybe<Int_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   can_use_crud_endpoints?: Maybe<Boolean_Comparison_Exp>;
+  can_use_dashboard_queries_endpoints?: Maybe<Boolean_Comparison_Exp>;
+  can_use_static_data_uploads?: Maybe<Boolean_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
   csv_downloads_per_month?: Maybe<Int_Comparison_Exp>;
   description?: Maybe<String_Comparison_Exp>;
@@ -24219,6 +24974,7 @@ export enum User_Service_Tiers_Constraint {
 
 /** input type for incrementing numeric columns in table "user_service_tiers" */
 export type User_Service_Tiers_Inc_Input = {
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -24236,8 +24992,11 @@ export type User_Service_Tiers_Inc_Input = {
 /** input type for inserting data into table "user_service_tiers" */
 export type User_Service_Tiers_Insert_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24267,6 +25026,7 @@ export type User_Service_Tiers_Insert_Input = {
 /** aggregate max on columns */
 export type User_Service_Tiers_Max_Fields = {
   __typename?: 'user_service_tiers_max_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -24293,6 +25053,7 @@ export type User_Service_Tiers_Max_Fields = {
 /** aggregate min on columns */
 export type User_Service_Tiers_Min_Fields = {
   __typename?: 'user_service_tiers_min_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -24342,8 +25103,11 @@ export type User_Service_Tiers_On_Conflict = {
 /** Ordering options when selecting data from "user_service_tiers". */
 export type User_Service_Tiers_Order_By = {
   allow_private_queries_as_views?: Maybe<Order_By>;
+  api_calls_per_minute?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   can_use_crud_endpoints?: Maybe<Order_By>;
+  can_use_dashboard_queries_endpoints?: Maybe<Order_By>;
+  can_use_static_data_uploads?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
   csv_downloads_per_month?: Maybe<Order_By>;
   description?: Maybe<Order_By>;
@@ -24380,9 +25144,15 @@ export enum User_Service_Tiers_Select_Column {
   /** column name */
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
+  ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
   CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
+  CanUseDashboardQueriesEndpoints = 'can_use_dashboard_queries_endpoints',
+  /** column name */
+  CanUseStaticDataUploads = 'can_use_static_data_uploads',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -24432,8 +25202,11 @@ export enum User_Service_Tiers_Select_Column {
 /** input type for updating data in table "user_service_tiers" */
 export type User_Service_Tiers_Set_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24461,6 +25234,7 @@ export type User_Service_Tiers_Set_Input = {
 /** aggregate stddev on columns */
 export type User_Service_Tiers_Stddev_Fields = {
   __typename?: 'user_service_tiers_stddev_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24478,6 +25252,7 @@ export type User_Service_Tiers_Stddev_Fields = {
 /** aggregate stddev_pop on columns */
 export type User_Service_Tiers_Stddev_Pop_Fields = {
   __typename?: 'user_service_tiers_stddev_pop_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24495,6 +25270,7 @@ export type User_Service_Tiers_Stddev_Pop_Fields = {
 /** aggregate stddev_samp on columns */
 export type User_Service_Tiers_Stddev_Samp_Fields = {
   __typename?: 'user_service_tiers_stddev_samp_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24520,8 +25296,11 @@ export type User_Service_Tiers_Stream_Cursor_Input = {
 /** Initial value of the column from where the streaming should start */
 export type User_Service_Tiers_Stream_Cursor_Value_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_dashboard_queries_endpoints?: Maybe<Scalars['Boolean']>;
+  can_use_static_data_uploads?: Maybe<Scalars['Boolean']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   description?: Maybe<Scalars['String']>;
@@ -24549,6 +25328,7 @@ export type User_Service_Tiers_Stream_Cursor_Value_Input = {
 /** aggregate sum on columns */
 export type User_Service_Tiers_Sum_Fields = {
   __typename?: 'user_service_tiers_sum_fields';
+  api_calls_per_minute?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -24568,9 +25348,15 @@ export enum User_Service_Tiers_Update_Column {
   /** column name */
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
+  ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
   CanUseCrudEndpoints = 'can_use_crud_endpoints',
+  /** column name */
+  CanUseDashboardQueriesEndpoints = 'can_use_dashboard_queries_endpoints',
+  /** column name */
+  CanUseStaticDataUploads = 'can_use_static_data_uploads',
   /** column name */
   CreatedAt = 'created_at',
   /** column name */
@@ -24628,6 +25414,7 @@ export type User_Service_Tiers_Updates = {
 /** aggregate var_pop on columns */
 export type User_Service_Tiers_Var_Pop_Fields = {
   __typename?: 'user_service_tiers_var_pop_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24645,6 +25432,7 @@ export type User_Service_Tiers_Var_Pop_Fields = {
 /** aggregate var_samp on columns */
 export type User_Service_Tiers_Var_Samp_Fields = {
   __typename?: 'user_service_tiers_var_samp_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -24662,6 +25450,7 @@ export type User_Service_Tiers_Var_Samp_Fields = {
 /** aggregate variance on columns */
 export type User_Service_Tiers_Variance_Fields = {
   __typename?: 'user_service_tiers_variance_fields';
+  api_calls_per_minute?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -27641,10 +28430,10 @@ export type DashboardItemFragment = (
   & Pick<Dashboards, 'id' | 'name' | 'slug' | 'created_at' | 'updated_at' | 'tags' | 'is_private'>
   & { user?: Maybe<(
     { __typename?: 'users' }
-    & Pick<Users, 'name' | 'profile_image_url'>
+    & Pick<Users, 'id' | 'name' | 'profile_image_url'>
   )>, team?: Maybe<(
     { __typename?: 'teams' }
-    & Pick<Teams, 'handle' | 'profile_image_url'>
+    & Pick<Teams, 'id' | 'handle' | 'profile_image_url'>
   )>, dashboard_favorite_count_all?: Maybe<(
     { __typename?: 'dashboard_favorite_count_all' }
     & Pick<Dashboard_Favorite_Count_All, 'favorite_count'>
@@ -28448,6 +29237,70 @@ export type ForkDashboardMutation = (
   )> }
 );
 
+export type CreateDashboardScheduleMutationVariables = Exact<{
+  dashboard_id: Scalars['Int'];
+  cron_expression: Scalars['String'];
+  performance: Scalars['String'];
+}>;
+
+
+export type CreateDashboardScheduleMutation = (
+  { __typename?: 'mutation_root' }
+  & { create_dashboard_schedule: (
+    { __typename?: 'CreateDashboardScheduleResponse' }
+    & Pick<CreateDashboardScheduleResponse, 'dashboard_id'>
+  ) }
+);
+
+export type DashboardSchedulesQueryVariables = Exact<{
+  dashboard_id: Scalars['Int'];
+}>;
+
+
+export type DashboardSchedulesQuery = (
+  { __typename?: 'query_root' }
+  & { dashboard_schedules: (
+    { __typename?: 'DashboardSchedulesResponse' }
+    & Pick<DashboardSchedulesResponse, 'dashboard_id'>
+    & { cron_jobs: Array<(
+      { __typename?: 'CronJob' }
+      & Pick<CronJob, 'id' | 'cron_expression' | 'performance' | 'owned_by_customer_id'>
+      & { metadata: (
+        { __typename?: 'CronJobMetadata' }
+        & Pick<CronJobMetadata, 'updated_at'>
+      ) }
+    )> }
+  ) }
+);
+
+export type DeleteDashboardScheduleMutationVariables = Exact<{
+  cron_job_id: Scalars['String'];
+}>;
+
+
+export type DeleteDashboardScheduleMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_dashboard_schedule: (
+    { __typename?: 'DeleteDashboardScheduleResponse' }
+    & Pick<DeleteDashboardScheduleResponse, 'cron_job_id'>
+  ) }
+);
+
+export type UpdateDashboardScheduleMutationVariables = Exact<{
+  cron_job_id: Scalars['String'];
+  cron_expression: Scalars['String'];
+  performance: Scalars['String'];
+}>;
+
+
+export type UpdateDashboardScheduleMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_dashboard_schedule: (
+    { __typename?: 'UpdateDashboardScheduleResponse' }
+    & Pick<UpdateDashboardScheduleResponse, 'dashboard_id'>
+  ) }
+);
+
 export type UpsertDashboardMutationVariables = Exact<{
   object: Dashboards_Insert_Input;
   on_conflict: Dashboards_On_Conflict;
@@ -28908,6 +29761,70 @@ export type GetQueryContributorsQuery = (
       { __typename?: 'QueryContributor' }
       & Pick<QueryContributor, 'handle' | 'contributions' | 'profile_image_url' | 'query_id' | 'user_id'>
     )> }
+  ) }
+);
+
+export type CreateMatViewMutationVariables = Exact<{
+  input: CreateMaterializedViewInput;
+}>;
+
+
+export type CreateMatViewMutation = (
+  { __typename?: 'mutation_root' }
+  & { create_materialized_view: (
+    { __typename?: 'CreateMaterializedViewResponse' }
+    & Pick<CreateMaterializedViewResponse, 'matview_id' | 'query_id' | 'sql_names' | 'is_private' | 'execution_id'>
+    & { schedule: (
+      { __typename?: 'CronJob' }
+      & Pick<CronJob, 'id' | 'cron_expression' | 'performance' | 'next_execution_time'>
+    ) }
+  ) }
+);
+
+export type GetExecutionStatusQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetExecutionStatusQuery = (
+  { __typename?: 'query_root' }
+  & { get_execution_status?: Maybe<(
+    { __typename?: 'GetExecutionStatusResponse' }
+    & Pick<GetExecutionStatusResponse, 'state' | 'execution_ended_at' | 'error_message'>
+  )> }
+);
+
+export type GetMatViewQueryVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type GetMatViewQuery = (
+  { __typename?: 'query_root' }
+  & { get_materialized_view: (
+    { __typename?: 'GetMaterializedViewResponse' }
+    & Pick<GetMaterializedViewResponse, 'sql_names' | 'is_private' | 'last_execution_ids' | 'table_size_bytes'>
+    & { schedule: (
+      { __typename?: 'CronJob' }
+      & Pick<CronJob, 'id' | 'cron_expression' | 'performance' | 'next_execution_time'>
+    ) }
+  ) }
+);
+
+export type UpdateMatViewMutationVariables = Exact<{
+  input: UpdateMaterializedViewInput;
+}>;
+
+
+export type UpdateMatViewMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_materialized_view: (
+    { __typename?: 'UpdateMaterializedViewResponse' }
+    & Pick<UpdateMaterializedViewResponse, 'matview_id' | 'query_id' | 'sql_names' | 'is_private' | 'execution_id'>
+    & { schedule: (
+      { __typename?: 'CronJob' }
+      & Pick<CronJob, 'id' | 'cron_expression' | 'performance' | 'next_execution_time'>
+    ) }
   ) }
 );
 
@@ -30436,20 +31353,22 @@ export type UpdateWandCompletionQueryMutation = (
   )> }
 );
 
-export type FindWandCompletionByQueryIdQueryVariables = Exact<{
-  query_id: Scalars['Int'];
+export type WandDebugQueryMutationVariables = Exact<{
+  error: Scalars['String'];
+  query: Scalars['String'];
 }>;
 
 
-export type FindWandCompletionByQueryIdQuery = (
-  { __typename?: 'query_root' }
-  & { wand_completions: Array<(
-    { __typename?: 'wand_completions' }
-    & Pick<Wand_Completions, 'id' | 'question' | 'answer'>
-  )> }
+export type WandDebugQueryMutation = (
+  { __typename?: 'mutation_root' }
+  & { debug_wand_query: (
+    { __typename?: 'DebugWandQueryResponse' }
+    & Pick<DebugWandQueryResponse, 'response_id' | 'query'>
+  ) }
 );
 
 export type GenerateDataUploadUrlMutationVariables = Exact<{
+  context_owner?: Maybe<ContextOwner>;
   content_length: Scalars['Int'];
   file_name: Scalars['String'];
 }>;
@@ -30461,6 +31380,21 @@ export type GenerateDataUploadUrlMutation = (
     { __typename?: 'PresignedUrlResponse' }
     & Pick<PresignedUrlResponse, 'url'>
   )> }
+);
+
+export type MoveContentMutationVariables = Exact<{
+  dashboard_ids: Array<Scalars['Int']> | Scalars['Int'];
+  query_ids: Array<Scalars['Int']> | Scalars['Int'];
+  target_folder_id?: Maybe<Scalars['String']>;
+}>;
+
+
+export type MoveContentMutation = (
+  { __typename?: 'mutation_root' }
+  & { move_content: (
+    { __typename?: 'MoveContentResult' }
+    & Pick<MoveContentResult, 'ok'>
+  ) }
 );
 
 export type CreateFolderMutationVariables = Exact<{
@@ -30480,7 +31414,106 @@ export type CreateFolderMutation = (
   ) }
 );
 
-export type UploadedTablesQueryVariables = Exact<{ [key: string]: never; }>;
+export type UpdateFolderMutationVariables = Exact<{
+  id: Scalars['String'];
+  name: Scalars['String'];
+  icon: Scalars['String'];
+  color: Scalars['String'];
+  description?: Maybe<Scalars['String']>;
+}>;
+
+
+export type UpdateFolderMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_folder: (
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id'>
+  ) }
+);
+
+export type DeleteFolderMutationVariables = Exact<{
+  id: Scalars['String'];
+}>;
+
+
+export type DeleteFolderMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_folder: (
+    { __typename?: 'DeleteFolderResult' }
+    & Pick<DeleteFolderResult, 'id'>
+  ) }
+);
+
+export type ListFoldersQueryVariables = Exact<{
+  input: GetFoldersInput;
+}>;
+
+
+export type ListFoldersQuery = (
+  { __typename?: 'query_root' }
+  & { get_folders: (
+    { __typename?: 'GetFoldersResponse' }
+    & { results: Array<(
+      { __typename?: 'FolderResult' }
+      & Pick<FolderResult, 'id' | 'name' | 'description' | 'path' | 'color' | 'icon' | 'content_count'>
+    )> }
+  ) }
+);
+
+export type GetFolderContentQueryVariables = Exact<{
+  input: GetContentInput;
+}>;
+
+
+export type GetFolderContentQuery = (
+  { __typename?: 'query_root' }
+  & { get_content: (
+    { __typename?: 'GetContentResponse' }
+    & Pick<GetContentResponse, 'total_count'>
+    & { results: Array<(
+      { __typename?: 'ContentResult' }
+      & Pick<ContentResult, 'id' | 'type'>
+      & { dashboard?: Maybe<(
+        { __typename?: 'DashboardResult' }
+        & DashboardElementFragment
+      )>, query?: Maybe<(
+        { __typename?: 'QueryResult' }
+        & QueryElementFragment
+      )> }
+    )> }
+  ) }
+);
+
+export type DashboardElementFragment = (
+  { __typename?: 'DashboardResult' }
+  & Pick<DashboardResult, 'id' | 'name' | 'slug' | 'created_at' | 'updated_at' | 'tags' | 'is_private' | 'favorites'>
+  & { folder?: Maybe<(
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id' | 'color' | 'icon' | 'name'>
+  )>, owner: (
+    { __typename?: 'Owner' }
+    & Pick<Owner, 'id' | 'type' | 'handle' | 'profile_image_url'>
+  ), trending_scores?: Maybe<(
+    { __typename?: 'DashboardTrendingScores' }
+    & Pick<DashboardTrendingScores, 'score_1h' | 'score_4h' | 'score_24h' | 'updated_at'>
+  )> }
+);
+
+export type QueryElementFragment = (
+  { __typename?: 'QueryResult' }
+  & Pick<QueryResult, 'id' | 'name' | 'created_at' | 'updated_at' | 'matview_id' | 'is_private' | 'tags' | 'favorites'>
+  & { folder?: Maybe<(
+    { __typename?: 'Folder' }
+    & Pick<Folder, 'id' | 'color' | 'icon' | 'name'>
+  )>, owner: (
+    { __typename?: 'Owner' }
+    & Pick<Owner, 'id' | 'type' | 'handle' | 'profile_image_url'>
+  ) }
+);
+
+export type UploadedTablesQueryVariables = Exact<{
+  context_owner?: Maybe<ContextOwner>;
+}>;
 
 
 export type UploadedTablesQuery = (
@@ -30498,7 +31531,7 @@ export type DefaultV2UserServiceTierQuery = (
   { __typename?: 'query_root' }
   & { user_service_tiers_by_pk?: Maybe<(
     { __typename?: 'user_service_tiers' }
-    & Pick<User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'max_private_dashboards' | 'max_private_queries' | 'csv_downloads_per_month'>
+    & Pick<User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'max_private_dashboards' | 'max_private_queries' | 'csv_downloads_per_month' | 'can_use_crud_endpoints' | 'allow_private_queries_as_views' | 'api_calls_per_minute' | 'max_query_event_retention_days' | 'max_folders'>
   )> }
 );
 
@@ -30509,7 +31542,7 @@ export type GetAllV2TeamServiceTiersQuery = (
   { __typename?: 'query_root' }
   & { team_service_tiers: Array<(
     { __typename?: 'team_service_tiers' }
-    & Pick<Team_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'is_public' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'max_private_dashboards' | 'max_private_queries' | 'csv_downloads_per_month' | 'release_version'>
+    & Pick<Team_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'is_public' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'max_private_dashboards' | 'max_private_queries' | 'csv_downloads_per_month' | 'release_version' | 'can_use_crud_endpoints' | 'allow_private_queries_as_views' | 'api_calls_per_minute' | 'max_query_event_retention_days' | 'max_folders' | 'remove_watermark'>
   )> }
 );
 
@@ -30820,21 +31853,6 @@ export type SetUserMaxDatapointsPerRequestMutation = (
       { __typename?: 'user_private' }
       & Pick<User_Private, 'max_datapoints_per_request'>
     )> }
-  )> }
-);
-
-export type InviteMemberMutationVariables = Exact<{
-  team_id: Scalars['Int'];
-  role: Scalars['String'];
-  usernameOrEmail: Scalars['String'];
-}>;
-
-
-export type InviteMemberMutation = (
-  { __typename?: 'mutation_root' }
-  & { invite_member_v2?: Maybe<(
-    { __typename?: 'InviteMemberResponse' }
-    & Pick<InviteMemberResponse, 'id'>
   )> }
 );
 
@@ -31495,6 +32513,21 @@ export type GetTeamServiceTierInfoByNameQuery = (
   )> }
 );
 
+export type InviteMemberMutationVariables = Exact<{
+  team_id: Scalars['Int'];
+  role: Scalars['String'];
+  usernameOrEmail: Scalars['String'];
+}>;
+
+
+export type InviteMemberMutation = (
+  { __typename?: 'mutation_root' }
+  & { invite_member_v2?: Maybe<(
+    { __typename?: 'InviteMemberResponse' }
+    & Pick<InviteMemberResponse, 'id'>
+  )> }
+);
+
 export type SubmitOnboardingQsMutationVariables = Exact<{
   user_id: Scalars['Int'];
   brings_to_dune: Scalars['String'];
@@ -31723,10 +32756,12 @@ export const DashboardItemFragmentDoc = gql`
   updated_at
   tags
   user {
+    id
     name
     profile_image_url
   }
   team {
+    id
     handle
     profile_image_url
   }
@@ -32185,6 +33220,61 @@ export const SessionUserFragmentDoc = gql`
     included_executions
     is_public
   }
+}
+    `;
+export const DashboardElementFragmentDoc = gql`
+    fragment DashboardElement on DashboardResult {
+  id
+  name
+  slug
+  created_at
+  updated_at
+  tags
+  folder {
+    id
+    color
+    icon
+    name
+  }
+  owner {
+    id
+    type
+    handle
+    profile_image_url
+  }
+  is_private
+  favorites
+  trending_scores {
+    score_1h
+    score_4h
+    score_24h
+    updated_at
+  }
+}
+    `;
+export const QueryElementFragmentDoc = gql`
+    fragment QueryElement on QueryResult {
+  id
+  name
+  created_at
+  updated_at
+  matview_id
+  folder {
+    id
+    color
+    icon
+    name
+  }
+  owner {
+    id
+    type
+    handle
+    profile_image_url
+  }
+  is_private
+  matview_id
+  tags
+  favorites
 }
     `;
 export const ApplyDowngradeApiUserSubscriptionDocument = gql`
@@ -34600,6 +35690,156 @@ export function useForkDashboardMutation(baseOptions?: Apollo.MutationHookOption
 export type ForkDashboardMutationHookResult = ReturnType<typeof useForkDashboardMutation>;
 export type ForkDashboardMutationResult = Apollo.MutationResult<ForkDashboardMutation>;
 export type ForkDashboardMutationOptions = Apollo.BaseMutationOptions<ForkDashboardMutation, ForkDashboardMutationVariables>;
+export const CreateDashboardScheduleDocument = gql`
+    mutation CreateDashboardSchedule($dashboard_id: Int!, $cron_expression: String!, $performance: String!) {
+  create_dashboard_schedule(
+    dashboard_id: $dashboard_id
+    cron_expression: $cron_expression
+    performance: $performance
+  ) {
+    dashboard_id
+  }
+}
+    `;
+export type CreateDashboardScheduleMutationFn = Apollo.MutationFunction<CreateDashboardScheduleMutation, CreateDashboardScheduleMutationVariables>;
+
+/**
+ * __useCreateDashboardScheduleMutation__
+ *
+ * To run a mutation, you first call `useCreateDashboardScheduleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateDashboardScheduleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createDashboardScheduleMutation, { data, loading, error }] = useCreateDashboardScheduleMutation({
+ *   variables: {
+ *      dashboard_id: // value for 'dashboard_id'
+ *      cron_expression: // value for 'cron_expression'
+ *      performance: // value for 'performance'
+ *   },
+ * });
+ */
+export function useCreateDashboardScheduleMutation(baseOptions?: Apollo.MutationHookOptions<CreateDashboardScheduleMutation, CreateDashboardScheduleMutationVariables>) {
+        return Apollo.useMutation<CreateDashboardScheduleMutation, CreateDashboardScheduleMutationVariables>(CreateDashboardScheduleDocument, baseOptions);
+      }
+export type CreateDashboardScheduleMutationHookResult = ReturnType<typeof useCreateDashboardScheduleMutation>;
+export type CreateDashboardScheduleMutationResult = Apollo.MutationResult<CreateDashboardScheduleMutation>;
+export type CreateDashboardScheduleMutationOptions = Apollo.BaseMutationOptions<CreateDashboardScheduleMutation, CreateDashboardScheduleMutationVariables>;
+export const DashboardSchedulesDocument = gql`
+    query DashboardSchedules($dashboard_id: Int!) {
+  dashboard_schedules(dashboard_id: $dashboard_id) {
+    dashboard_id
+    cron_jobs {
+      id
+      cron_expression
+      performance
+      owned_by_customer_id
+      metadata {
+        updated_at
+      }
+    }
+  }
+}
+    `;
+
+/**
+ * __useDashboardSchedulesQuery__
+ *
+ * To run a query within a React component, call `useDashboardSchedulesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useDashboardSchedulesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useDashboardSchedulesQuery({
+ *   variables: {
+ *      dashboard_id: // value for 'dashboard_id'
+ *   },
+ * });
+ */
+export function useDashboardSchedulesQuery(baseOptions: Apollo.QueryHookOptions<DashboardSchedulesQuery, DashboardSchedulesQueryVariables>) {
+        return Apollo.useQuery<DashboardSchedulesQuery, DashboardSchedulesQueryVariables>(DashboardSchedulesDocument, baseOptions);
+      }
+export function useDashboardSchedulesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<DashboardSchedulesQuery, DashboardSchedulesQueryVariables>) {
+          return Apollo.useLazyQuery<DashboardSchedulesQuery, DashboardSchedulesQueryVariables>(DashboardSchedulesDocument, baseOptions);
+        }
+export type DashboardSchedulesQueryHookResult = ReturnType<typeof useDashboardSchedulesQuery>;
+export type DashboardSchedulesLazyQueryHookResult = ReturnType<typeof useDashboardSchedulesLazyQuery>;
+export type DashboardSchedulesQueryResult = Apollo.QueryResult<DashboardSchedulesQuery, DashboardSchedulesQueryVariables>;
+export const DeleteDashboardScheduleDocument = gql`
+    mutation DeleteDashboardSchedule($cron_job_id: String!) {
+  delete_dashboard_schedule(cron_job_id: $cron_job_id) {
+    cron_job_id
+  }
+}
+    `;
+export type DeleteDashboardScheduleMutationFn = Apollo.MutationFunction<DeleteDashboardScheduleMutation, DeleteDashboardScheduleMutationVariables>;
+
+/**
+ * __useDeleteDashboardScheduleMutation__
+ *
+ * To run a mutation, you first call `useDeleteDashboardScheduleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteDashboardScheduleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteDashboardScheduleMutation, { data, loading, error }] = useDeleteDashboardScheduleMutation({
+ *   variables: {
+ *      cron_job_id: // value for 'cron_job_id'
+ *   },
+ * });
+ */
+export function useDeleteDashboardScheduleMutation(baseOptions?: Apollo.MutationHookOptions<DeleteDashboardScheduleMutation, DeleteDashboardScheduleMutationVariables>) {
+        return Apollo.useMutation<DeleteDashboardScheduleMutation, DeleteDashboardScheduleMutationVariables>(DeleteDashboardScheduleDocument, baseOptions);
+      }
+export type DeleteDashboardScheduleMutationHookResult = ReturnType<typeof useDeleteDashboardScheduleMutation>;
+export type DeleteDashboardScheduleMutationResult = Apollo.MutationResult<DeleteDashboardScheduleMutation>;
+export type DeleteDashboardScheduleMutationOptions = Apollo.BaseMutationOptions<DeleteDashboardScheduleMutation, DeleteDashboardScheduleMutationVariables>;
+export const UpdateDashboardScheduleDocument = gql`
+    mutation UpdateDashboardSchedule($cron_job_id: String!, $cron_expression: String!, $performance: String!) {
+  update_dashboard_schedule(
+    cron_job_id: $cron_job_id
+    cron_expression: $cron_expression
+    performance: $performance
+  ) {
+    dashboard_id
+  }
+}
+    `;
+export type UpdateDashboardScheduleMutationFn = Apollo.MutationFunction<UpdateDashboardScheduleMutation, UpdateDashboardScheduleMutationVariables>;
+
+/**
+ * __useUpdateDashboardScheduleMutation__
+ *
+ * To run a mutation, you first call `useUpdateDashboardScheduleMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateDashboardScheduleMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateDashboardScheduleMutation, { data, loading, error }] = useUpdateDashboardScheduleMutation({
+ *   variables: {
+ *      cron_job_id: // value for 'cron_job_id'
+ *      cron_expression: // value for 'cron_expression'
+ *      performance: // value for 'performance'
+ *   },
+ * });
+ */
+export function useUpdateDashboardScheduleMutation(baseOptions?: Apollo.MutationHookOptions<UpdateDashboardScheduleMutation, UpdateDashboardScheduleMutationVariables>) {
+        return Apollo.useMutation<UpdateDashboardScheduleMutation, UpdateDashboardScheduleMutationVariables>(UpdateDashboardScheduleDocument, baseOptions);
+      }
+export type UpdateDashboardScheduleMutationHookResult = ReturnType<typeof useUpdateDashboardScheduleMutation>;
+export type UpdateDashboardScheduleMutationResult = Apollo.MutationResult<UpdateDashboardScheduleMutation>;
+export type UpdateDashboardScheduleMutationOptions = Apollo.BaseMutationOptions<UpdateDashboardScheduleMutation, UpdateDashboardScheduleMutationVariables>;
 export const UpsertDashboardDocument = gql`
     mutation UpsertDashboard($object: dashboards_insert_input!, $on_conflict: dashboards_on_conflict!) {
   insert_dashboards_one(object: $object, on_conflict: $on_conflict) {
@@ -35718,6 +36958,167 @@ export function useGetQueryContributorsLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetQueryContributorsQueryHookResult = ReturnType<typeof useGetQueryContributorsQuery>;
 export type GetQueryContributorsLazyQueryHookResult = ReturnType<typeof useGetQueryContributorsLazyQuery>;
 export type GetQueryContributorsQueryResult = Apollo.QueryResult<GetQueryContributorsQuery, GetQueryContributorsQueryVariables>;
+export const CreateMatViewDocument = gql`
+    mutation CreateMatView($input: CreateMaterializedViewInput!) {
+  create_materialized_view(input: $input) {
+    matview_id
+    query_id
+    sql_names
+    is_private
+    execution_id
+    schedule {
+      id
+      cron_expression
+      performance
+      next_execution_time
+    }
+  }
+}
+    `;
+export type CreateMatViewMutationFn = Apollo.MutationFunction<CreateMatViewMutation, CreateMatViewMutationVariables>;
+
+/**
+ * __useCreateMatViewMutation__
+ *
+ * To run a mutation, you first call `useCreateMatViewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateMatViewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createMatViewMutation, { data, loading, error }] = useCreateMatViewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateMatViewMutation(baseOptions?: Apollo.MutationHookOptions<CreateMatViewMutation, CreateMatViewMutationVariables>) {
+        return Apollo.useMutation<CreateMatViewMutation, CreateMatViewMutationVariables>(CreateMatViewDocument, baseOptions);
+      }
+export type CreateMatViewMutationHookResult = ReturnType<typeof useCreateMatViewMutation>;
+export type CreateMatViewMutationResult = Apollo.MutationResult<CreateMatViewMutation>;
+export type CreateMatViewMutationOptions = Apollo.BaseMutationOptions<CreateMatViewMutation, CreateMatViewMutationVariables>;
+export const GetExecutionStatusDocument = gql`
+    query GetExecutionStatus($id: String!) {
+  get_execution_status(execution_id: $id) {
+    state
+    execution_ended_at
+    error_message
+  }
+}
+    `;
+
+/**
+ * __useGetExecutionStatusQuery__
+ *
+ * To run a query within a React component, call `useGetExecutionStatusQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetExecutionStatusQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetExecutionStatusQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetExecutionStatusQuery(baseOptions: Apollo.QueryHookOptions<GetExecutionStatusQuery, GetExecutionStatusQueryVariables>) {
+        return Apollo.useQuery<GetExecutionStatusQuery, GetExecutionStatusQueryVariables>(GetExecutionStatusDocument, baseOptions);
+      }
+export function useGetExecutionStatusLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetExecutionStatusQuery, GetExecutionStatusQueryVariables>) {
+          return Apollo.useLazyQuery<GetExecutionStatusQuery, GetExecutionStatusQueryVariables>(GetExecutionStatusDocument, baseOptions);
+        }
+export type GetExecutionStatusQueryHookResult = ReturnType<typeof useGetExecutionStatusQuery>;
+export type GetExecutionStatusLazyQueryHookResult = ReturnType<typeof useGetExecutionStatusLazyQuery>;
+export type GetExecutionStatusQueryResult = Apollo.QueryResult<GetExecutionStatusQuery, GetExecutionStatusQueryVariables>;
+export const GetMatViewDocument = gql`
+    query GetMatView($id: String!) {
+  get_materialized_view(id: $id) {
+    sql_names
+    is_private
+    last_execution_ids
+    table_size_bytes
+    schedule {
+      id
+      cron_expression
+      performance
+      next_execution_time
+    }
+  }
+}
+    `;
+
+/**
+ * __useGetMatViewQuery__
+ *
+ * To run a query within a React component, call `useGetMatViewQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetMatViewQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetMatViewQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGetMatViewQuery(baseOptions: Apollo.QueryHookOptions<GetMatViewQuery, GetMatViewQueryVariables>) {
+        return Apollo.useQuery<GetMatViewQuery, GetMatViewQueryVariables>(GetMatViewDocument, baseOptions);
+      }
+export function useGetMatViewLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetMatViewQuery, GetMatViewQueryVariables>) {
+          return Apollo.useLazyQuery<GetMatViewQuery, GetMatViewQueryVariables>(GetMatViewDocument, baseOptions);
+        }
+export type GetMatViewQueryHookResult = ReturnType<typeof useGetMatViewQuery>;
+export type GetMatViewLazyQueryHookResult = ReturnType<typeof useGetMatViewLazyQuery>;
+export type GetMatViewQueryResult = Apollo.QueryResult<GetMatViewQuery, GetMatViewQueryVariables>;
+export const UpdateMatViewDocument = gql`
+    mutation UpdateMatView($input: UpdateMaterializedViewInput!) {
+  update_materialized_view(input: $input) {
+    matview_id
+    query_id
+    sql_names
+    is_private
+    execution_id
+    schedule {
+      id
+      cron_expression
+      performance
+      next_execution_time
+    }
+  }
+}
+    `;
+export type UpdateMatViewMutationFn = Apollo.MutationFunction<UpdateMatViewMutation, UpdateMatViewMutationVariables>;
+
+/**
+ * __useUpdateMatViewMutation__
+ *
+ * To run a mutation, you first call `useUpdateMatViewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateMatViewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateMatViewMutation, { data, loading, error }] = useUpdateMatViewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useUpdateMatViewMutation(baseOptions?: Apollo.MutationHookOptions<UpdateMatViewMutation, UpdateMatViewMutationVariables>) {
+        return Apollo.useMutation<UpdateMatViewMutation, UpdateMatViewMutationVariables>(UpdateMatViewDocument, baseOptions);
+      }
+export type UpdateMatViewMutationHookResult = ReturnType<typeof useUpdateMatViewMutation>;
+export type UpdateMatViewMutationResult = Apollo.MutationResult<UpdateMatViewMutation>;
+export type UpdateMatViewMutationOptions = Apollo.BaseMutationOptions<UpdateMatViewMutation, UpdateMatViewMutationVariables>;
 export const CreateQueryScheduleDocument = gql`
     mutation CreateQuerySchedule($query_id: Int!, $cron_expression: String!, $performance: String!) {
   create_query_schedule(
@@ -38706,48 +40107,47 @@ export function useUpdateWandCompletionQueryMutation(baseOptions?: Apollo.Mutati
 export type UpdateWandCompletionQueryMutationHookResult = ReturnType<typeof useUpdateWandCompletionQueryMutation>;
 export type UpdateWandCompletionQueryMutationResult = Apollo.MutationResult<UpdateWandCompletionQueryMutation>;
 export type UpdateWandCompletionQueryMutationOptions = Apollo.BaseMutationOptions<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>;
-export const FindWandCompletionByQueryIdDocument = gql`
-    query FindWandCompletionByQueryId($query_id: Int!) {
-  wand_completions(
-    where: {query_id: {_eq: $query_id}}
-    order_by: {created_at: desc}
-    limit: 1
-  ) {
-    id
-    question
-    answer
+export const WandDebugQueryDocument = gql`
+    mutation WandDebugQuery($error: String!, $query: String!) {
+  debug_wand_query(error: $error, query: $query) {
+    response_id
+    query
   }
 }
     `;
+export type WandDebugQueryMutationFn = Apollo.MutationFunction<WandDebugQueryMutation, WandDebugQueryMutationVariables>;
 
 /**
- * __useFindWandCompletionByQueryIdQuery__
+ * __useWandDebugQueryMutation__
  *
- * To run a query within a React component, call `useFindWandCompletionByQueryIdQuery` and pass it any options that fit your needs.
- * When your component renders, `useFindWandCompletionByQueryIdQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
+ * To run a mutation, you first call `useWandDebugQueryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useWandDebugQueryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
  *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const { data, loading, error } = useFindWandCompletionByQueryIdQuery({
+ * const [wandDebugQueryMutation, { data, loading, error }] = useWandDebugQueryMutation({
  *   variables: {
- *      query_id: // value for 'query_id'
+ *      error: // value for 'error'
+ *      query: // value for 'query'
  *   },
  * });
  */
-export function useFindWandCompletionByQueryIdQuery(baseOptions: Apollo.QueryHookOptions<FindWandCompletionByQueryIdQuery, FindWandCompletionByQueryIdQueryVariables>) {
-        return Apollo.useQuery<FindWandCompletionByQueryIdQuery, FindWandCompletionByQueryIdQueryVariables>(FindWandCompletionByQueryIdDocument, baseOptions);
+export function useWandDebugQueryMutation(baseOptions?: Apollo.MutationHookOptions<WandDebugQueryMutation, WandDebugQueryMutationVariables>) {
+        return Apollo.useMutation<WandDebugQueryMutation, WandDebugQueryMutationVariables>(WandDebugQueryDocument, baseOptions);
       }
-export function useFindWandCompletionByQueryIdLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindWandCompletionByQueryIdQuery, FindWandCompletionByQueryIdQueryVariables>) {
-          return Apollo.useLazyQuery<FindWandCompletionByQueryIdQuery, FindWandCompletionByQueryIdQueryVariables>(FindWandCompletionByQueryIdDocument, baseOptions);
-        }
-export type FindWandCompletionByQueryIdQueryHookResult = ReturnType<typeof useFindWandCompletionByQueryIdQuery>;
-export type FindWandCompletionByQueryIdLazyQueryHookResult = ReturnType<typeof useFindWandCompletionByQueryIdLazyQuery>;
-export type FindWandCompletionByQueryIdQueryResult = Apollo.QueryResult<FindWandCompletionByQueryIdQuery, FindWandCompletionByQueryIdQueryVariables>;
+export type WandDebugQueryMutationHookResult = ReturnType<typeof useWandDebugQueryMutation>;
+export type WandDebugQueryMutationResult = Apollo.MutationResult<WandDebugQueryMutation>;
+export type WandDebugQueryMutationOptions = Apollo.BaseMutationOptions<WandDebugQueryMutation, WandDebugQueryMutationVariables>;
 export const GenerateDataUploadUrlDocument = gql`
-    mutation GenerateDataUploadUrl($content_length: Int!, $file_name: String!) {
-  generate_data_upload_url(content_length: $content_length, file_name: $file_name) {
+    mutation GenerateDataUploadUrl($context_owner: ContextOwner, $content_length: Int!, $file_name: String!) {
+  generate_data_upload_url(
+    context_owner: $context_owner
+    content_length: $content_length
+    file_name: $file_name
+  ) {
     url
   }
 }
@@ -38767,6 +40167,7 @@ export type GenerateDataUploadUrlMutationFn = Apollo.MutationFunction<GenerateDa
  * @example
  * const [generateDataUploadUrlMutation, { data, loading, error }] = useGenerateDataUploadUrlMutation({
  *   variables: {
+ *      context_owner: // value for 'context_owner'
  *      content_length: // value for 'content_length'
  *      file_name: // value for 'file_name'
  *   },
@@ -38778,6 +40179,42 @@ export function useGenerateDataUploadUrlMutation(baseOptions?: Apollo.MutationHo
 export type GenerateDataUploadUrlMutationHookResult = ReturnType<typeof useGenerateDataUploadUrlMutation>;
 export type GenerateDataUploadUrlMutationResult = Apollo.MutationResult<GenerateDataUploadUrlMutation>;
 export type GenerateDataUploadUrlMutationOptions = Apollo.BaseMutationOptions<GenerateDataUploadUrlMutation, GenerateDataUploadUrlMutationVariables>;
+export const MoveContentDocument = gql`
+    mutation MoveContent($dashboard_ids: [Int!]!, $query_ids: [Int!]!, $target_folder_id: String) {
+  move_content(
+    input: {dashboard_ids: $dashboard_ids, query_ids: $query_ids, target_folder_id: $target_folder_id}
+  ) {
+    ok
+  }
+}
+    `;
+export type MoveContentMutationFn = Apollo.MutationFunction<MoveContentMutation, MoveContentMutationVariables>;
+
+/**
+ * __useMoveContentMutation__
+ *
+ * To run a mutation, you first call `useMoveContentMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useMoveContentMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [moveContentMutation, { data, loading, error }] = useMoveContentMutation({
+ *   variables: {
+ *      dashboard_ids: // value for 'dashboard_ids'
+ *      query_ids: // value for 'query_ids'
+ *      target_folder_id: // value for 'target_folder_id'
+ *   },
+ * });
+ */
+export function useMoveContentMutation(baseOptions?: Apollo.MutationHookOptions<MoveContentMutation, MoveContentMutationVariables>) {
+        return Apollo.useMutation<MoveContentMutation, MoveContentMutationVariables>(MoveContentDocument, baseOptions);
+      }
+export type MoveContentMutationHookResult = ReturnType<typeof useMoveContentMutation>;
+export type MoveContentMutationResult = Apollo.MutationResult<MoveContentMutation>;
+export type MoveContentMutationOptions = Apollo.BaseMutationOptions<MoveContentMutation, MoveContentMutationVariables>;
 export const CreateFolderDocument = gql`
     mutation CreateFolder($name: String!, $icon: String!, $color: String!, $description: String, $team_id: Int) {
   create_folder(
@@ -38816,9 +40253,164 @@ export function useCreateFolderMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateFolderMutationHookResult = ReturnType<typeof useCreateFolderMutation>;
 export type CreateFolderMutationResult = Apollo.MutationResult<CreateFolderMutation>;
 export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<CreateFolderMutation, CreateFolderMutationVariables>;
+export const UpdateFolderDocument = gql`
+    mutation UpdateFolder($id: String!, $name: String!, $icon: String!, $color: String!, $description: String) {
+  update_folder(
+    folder: {id: $id, name: $name, icon: $icon, color: $color, description: $description}
+  ) {
+    id
+  }
+}
+    `;
+export type UpdateFolderMutationFn = Apollo.MutationFunction<UpdateFolderMutation, UpdateFolderMutationVariables>;
+
+/**
+ * __useUpdateFolderMutation__
+ *
+ * To run a mutation, you first call `useUpdateFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateFolderMutation, { data, loading, error }] = useUpdateFolderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      name: // value for 'name'
+ *      icon: // value for 'icon'
+ *      color: // value for 'color'
+ *      description: // value for 'description'
+ *   },
+ * });
+ */
+export function useUpdateFolderMutation(baseOptions?: Apollo.MutationHookOptions<UpdateFolderMutation, UpdateFolderMutationVariables>) {
+        return Apollo.useMutation<UpdateFolderMutation, UpdateFolderMutationVariables>(UpdateFolderDocument, baseOptions);
+      }
+export type UpdateFolderMutationHookResult = ReturnType<typeof useUpdateFolderMutation>;
+export type UpdateFolderMutationResult = Apollo.MutationResult<UpdateFolderMutation>;
+export type UpdateFolderMutationOptions = Apollo.BaseMutationOptions<UpdateFolderMutation, UpdateFolderMutationVariables>;
+export const DeleteFolderDocument = gql`
+    mutation DeleteFolder($id: String!) {
+  delete_folder(id: $id) {
+    id
+  }
+}
+    `;
+export type DeleteFolderMutationFn = Apollo.MutationFunction<DeleteFolderMutation, DeleteFolderMutationVariables>;
+
+/**
+ * __useDeleteFolderMutation__
+ *
+ * To run a mutation, you first call `useDeleteFolderMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteFolderMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteFolderMutation, { data, loading, error }] = useDeleteFolderMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useDeleteFolderMutation(baseOptions?: Apollo.MutationHookOptions<DeleteFolderMutation, DeleteFolderMutationVariables>) {
+        return Apollo.useMutation<DeleteFolderMutation, DeleteFolderMutationVariables>(DeleteFolderDocument, baseOptions);
+      }
+export type DeleteFolderMutationHookResult = ReturnType<typeof useDeleteFolderMutation>;
+export type DeleteFolderMutationResult = Apollo.MutationResult<DeleteFolderMutation>;
+export type DeleteFolderMutationOptions = Apollo.BaseMutationOptions<DeleteFolderMutation, DeleteFolderMutationVariables>;
+export const ListFoldersDocument = gql`
+    query ListFolders($input: GetFoldersInput!) {
+  get_folders(input: $input) {
+    results {
+      id
+      name
+      description
+      path
+      color
+      icon
+      content_count
+    }
+  }
+}
+    `;
+
+/**
+ * __useListFoldersQuery__
+ *
+ * To run a query within a React component, call `useListFoldersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListFoldersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListFoldersQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useListFoldersQuery(baseOptions: Apollo.QueryHookOptions<ListFoldersQuery, ListFoldersQueryVariables>) {
+        return Apollo.useQuery<ListFoldersQuery, ListFoldersQueryVariables>(ListFoldersDocument, baseOptions);
+      }
+export function useListFoldersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListFoldersQuery, ListFoldersQueryVariables>) {
+          return Apollo.useLazyQuery<ListFoldersQuery, ListFoldersQueryVariables>(ListFoldersDocument, baseOptions);
+        }
+export type ListFoldersQueryHookResult = ReturnType<typeof useListFoldersQuery>;
+export type ListFoldersLazyQueryHookResult = ReturnType<typeof useListFoldersLazyQuery>;
+export type ListFoldersQueryResult = Apollo.QueryResult<ListFoldersQuery, ListFoldersQueryVariables>;
+export const GetFolderContentDocument = gql`
+    query GetFolderContent($input: GetContentInput!) {
+  get_content(input: $input) {
+    results {
+      id
+      type
+      dashboard {
+        ...DashboardElement
+      }
+      query {
+        ...QueryElement
+      }
+    }
+    total_count
+  }
+}
+    ${DashboardElementFragmentDoc}
+${QueryElementFragmentDoc}`;
+
+/**
+ * __useGetFolderContentQuery__
+ *
+ * To run a query within a React component, call `useGetFolderContentQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGetFolderContentQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGetFolderContentQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useGetFolderContentQuery(baseOptions: Apollo.QueryHookOptions<GetFolderContentQuery, GetFolderContentQueryVariables>) {
+        return Apollo.useQuery<GetFolderContentQuery, GetFolderContentQueryVariables>(GetFolderContentDocument, baseOptions);
+      }
+export function useGetFolderContentLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetFolderContentQuery, GetFolderContentQueryVariables>) {
+          return Apollo.useLazyQuery<GetFolderContentQuery, GetFolderContentQueryVariables>(GetFolderContentDocument, baseOptions);
+        }
+export type GetFolderContentQueryHookResult = ReturnType<typeof useGetFolderContentQuery>;
+export type GetFolderContentLazyQueryHookResult = ReturnType<typeof useGetFolderContentLazyQuery>;
+export type GetFolderContentQueryResult = Apollo.QueryResult<GetFolderContentQuery, GetFolderContentQueryVariables>;
 export const UploadedTablesDocument = gql`
-    query UploadedTables {
-  uploaded_tables {
+    query UploadedTables($context_owner: ContextOwner) {
+  uploaded_tables(context_owner: $context_owner) {
     file_name
     table_name
     status
@@ -38838,6 +40430,7 @@ export const UploadedTablesDocument = gql`
  * @example
  * const { data, loading, error } = useUploadedTablesQuery({
  *   variables: {
+ *      context_owner: // value for 'context_owner'
  *   },
  * });
  */
@@ -38861,6 +40454,11 @@ export const DefaultV2UserServiceTierDocument = gql`
     max_private_dashboards
     max_private_queries
     csv_downloads_per_month
+    can_use_crud_endpoints
+    allow_private_queries_as_views
+    api_calls_per_minute
+    max_query_event_retention_days
+    max_folders
   }
 }
     `;
@@ -38905,6 +40503,12 @@ export const GetAllV2TeamServiceTiersDocument = gql`
     max_private_queries
     csv_downloads_per_month
     release_version
+    can_use_crud_endpoints
+    allow_private_queries_as_views
+    api_calls_per_minute
+    max_query_event_retention_days
+    max_folders
+    remove_watermark
   }
 }
     `;
@@ -39680,44 +41284,6 @@ export function useSetUserMaxDatapointsPerRequestMutation(baseOptions?: Apollo.M
 export type SetUserMaxDatapointsPerRequestMutationHookResult = ReturnType<typeof useSetUserMaxDatapointsPerRequestMutation>;
 export type SetUserMaxDatapointsPerRequestMutationResult = Apollo.MutationResult<SetUserMaxDatapointsPerRequestMutation>;
 export type SetUserMaxDatapointsPerRequestMutationOptions = Apollo.BaseMutationOptions<SetUserMaxDatapointsPerRequestMutation, SetUserMaxDatapointsPerRequestMutationVariables>;
-export const InviteMemberDocument = gql`
-    mutation InviteMember($team_id: Int!, $role: String!, $usernameOrEmail: String!) {
-  invite_member_v2(
-    team_id: $team_id
-    role: $role
-    usernameOrEmail: $usernameOrEmail
-  ) {
-    id
-  }
-}
-    `;
-export type InviteMemberMutationFn = Apollo.MutationFunction<InviteMemberMutation, InviteMemberMutationVariables>;
-
-/**
- * __useInviteMemberMutation__
- *
- * To run a mutation, you first call `useInviteMemberMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInviteMemberMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [inviteMemberMutation, { data, loading, error }] = useInviteMemberMutation({
- *   variables: {
- *      team_id: // value for 'team_id'
- *      role: // value for 'role'
- *      usernameOrEmail: // value for 'usernameOrEmail'
- *   },
- * });
- */
-export function useInviteMemberMutation(baseOptions?: Apollo.MutationHookOptions<InviteMemberMutation, InviteMemberMutationVariables>) {
-        return Apollo.useMutation<InviteMemberMutation, InviteMemberMutationVariables>(InviteMemberDocument, baseOptions);
-      }
-export type InviteMemberMutationHookResult = ReturnType<typeof useInviteMemberMutation>;
-export type InviteMemberMutationResult = Apollo.MutationResult<InviteMemberMutation>;
-export type InviteMemberMutationOptions = Apollo.BaseMutationOptions<InviteMemberMutation, InviteMemberMutationVariables>;
 export const CreateTeamApiKeyDocument = gql`
     mutation CreateTeamApiKey($name: String!, $teamId: Int!) {
   create_team_api_key(name: $name, team_id: $teamId) {
@@ -41296,6 +42862,44 @@ export function useGetTeamServiceTierInfoByNameLazyQuery(baseOptions?: Apollo.La
 export type GetTeamServiceTierInfoByNameQueryHookResult = ReturnType<typeof useGetTeamServiceTierInfoByNameQuery>;
 export type GetTeamServiceTierInfoByNameLazyQueryHookResult = ReturnType<typeof useGetTeamServiceTierInfoByNameLazyQuery>;
 export type GetTeamServiceTierInfoByNameQueryResult = Apollo.QueryResult<GetTeamServiceTierInfoByNameQuery, GetTeamServiceTierInfoByNameQueryVariables>;
+export const InviteMemberDocument = gql`
+    mutation InviteMember($team_id: Int!, $role: String!, $usernameOrEmail: String!) {
+  invite_member_v2(
+    team_id: $team_id
+    role: $role
+    usernameOrEmail: $usernameOrEmail
+  ) {
+    id
+  }
+}
+    `;
+export type InviteMemberMutationFn = Apollo.MutationFunction<InviteMemberMutation, InviteMemberMutationVariables>;
+
+/**
+ * __useInviteMemberMutation__
+ *
+ * To run a mutation, you first call `useInviteMemberMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInviteMemberMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [inviteMemberMutation, { data, loading, error }] = useInviteMemberMutation({
+ *   variables: {
+ *      team_id: // value for 'team_id'
+ *      role: // value for 'role'
+ *      usernameOrEmail: // value for 'usernameOrEmail'
+ *   },
+ * });
+ */
+export function useInviteMemberMutation(baseOptions?: Apollo.MutationHookOptions<InviteMemberMutation, InviteMemberMutationVariables>) {
+        return Apollo.useMutation<InviteMemberMutation, InviteMemberMutationVariables>(InviteMemberDocument, baseOptions);
+      }
+export type InviteMemberMutationHookResult = ReturnType<typeof useInviteMemberMutation>;
+export type InviteMemberMutationResult = Apollo.MutationResult<InviteMemberMutation>;
+export type InviteMemberMutationOptions = Apollo.BaseMutationOptions<InviteMemberMutation, InviteMemberMutationVariables>;
 export const SubmitOnboardingQsDocument = gql`
     mutation SubmitOnboardingQs($user_id: Int!, $brings_to_dune: String!, $achieve_with_dune: String!, $sql_experience: String, $blockchain_experience: String!, $organization_size: String, $version: String!, $until: timestamptz!) {
   insert_onboarding_questions(

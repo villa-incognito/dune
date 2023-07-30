@@ -2,7 +2,7 @@ import { ModalWithoutTrigger } from "./ModalWithoutTrigger";
 
 import type { ReactElement } from "react";
 
-export interface ContentProps {
+interface ContentProps {
   close: () => void;
 }
 
@@ -11,7 +11,7 @@ export interface TriggerProps {
   onClick: () => void;
 }
 
-interface Props {
+export interface ControlledModalProps {
   size: "S" | "M" | "L";
   label: string;
   content: (props: ContentProps) => ReactElement;
@@ -22,7 +22,7 @@ interface Props {
   onDismiss?: () => void;
 }
 
-export function ControlledModal(props: Props) {
+export function ControlledModal(props: ControlledModalProps) {
   const { size, label, content, trigger, isOpen, setIsOpen, onDismiss } = props;
 
   const open = () => setIsOpen(true);

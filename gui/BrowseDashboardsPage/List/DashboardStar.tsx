@@ -5,7 +5,7 @@ import {
   RefetchDashboardFavoritesDocument,
 } from "lib/types/graphql";
 
-import styles from "./DashboardsList.module.css";
+import styles from "shared/ContentList/ContentList.module.css";
 
 import { Icon } from "gui/icon/icon";
 import { formatNumber } from "lib/intl/number";

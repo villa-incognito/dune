@@ -19,6 +19,7 @@ import { useRouter } from "next/router";
 import { dashboardLink } from "lib/links/links";
 import { useHasAdminPermission } from "lib/permissions/permissions";
 import { usePatchDashboardSettingsMutation } from "lib/types/graphql";
+import { clearDashboardScheduleCache } from "gui/dashboard/ScheduleDashboardExecutionButton/useDashboardSchedule";
 import { validateSlug } from "lib/links/slugs";
 import styles from "./dashboard.module.css";
 import { Button } from "components/Button/Button";
@@ -135,6 +136,11 @@ const DashboardSettingsDialog: React.FC<{
       tags: parseTagsList(tags),
     };
 
+    const hasOwnerChanged = !(
+      props.dashboard.owner.type === owner.type &&
+      props.dashboard.owner.id === owner.id
+    );
+
     patchSettings({ variables: dashboard }).then((data) => {
       if (data.errors) {
         if (
@@ -157,13 +163,20 @@ const DashboardSettingsDialog: React.FC<{
           setError(data.errors[0]);
         }
       } else {
+        if (hasOwnerChanged) {
+          // Dashboard schedule is deleted on owner change
+          // It takes some time for the underlying db to change, so drop
+          // it from the cache instead of refetching.
+          clearDashboardScheduleCache(dashboard.id);
+        }
+
         // Current user lost the access to this dashboard after transferring the ownership.
         if (
           isPrivate &&
           owner.type === "user" &&
           owner.id !== session?.user?.id
         ) {
-          replace("/browse/dashboards/authored");
+          replace("/workspace/library?tab=dashboards");
 
           return;
         }

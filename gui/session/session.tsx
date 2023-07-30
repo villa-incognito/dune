@@ -40,7 +40,7 @@ export const SessionProvider: React.FC = (props) => {
     fetchOptions
   );
 
-  React.useCallback(() => {
+  React.useEffect(() => {
     const onSession = (session: globalSession.Session) => {
       mutate({ session });
     };

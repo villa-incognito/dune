@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSession } from "gui/session/session";
-import { ModalWithoutTrigger } from "components/Modal";
+import { ModalWithQueue } from "components/Modal";
 import { Content } from "./Content";
 import { useWindowSize } from "@reach/window-size";
 
@@ -27,9 +27,10 @@ export function OnboardingQuestions() {
   };
 
   return (
-    <ModalWithoutTrigger
+    <ModalWithQueue
       size="M"
       label="Onboarding Questions"
+      queueKey="onboarding-questions"
       content={
         <Content
           session={session}

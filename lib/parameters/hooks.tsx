@@ -109,7 +109,7 @@ export const useParameters = (defaults: Parameter[]): ParametersState => {
 // This mapping is used when fetching results for a specific widget.
 //
 export const useDashboardParameters = (
-  dashboard?: FullDashboard
+  dashboard: FullDashboard
 ): ParameterMerge => {
   const [parameters, mapping] = React.useMemo(
     () => mergeDashboardParameters(dashboard),

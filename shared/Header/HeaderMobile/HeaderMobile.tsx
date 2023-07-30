@@ -6,6 +6,7 @@ import { HamburgerMenu } from "./HamburgerMenu";
 
 import { useContext } from "react";
 import { SessionContext } from "gui/session/session";
+import { useSignupUrl } from "lib/hooks/useSignupUrl";
 
 interface Props {
   className?: string;
@@ -14,6 +15,7 @@ interface Props {
 export function HeaderMobile(props: Props) {
   const { session, sessionLoading } = useContext(SessionContext);
   const isLoggedOut = !session && !sessionLoading;
+  const signupUrl = useSignupUrl();
 
   return (
     <header className={cn(styles.header, props.className)}>
@@ -38,7 +40,7 @@ export function HeaderMobile(props: Props) {
           {isLoggedOut && (
             <ul>
               <li>
-                <AnchorButton theme="secondary" size="M" href="/auth/register">
+                <AnchorButton theme="secondary" size="M" href={signupUrl}>
                   Sign up
                 </AnchorButton>
               </li>

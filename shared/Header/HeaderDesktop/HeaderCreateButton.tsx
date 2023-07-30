@@ -11,30 +11,39 @@ import { CreateDashboardDialog } from "gui/dashboard/create";
 
 import { useState } from "react";
 import { useSession } from "gui/session/session";
-import { loginPath } from "lib/links/links";
-import { useRouter } from "next/router";
+import { useLoginUrl, getLoginUrlWithNextUrl } from "lib/hooks/useLoginUrl";
 
 import styles from "./HeaderDesktop.module.css";
+import { useActiveContext } from "shared/ContextSwitcher/store";
+import { useCanInviteMembers } from "lib/teams/teams";
+import { InviteMemberDialog } from "shared/InviteMember/InviteMemberDialog";
+import { IconPeople } from "components/Icons/IconPeople";
 
 export function HeaderCreateButton() {
   const session = useSession();
-  const router = useRouter();
+  const loginUrl = useLoginUrl();
 
   const [
     isCreateDashboardDialogOpen,
     setIsCreateDashboardDialogOpen,
   ] = useState(false);
+  const [isAddMembersDialogOpen, setIsAddMembersDialogOpen] = useState(false);
+
+  const activeContext = useActiveContext();
+  const canInviteMembers = useCanInviteMembers(activeContext);
 
   const menu = ({ close }: ContentProps) => (
     <Menu.Panel>
       <Menu.Section>
-        <Menu.ItemLink href={session ? "/queries" : loginPath("/queries")}>
+        <Menu.ItemLink
+          href={session ? "/queries" : getLoginUrlWithNextUrl("/queries")}
+        >
           <IconTerminalWindow />
           New query
         </Menu.ItemLink>
 
         {!session ? (
-          <Menu.ItemLink href={loginPath(router.asPath)}>
+          <Menu.ItemLink href={loginUrl}>
             <IconGridFour />
             New dashboard
           </Menu.ItemLink>
@@ -47,6 +56,17 @@ export function HeaderCreateButton() {
           >
             <IconGridFour />
             New dashboard
+          </Menu.ItemButton>
+        )}
+        {canInviteMembers && (
+          <Menu.ItemButton
+            onClick={() => {
+              setIsAddMembersDialogOpen(true);
+              close();
+            }}
+          >
+            <IconPeople />
+            Invite Members
           </Menu.ItemButton>
         )}
       </Menu.Section>
@@ -70,6 +90,15 @@ export function HeaderCreateButton() {
           isOpen={isCreateDashboardDialogOpen}
           close={() => setIsCreateDashboardDialogOpen(false)}
           redirect={true}
+        />
+      )}
+      {activeContext?.type === "team" && session && (
+        <InviteMemberDialog
+          title="Invite Members"
+          isOpen={isAddMembersDialogOpen}
+          onDismiss={() => setIsAddMembersDialogOpen(false)}
+          session={session}
+          team={activeContext}
         />
       )}
     </>
