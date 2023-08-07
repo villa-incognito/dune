@@ -40,6 +40,7 @@ const SessionUser = gql`
       is_public
       performance
       release_version
+      max_folders
     }
     api_user_service_tier {
       id

@@ -513,10 +513,13 @@ export function isEditingDisabled(
   return dataset.name.includes("[deprecated]");
 }
 
-export function isExecutionDisabled(dataset: Pick<Datasets, "name">) {
-  return !(
-    dataset.name.includes("Spark SQL") ||
-    dataset.name.includes("Dune SQL") ||
-    dataset.name.includes("Ethereum")
-  );
+export function isExecutionDisabled(
+  dataset: Pick<Datasets, "name">,
+  options: { hasPaidPlan: boolean; isSpellbookContributor: boolean }
+) {
+  if (dataset.name.includes("Spark SQL")) {
+    return !(options.hasPaidPlan || options.isSpellbookContributor);
+  }
+
+  return !dataset.name.includes("Dune SQL");
 }

@@ -62,8 +62,12 @@ export function useCanInviteMembers(owner?: {
   id: number;
 }): boolean {
   const { role, loading } = useTeamRole(owner);
-  const canInviteMembers =
-    !loading && owner?.type === "team" && role === "admin";
+  const canInviteMembers = Boolean(
+    !loading &&
+      role &&
+      owner?.type === "team" &&
+      ["admin", "editor"].includes(role)
+  );
 
   return canInviteMembers;
 }

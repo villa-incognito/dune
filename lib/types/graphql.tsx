@@ -7872,7 +7872,6 @@ export type Memberships_Variance_Order_By = {
 /** mutation root */
 export type Mutation_Root = {
   __typename?: 'mutation_root';
-  accept_invite?: Maybe<AcceptInviteResponse>;
   accept_invite_v2?: Maybe<AcceptInviteResponse>;
   cancel_api_user_pending_subscription_change: CancelApiUserPendingSubscriptionChangeResponse;
   cancel_api_user_subscription: CancelApiUserSubscriptionResponse;
@@ -8226,7 +8225,6 @@ export type Mutation_Root = {
   insert_wand_completions?: Maybe<Wand_Completions_Mutation_Response>;
   /** insert a single row into the table: "wand_completions" */
   insert_wand_completions_one?: Maybe<Wand_Completions>;
-  invite_member?: Maybe<InviteMemberResponse>;
   invite_member_v2?: Maybe<InviteMemberResponse>;
   migrate_content: MigrateContentResponse;
   migrate_legacy_plan: MigrateLegacyPlanResponse;
@@ -8235,7 +8233,6 @@ export type Mutation_Root = {
   patch_query_settings?: Maybe<PatchQuerySettingsResponse>;
   remove_member?: Maybe<RemoveMemberResponse>;
   resend_email_verification_code?: Maybe<ResendEmailVerificationCodeOutput>;
-  resend_invite?: Maybe<ResendInviteResponse>;
   resend_invite_v2?: Maybe<ResendInviteResponse>;
   restore_query: RestoreQueryResponse;
   set_max_executions_overage_cost_cents: SetMaxExecutionsOverageCostCentsResponse;
@@ -8490,12 +8487,6 @@ export type Mutation_Root = {
   upgrade_user_subscription: UpgradeUserSubscriptionResponse;
   upsert_query_event_metadata: QueryEventMetadata;
   verify_email?: Maybe<VerifyEmailOutput>;
-};
-
-
-/** mutation root */
-export type Mutation_RootAccept_InviteArgs = {
-  membership_id: Scalars['uuid'];
 };
 
 
@@ -9142,6 +9133,7 @@ export type Mutation_RootEdit_Wand_QueryArgs = {
 
 /** mutation root */
 export type Mutation_RootExecute_Query_V3Args = {
+  execution_type?: Maybe<Scalars['String']>;
   executor: ContextOwner;
   parameters?: Maybe<Array<Parameter>>;
   performance?: Maybe<Scalars['String']>;
@@ -9745,14 +9737,6 @@ export type Mutation_RootInsert_Wand_Completions_OneArgs = {
 
 
 /** mutation root */
-export type Mutation_RootInvite_MemberArgs = {
-  role: Scalars['String'];
-  team_id: Scalars['Int'];
-  user_id: Scalars['Int'];
-};
-
-
-/** mutation root */
 export type Mutation_RootInvite_Member_V2Args = {
   role: Scalars['String'];
   team_id: Scalars['Int'];
@@ -9793,12 +9777,6 @@ export type Mutation_RootPatch_Query_SettingsArgs = {
 
 /** mutation root */
 export type Mutation_RootRemove_MemberArgs = {
-  membership_id: Scalars['uuid'];
-};
-
-
-/** mutation root */
-export type Mutation_RootResend_InviteArgs = {
   membership_id: Scalars['uuid'];
 };
 
@@ -29892,6 +29870,80 @@ export type UpdateQueryScheduleMutation = (
   ) }
 );
 
+export type CreateWandQueryMutationVariables = Exact<{
+  prompt: Scalars['String'];
+}>;
+
+
+export type CreateWandQueryMutation = (
+  { __typename?: 'mutation_root' }
+  & { create_wand_query: (
+    { __typename?: 'CreateWandQueryResponse' }
+    & Pick<CreateWandQueryResponse, 'response_id' | 'query'>
+  ) }
+);
+
+export type EditWandQueryMutationVariables = Exact<{
+  prompt: Scalars['String'];
+  query: Scalars['String'];
+}>;
+
+
+export type EditWandQueryMutation = (
+  { __typename?: 'mutation_root' }
+  & { edit_wand_query: (
+    { __typename?: 'EditWandQueryResponse' }
+    & Pick<EditWandQueryResponse, 'response_id' | 'query'>
+  ) }
+);
+
+export type DebugWandQueryMutationVariables = Exact<{
+  error: Scalars['String'];
+  query: Scalars['String'];
+}>;
+
+
+export type DebugWandQueryMutation = (
+  { __typename?: 'mutation_root' }
+  & { debug_wand_query: (
+    { __typename?: 'DebugWandQueryResponse' }
+    & Pick<DebugWandQueryResponse, 'response_id' | 'query'>
+  ) }
+);
+
+export type InsertWandCompletionMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  question: Scalars['String'];
+  answer: Scalars['String'];
+  user_id: Scalars['Int'];
+  query_id?: Maybe<Scalars['Int']>;
+  query_version?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type InsertWandCompletionMutation = (
+  { __typename?: 'mutation_root' }
+  & { insert_wand_completions_one?: Maybe<(
+    { __typename?: 'wand_completions' }
+    & Pick<Wand_Completions, 'id'>
+  )> }
+);
+
+export type UpdateWandCompletionQueryMutationVariables = Exact<{
+  id: Scalars['uuid'];
+  query_id?: Maybe<Scalars['Int']>;
+  query_version?: Maybe<Scalars['Int']>;
+}>;
+
+
+export type UpdateWandCompletionQueryMutation = (
+  { __typename?: 'mutation_root' }
+  & { update_wand_completions?: Maybe<(
+    { __typename?: 'wand_completions_mutation_response' }
+    & Pick<Wand_Completions_Mutation_Response, 'affected_rows'>
+  )> }
+);
+
 export type InsertVisualMutationVariables = Exact<{
   visual: Visualizations_Insert_Input;
 }>;
@@ -31218,7 +31270,7 @@ export type SessionUserFragment = (
     & { stripeCustomerId: User_Private['stripe_customer_id'], orbCustomerId: User_Private['orb_customer_id'], serviceTierId: User_Private['service_tier'], apiServiceTierId: User_Private['api_service_tier_id'], orbSubscriptionId: User_Private['orb_subscription_id'], orbApiSubscriptionId: User_Private['orb_api_subscription_id'], fromServiceTier: User_Private['from_service_tier'] }
   )>, user_service_tier: (
     { __typename?: 'user_service_tiers' }
-    & Pick<User_Service_Tiers, 'id' | 'name' | 'max_private_queries' | 'max_private_dashboards' | 'csv_downloads_per_month' | 'included_query_executions' | 'included_nanocredits' | 'remove_watermark' | 'base_monthly_price_dollars_cents' | 'max_query_event_retention_days' | 'is_public' | 'performance' | 'release_version'>
+    & Pick<User_Service_Tiers, 'id' | 'name' | 'max_private_queries' | 'max_private_dashboards' | 'csv_downloads_per_month' | 'included_query_executions' | 'included_nanocredits' | 'remove_watermark' | 'base_monthly_price_dollars_cents' | 'max_query_event_retention_days' | 'is_public' | 'performance' | 'release_version' | 'max_folders'>
   ), api_user_service_tier?: Maybe<(
     { __typename?: 'api_user_service_tiers' }
     & Pick<Api_User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'included_datapoints' | 'included_executions' | 'is_public'>
@@ -31295,76 +31347,6 @@ export type FindVisualQuery = (
     { __typename?: 'visualizations' }
     & VisualizationFragment
   )> }
-);
-
-export type NlqModelsQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type NlqModelsQuery = (
-  { __typename?: 'query_root' }
-  & Pick<Query_Root, 'nlq_models'>
-);
-
-export type CompleteNlqModelMutationVariables = Exact<{
-  model: Scalars['String'];
-  prompt: Scalars['String'];
-  table: Scalars['String'];
-}>;
-
-
-export type CompleteNlqModelMutation = (
-  { __typename?: 'mutation_root' }
-  & { complete_nlq_model: (
-    { __typename?: 'CompleteNlqModelResponse' }
-    & Pick<CompleteNlqModelResponse, 'id' | 'response'>
-  ) }
-);
-
-export type InsertWandCompletionMutationVariables = Exact<{
-  id: Scalars['uuid'];
-  question: Scalars['String'];
-  answer: Scalars['String'];
-  user_id: Scalars['Int'];
-  query_id?: Maybe<Scalars['Int']>;
-  query_version?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type InsertWandCompletionMutation = (
-  { __typename?: 'mutation_root' }
-  & { insert_wand_completions_one?: Maybe<(
-    { __typename?: 'wand_completions' }
-    & Pick<Wand_Completions, 'id'>
-  )> }
-);
-
-export type UpdateWandCompletionQueryMutationVariables = Exact<{
-  id: Scalars['uuid'];
-  query_id?: Maybe<Scalars['Int']>;
-  query_version?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type UpdateWandCompletionQueryMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_wand_completions?: Maybe<(
-    { __typename?: 'wand_completions_mutation_response' }
-    & Pick<Wand_Completions_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
-export type WandDebugQueryMutationVariables = Exact<{
-  error: Scalars['String'];
-  query: Scalars['String'];
-}>;
-
-
-export type WandDebugQueryMutation = (
-  { __typename?: 'mutation_root' }
-  & { debug_wand_query: (
-    { __typename?: 'DebugWandQueryResponse' }
-    & Pick<DebugWandQueryResponse, 'response_id' | 'query'>
-  ) }
 );
 
 export type GenerateDataUploadUrlMutationVariables = Exact<{
@@ -32616,6 +32598,7 @@ export type ExecuteQueryV3MutationVariables = Exact<{
   executor: ContextOwner;
   performance?: Maybe<Scalars['String']>;
   parameters: Array<Parameter> | Parameter;
+  executionType: Scalars['String'];
 }>;
 
 
@@ -32721,7 +32704,7 @@ export type ListUserMembershipsQuery = (
       & Pick<Teams, 'id' | 'name' | 'handle' | 'profile_image_url'>
       & { service_tier: (
         { __typename?: 'team_service_tiers' }
-        & Pick<Team_Service_Tiers, 'id' | 'name' | 'release_version' | 'is_public' | 'csv_downloads_per_month' | 'included_datapoints' | 'included_nanocredits'>
+        & Pick<Team_Service_Tiers, 'id' | 'name' | 'release_version' | 'is_public' | 'csv_downloads_per_month' | 'included_datapoints' | 'included_nanocredits' | 'max_folders'>
       ) }
     )> }
   )> }
@@ -33211,6 +33194,7 @@ export const SessionUserFragmentDoc = gql`
     is_public
     performance
     release_version
+    max_folders
   }
   api_user_service_tier {
     id
@@ -37269,6 +37253,183 @@ export function useUpdateQueryScheduleMutation(baseOptions?: Apollo.MutationHook
 export type UpdateQueryScheduleMutationHookResult = ReturnType<typeof useUpdateQueryScheduleMutation>;
 export type UpdateQueryScheduleMutationResult = Apollo.MutationResult<UpdateQueryScheduleMutation>;
 export type UpdateQueryScheduleMutationOptions = Apollo.BaseMutationOptions<UpdateQueryScheduleMutation, UpdateQueryScheduleMutationVariables>;
+export const CreateWandQueryDocument = gql`
+    mutation CreateWandQuery($prompt: String!) {
+  create_wand_query(prompt: $prompt) {
+    response_id
+    query
+  }
+}
+    `;
+export type CreateWandQueryMutationFn = Apollo.MutationFunction<CreateWandQueryMutation, CreateWandQueryMutationVariables>;
+
+/**
+ * __useCreateWandQueryMutation__
+ *
+ * To run a mutation, you first call `useCreateWandQueryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWandQueryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createWandQueryMutation, { data, loading, error }] = useCreateWandQueryMutation({
+ *   variables: {
+ *      prompt: // value for 'prompt'
+ *   },
+ * });
+ */
+export function useCreateWandQueryMutation(baseOptions?: Apollo.MutationHookOptions<CreateWandQueryMutation, CreateWandQueryMutationVariables>) {
+        return Apollo.useMutation<CreateWandQueryMutation, CreateWandQueryMutationVariables>(CreateWandQueryDocument, baseOptions);
+      }
+export type CreateWandQueryMutationHookResult = ReturnType<typeof useCreateWandQueryMutation>;
+export type CreateWandQueryMutationResult = Apollo.MutationResult<CreateWandQueryMutation>;
+export type CreateWandQueryMutationOptions = Apollo.BaseMutationOptions<CreateWandQueryMutation, CreateWandQueryMutationVariables>;
+export const EditWandQueryDocument = gql`
+    mutation EditWandQuery($prompt: String!, $query: String!) {
+  edit_wand_query(prompt: $prompt, query: $query) {
+    response_id
+    query
+  }
+}
+    `;
+export type EditWandQueryMutationFn = Apollo.MutationFunction<EditWandQueryMutation, EditWandQueryMutationVariables>;
+
+/**
+ * __useEditWandQueryMutation__
+ *
+ * To run a mutation, you first call `useEditWandQueryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useEditWandQueryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [editWandQueryMutation, { data, loading, error }] = useEditWandQueryMutation({
+ *   variables: {
+ *      prompt: // value for 'prompt'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useEditWandQueryMutation(baseOptions?: Apollo.MutationHookOptions<EditWandQueryMutation, EditWandQueryMutationVariables>) {
+        return Apollo.useMutation<EditWandQueryMutation, EditWandQueryMutationVariables>(EditWandQueryDocument, baseOptions);
+      }
+export type EditWandQueryMutationHookResult = ReturnType<typeof useEditWandQueryMutation>;
+export type EditWandQueryMutationResult = Apollo.MutationResult<EditWandQueryMutation>;
+export type EditWandQueryMutationOptions = Apollo.BaseMutationOptions<EditWandQueryMutation, EditWandQueryMutationVariables>;
+export const DebugWandQueryDocument = gql`
+    mutation DebugWandQuery($error: String!, $query: String!) {
+  debug_wand_query(error: $error, query: $query) {
+    response_id
+    query
+  }
+}
+    `;
+export type DebugWandQueryMutationFn = Apollo.MutationFunction<DebugWandQueryMutation, DebugWandQueryMutationVariables>;
+
+/**
+ * __useDebugWandQueryMutation__
+ *
+ * To run a mutation, you first call `useDebugWandQueryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDebugWandQueryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [debugWandQueryMutation, { data, loading, error }] = useDebugWandQueryMutation({
+ *   variables: {
+ *      error: // value for 'error'
+ *      query: // value for 'query'
+ *   },
+ * });
+ */
+export function useDebugWandQueryMutation(baseOptions?: Apollo.MutationHookOptions<DebugWandQueryMutation, DebugWandQueryMutationVariables>) {
+        return Apollo.useMutation<DebugWandQueryMutation, DebugWandQueryMutationVariables>(DebugWandQueryDocument, baseOptions);
+      }
+export type DebugWandQueryMutationHookResult = ReturnType<typeof useDebugWandQueryMutation>;
+export type DebugWandQueryMutationResult = Apollo.MutationResult<DebugWandQueryMutation>;
+export type DebugWandQueryMutationOptions = Apollo.BaseMutationOptions<DebugWandQueryMutation, DebugWandQueryMutationVariables>;
+export const InsertWandCompletionDocument = gql`
+    mutation InsertWandCompletion($id: uuid!, $question: String!, $answer: String!, $user_id: Int!, $query_id: Int, $query_version: Int) {
+  insert_wand_completions_one(
+    object: {id: $id, question: $question, answer: $answer, user_id: $user_id, query_id: $query_id, query_version: $query_version}
+  ) {
+    id
+  }
+}
+    `;
+export type InsertWandCompletionMutationFn = Apollo.MutationFunction<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>;
+
+/**
+ * __useInsertWandCompletionMutation__
+ *
+ * To run a mutation, you first call `useInsertWandCompletionMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useInsertWandCompletionMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [insertWandCompletionMutation, { data, loading, error }] = useInsertWandCompletionMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      question: // value for 'question'
+ *      answer: // value for 'answer'
+ *      user_id: // value for 'user_id'
+ *      query_id: // value for 'query_id'
+ *      query_version: // value for 'query_version'
+ *   },
+ * });
+ */
+export function useInsertWandCompletionMutation(baseOptions?: Apollo.MutationHookOptions<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>) {
+        return Apollo.useMutation<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>(InsertWandCompletionDocument, baseOptions);
+      }
+export type InsertWandCompletionMutationHookResult = ReturnType<typeof useInsertWandCompletionMutation>;
+export type InsertWandCompletionMutationResult = Apollo.MutationResult<InsertWandCompletionMutation>;
+export type InsertWandCompletionMutationOptions = Apollo.BaseMutationOptions<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>;
+export const UpdateWandCompletionQueryDocument = gql`
+    mutation UpdateWandCompletionQuery($id: uuid!, $query_id: Int, $query_version: Int) {
+  update_wand_completions(
+    where: {id: {_eq: $id}}
+    _set: {query_id: $query_id, query_version: $query_version}
+  ) {
+    affected_rows
+  }
+}
+    `;
+export type UpdateWandCompletionQueryMutationFn = Apollo.MutationFunction<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>;
+
+/**
+ * __useUpdateWandCompletionQueryMutation__
+ *
+ * To run a mutation, you first call `useUpdateWandCompletionQueryMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useUpdateWandCompletionQueryMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [updateWandCompletionQueryMutation, { data, loading, error }] = useUpdateWandCompletionQueryMutation({
+ *   variables: {
+ *      id: // value for 'id'
+ *      query_id: // value for 'query_id'
+ *      query_version: // value for 'query_version'
+ *   },
+ * });
+ */
+export function useUpdateWandCompletionQueryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>) {
+        return Apollo.useMutation<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>(UpdateWandCompletionQueryDocument, baseOptions);
+      }
+export type UpdateWandCompletionQueryMutationHookResult = ReturnType<typeof useUpdateWandCompletionQueryMutation>;
+export type UpdateWandCompletionQueryMutationResult = Apollo.MutationResult<UpdateWandCompletionQueryMutation>;
+export type UpdateWandCompletionQueryMutationOptions = Apollo.BaseMutationOptions<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>;
 export const InsertVisualDocument = gql`
     mutation InsertVisual($visual: visualizations_insert_input!) {
   insert_visualizations_one(object: $visual) {
@@ -39966,181 +40127,6 @@ export function useFindVisualLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type FindVisualQueryHookResult = ReturnType<typeof useFindVisualQuery>;
 export type FindVisualLazyQueryHookResult = ReturnType<typeof useFindVisualLazyQuery>;
 export type FindVisualQueryResult = Apollo.QueryResult<FindVisualQuery, FindVisualQueryVariables>;
-export const NlqModelsDocument = gql`
-    query NlqModels {
-  nlq_models
-}
-    `;
-
-/**
- * __useNlqModelsQuery__
- *
- * To run a query within a React component, call `useNlqModelsQuery` and pass it any options that fit your needs.
- * When your component renders, `useNlqModelsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useNlqModelsQuery({
- *   variables: {
- *   },
- * });
- */
-export function useNlqModelsQuery(baseOptions?: Apollo.QueryHookOptions<NlqModelsQuery, NlqModelsQueryVariables>) {
-        return Apollo.useQuery<NlqModelsQuery, NlqModelsQueryVariables>(NlqModelsDocument, baseOptions);
-      }
-export function useNlqModelsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<NlqModelsQuery, NlqModelsQueryVariables>) {
-          return Apollo.useLazyQuery<NlqModelsQuery, NlqModelsQueryVariables>(NlqModelsDocument, baseOptions);
-        }
-export type NlqModelsQueryHookResult = ReturnType<typeof useNlqModelsQuery>;
-export type NlqModelsLazyQueryHookResult = ReturnType<typeof useNlqModelsLazyQuery>;
-export type NlqModelsQueryResult = Apollo.QueryResult<NlqModelsQuery, NlqModelsQueryVariables>;
-export const CompleteNlqModelDocument = gql`
-    mutation CompleteNlqModel($model: String!, $prompt: String!, $table: String!) {
-  complete_nlq_model(model: $model, prompt: $prompt, table: $table) {
-    id
-    response
-  }
-}
-    `;
-export type CompleteNlqModelMutationFn = Apollo.MutationFunction<CompleteNlqModelMutation, CompleteNlqModelMutationVariables>;
-
-/**
- * __useCompleteNlqModelMutation__
- *
- * To run a mutation, you first call `useCompleteNlqModelMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCompleteNlqModelMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [completeNlqModelMutation, { data, loading, error }] = useCompleteNlqModelMutation({
- *   variables: {
- *      model: // value for 'model'
- *      prompt: // value for 'prompt'
- *      table: // value for 'table'
- *   },
- * });
- */
-export function useCompleteNlqModelMutation(baseOptions?: Apollo.MutationHookOptions<CompleteNlqModelMutation, CompleteNlqModelMutationVariables>) {
-        return Apollo.useMutation<CompleteNlqModelMutation, CompleteNlqModelMutationVariables>(CompleteNlqModelDocument, baseOptions);
-      }
-export type CompleteNlqModelMutationHookResult = ReturnType<typeof useCompleteNlqModelMutation>;
-export type CompleteNlqModelMutationResult = Apollo.MutationResult<CompleteNlqModelMutation>;
-export type CompleteNlqModelMutationOptions = Apollo.BaseMutationOptions<CompleteNlqModelMutation, CompleteNlqModelMutationVariables>;
-export const InsertWandCompletionDocument = gql`
-    mutation InsertWandCompletion($id: uuid!, $question: String!, $answer: String!, $user_id: Int!, $query_id: Int, $query_version: Int) {
-  insert_wand_completions_one(
-    object: {id: $id, question: $question, answer: $answer, user_id: $user_id, query_id: $query_id, query_version: $query_version}
-  ) {
-    id
-  }
-}
-    `;
-export type InsertWandCompletionMutationFn = Apollo.MutationFunction<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>;
-
-/**
- * __useInsertWandCompletionMutation__
- *
- * To run a mutation, you first call `useInsertWandCompletionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useInsertWandCompletionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [insertWandCompletionMutation, { data, loading, error }] = useInsertWandCompletionMutation({
- *   variables: {
- *      id: // value for 'id'
- *      question: // value for 'question'
- *      answer: // value for 'answer'
- *      user_id: // value for 'user_id'
- *      query_id: // value for 'query_id'
- *      query_version: // value for 'query_version'
- *   },
- * });
- */
-export function useInsertWandCompletionMutation(baseOptions?: Apollo.MutationHookOptions<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>) {
-        return Apollo.useMutation<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>(InsertWandCompletionDocument, baseOptions);
-      }
-export type InsertWandCompletionMutationHookResult = ReturnType<typeof useInsertWandCompletionMutation>;
-export type InsertWandCompletionMutationResult = Apollo.MutationResult<InsertWandCompletionMutation>;
-export type InsertWandCompletionMutationOptions = Apollo.BaseMutationOptions<InsertWandCompletionMutation, InsertWandCompletionMutationVariables>;
-export const UpdateWandCompletionQueryDocument = gql`
-    mutation UpdateWandCompletionQuery($id: uuid!, $query_id: Int, $query_version: Int) {
-  update_wand_completions(
-    where: {id: {_eq: $id}}
-    _set: {query_id: $query_id, query_version: $query_version}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type UpdateWandCompletionQueryMutationFn = Apollo.MutationFunction<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>;
-
-/**
- * __useUpdateWandCompletionQueryMutation__
- *
- * To run a mutation, you first call `useUpdateWandCompletionQueryMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateWandCompletionQueryMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateWandCompletionQueryMutation, { data, loading, error }] = useUpdateWandCompletionQueryMutation({
- *   variables: {
- *      id: // value for 'id'
- *      query_id: // value for 'query_id'
- *      query_version: // value for 'query_version'
- *   },
- * });
- */
-export function useUpdateWandCompletionQueryMutation(baseOptions?: Apollo.MutationHookOptions<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>) {
-        return Apollo.useMutation<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>(UpdateWandCompletionQueryDocument, baseOptions);
-      }
-export type UpdateWandCompletionQueryMutationHookResult = ReturnType<typeof useUpdateWandCompletionQueryMutation>;
-export type UpdateWandCompletionQueryMutationResult = Apollo.MutationResult<UpdateWandCompletionQueryMutation>;
-export type UpdateWandCompletionQueryMutationOptions = Apollo.BaseMutationOptions<UpdateWandCompletionQueryMutation, UpdateWandCompletionQueryMutationVariables>;
-export const WandDebugQueryDocument = gql`
-    mutation WandDebugQuery($error: String!, $query: String!) {
-  debug_wand_query(error: $error, query: $query) {
-    response_id
-    query
-  }
-}
-    `;
-export type WandDebugQueryMutationFn = Apollo.MutationFunction<WandDebugQueryMutation, WandDebugQueryMutationVariables>;
-
-/**
- * __useWandDebugQueryMutation__
- *
- * To run a mutation, you first call `useWandDebugQueryMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useWandDebugQueryMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [wandDebugQueryMutation, { data, loading, error }] = useWandDebugQueryMutation({
- *   variables: {
- *      error: // value for 'error'
- *      query: // value for 'query'
- *   },
- * });
- */
-export function useWandDebugQueryMutation(baseOptions?: Apollo.MutationHookOptions<WandDebugQueryMutation, WandDebugQueryMutationVariables>) {
-        return Apollo.useMutation<WandDebugQueryMutation, WandDebugQueryMutationVariables>(WandDebugQueryDocument, baseOptions);
-      }
-export type WandDebugQueryMutationHookResult = ReturnType<typeof useWandDebugQueryMutation>;
-export type WandDebugQueryMutationResult = Apollo.MutationResult<WandDebugQueryMutation>;
-export type WandDebugQueryMutationOptions = Apollo.BaseMutationOptions<WandDebugQueryMutation, WandDebugQueryMutationVariables>;
 export const GenerateDataUploadUrlDocument = gql`
     mutation GenerateDataUploadUrl($context_owner: ContextOwner, $content_length: Int!, $file_name: String!) {
   generate_data_upload_url(
@@ -41393,7 +41379,7 @@ export type GetTeamApiKeysQueryResult = Apollo.QueryResult<GetTeamApiKeysQuery, 
 export const GetTeamDocument = gql`
     query GetTeam($team_handle: String!, $userId: Int!) {
   teams(
-    where: {handle: {_eq: $team_handle}, memberships: {private_details: {user_id: {_eq: $userId}, role: {_eq: "admin"}}}}
+    where: {handle: {_eq: $team_handle}, memberships: {private_details: {user_id: {_eq: $userId}, status: {_eq: "invite_accepted"}, _or: [{role: {_eq: "admin"}}, {role: {_eq: "editor"}}]}}}
   ) {
     id
     name
@@ -43069,12 +43055,13 @@ export type GetUserOperationCostsQueryHookResult = ReturnType<typeof useGetUserO
 export type GetUserOperationCostsLazyQueryHookResult = ReturnType<typeof useGetUserOperationCostsLazyQuery>;
 export type GetUserOperationCostsQueryResult = Apollo.QueryResult<GetUserOperationCostsQuery, GetUserOperationCostsQueryVariables>;
 export const ExecuteQueryV3Document = gql`
-    mutation ExecuteQueryV3($query_id: Int!, $executor: ContextOwner!, $performance: String, $parameters: [Parameter!]!) {
+    mutation ExecuteQueryV3($query_id: Int!, $executor: ContextOwner!, $performance: String, $parameters: [Parameter!]!, $executionType: String!) {
   execute_query_v3(
     query_id: $query_id
     executor: $executor
     performance: $performance
     parameters: $parameters
+    execution_type: $executionType
   ) {
     job_id
   }
@@ -43099,6 +43086,7 @@ export type ExecuteQueryV3MutationFn = Apollo.MutationFunction<ExecuteQueryV3Mut
  *      executor: // value for 'executor'
  *      performance: // value for 'performance'
  *      parameters: // value for 'parameters'
+ *      executionType: // value for 'executionType'
  *   },
  * });
  */
@@ -43307,6 +43295,7 @@ export const ListUserMembershipsDocument = gql`
         csv_downloads_per_month
         included_datapoints
         included_nanocredits
+        max_folders
       }
     }
   }

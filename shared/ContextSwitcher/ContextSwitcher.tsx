@@ -122,11 +122,11 @@ export function ContextSwitcher() {
                 >
                   <IconIdentificationBadge />
                 </IconAnchorButton>
-                {team.membership.role === "admin" && (
+                {["admin", "editor"].includes(team.membership.role) && (
                   <IconAnchorButton
                     theme="ghost"
                     size="XS"
-                    href={`/settings/teams/manage/${team.handle}/profile`}
+                    href={`/settings/teams/manage/${team.handle}`}
                   >
                     <IconGear />
                   </IconAnchorButton>

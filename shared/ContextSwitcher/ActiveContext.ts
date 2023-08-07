@@ -16,6 +16,7 @@ export interface ActiveContext {
     isCSVExportEnabled: boolean;
     includedCredits: number;
     hasCustomPlan: boolean;
+    maxFolders: number;
   };
   permissions: {
     canEditContent: boolean;
@@ -44,6 +45,7 @@ export function getUserContext(session: SessionWithUser): ActiveContext {
         session.user.user_service_tier.csv_downloads_per_month ?? null,
       includedCredits:
         session.user.user_service_tier.included_nanocredits / 1_000_000_000,
+      maxFolders: session.user.user_service_tier.max_folders,
       get isCSVExportEnabled() {
         // team has infinite downloads when csvDownloadsPerMonth is null
         return (
@@ -86,6 +88,7 @@ export function getTeamContext(team: Team): ActiveContext {
       version: team.service_tier.release_version,
       csvDownloadsPerMonth: team.service_tier.csv_downloads_per_month ?? null,
       includedCredits: team.service_tier.included_nanocredits / 1_000_000_000,
+      maxFolders: team.service_tier.max_folders,
       get isCSVExportEnabled() {
         // team has infinite downloads when csvDownloadsPerMonth is null
         return (

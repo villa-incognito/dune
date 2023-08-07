@@ -41,7 +41,8 @@ export const SessionProvider: React.FC = (props) => {
   );
 
   React.useEffect(() => {
-    const onSession = (session: globalSession.Session) => {
+    const onSession = (session: Session) => {
+      session.user = data?.session?.user;
       mutate({ session });
     };
 

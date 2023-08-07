@@ -17,6 +17,7 @@ import { minDelay } from "page-components/Settings/Teams/util";
 import { Dialog } from "gui/dialog/dialog";
 import VisuallyHidden from "@reach/visually-hidden";
 import { Identity } from "components/Identity";
+import { useInviteRoleOptions } from "./hooks/useInviteRoleOptions";
 
 export const InviteMemberDialogContent: React.FC<{
   onDismiss: () => void;
@@ -26,6 +27,7 @@ export const InviteMemberDialogContent: React.FC<{
 }> = (props) => {
   const [userNameOrEmail, setUsernameOrEmail] = useState("");
   const [role, setRole] = useState("editor");
+  const { role: userRole, options: roleOptions } = useInviteRoleOptions();
 
   const [{ isLoading, error, isSaved }, setRequestStatus] = useState<{
     isLoading: boolean;
@@ -116,11 +118,7 @@ export const InviteMemberDialogContent: React.FC<{
               id="select-role"
               label="Role"
               value={role}
-              options={[
-                { key: "viewer", display: "Viewer" },
-                { key: "editor", display: "Editor" },
-                { key: "admin", display: "Admin" },
-              ]}
+              options={roleOptions}
               onChange={(val) => setRole(val)}
               caption={
                 <dl>
@@ -128,10 +126,14 @@ export const InviteMemberDialogContent: React.FC<{
                   <dt>Browse team queries and dashboards.</dt>
                   <dd>Editor</dd>
                   <dt>Create, edit team queries and dashboards.</dt>
-                  <dd>Admin</dd>
-                  <dt>
-                    Manage the team’s profile, members and other settings.
-                  </dt>
+                  {userRole === "admin" && (
+                    <>
+                      <dd>Admin</dd>
+                      <dt>
+                        Manage the team’s profile, members and other settings.
+                      </dt>
+                    </>
+                  )}
                 </dl>
               }
               widthType="full-length"

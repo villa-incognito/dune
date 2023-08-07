@@ -26,6 +26,7 @@ export type Team = Pick<
     | "csv_downloads_per_month"
     | "included_datapoints"
     | "included_nanocredits"
+    | "max_folders"
   >;
   membership: {
     role: string;
@@ -145,6 +146,7 @@ gql`
           csv_downloads_per_month
           included_datapoints
           included_nanocredits
+          max_folders
         }
       }
     }
