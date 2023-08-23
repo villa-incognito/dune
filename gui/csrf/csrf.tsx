@@ -1,6 +1,6 @@
 import React from "react";
 import { httpPost } from "lib/http/http";
-import { useErrorBoundary } from "lib/hooks/use-error-boundary";
+import { useErrorBoundary } from "src/hooks/useErrorBoundary";
 
 // SessionContext holds the CSRF token which is required for mutating requests.
 // The CSRF token can be sent as a header value or as a hidden form field.

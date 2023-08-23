@@ -1,5 +1,5 @@
 import { apolloCore } from "lib/apollo/apollo";
-import runOnce from "lib/runOnce";
+import runOnce from "src/utils/runOnce";
 import fetchServerTimeUnixMs from "lib/now/fetchServerTimeUnixMs";
 
 import {

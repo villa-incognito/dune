@@ -12,8 +12,8 @@ import type { ReactNode } from "react";
 
 export interface ControlledNotificationProps {
   // Appearance:
-  //      blue     gray        red       yellow      green
-  level: "info" | "neutral" | "error" | "warning" | "success";
+  //      blue     gray        red       yellow      green       brand-orange
+  level: "info" | "neutral" | "error" | "warning" | "success" | "brand-orange";
 
   // Content
   title: ReactNode;
@@ -24,6 +24,7 @@ export interface ControlledNotificationProps {
   dismissable?: boolean; // default: true
   onDismiss?: () => void;
   showIcon?: boolean; // default: true
+  customIcon?: ReactNode; // overrides NotificationIcon
 
   // Controlled open state
   isOpen: boolean;
@@ -47,7 +48,8 @@ export function ControlledNotification(props: ControlledNotificationProps) {
 
   return (
     <div className={cn(styles.notification, styles[props.level])}>
-      {showIcon && <NotificationIcon level={props.level} />}
+      {props.customIcon ||
+        (showIcon && <NotificationIcon level={props.level} />)}
 
       {dismissable && (
         <IconButton
@@ -79,6 +81,7 @@ function NotificationIcon(props: Pick<ControlledNotificationProps, "level">) {
   switch (props.level) {
     case "info":
     case "neutral":
+    case "brand-orange":
       return <IconInformation />;
     case "error":
     case "warning":

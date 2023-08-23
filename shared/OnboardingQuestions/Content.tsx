@@ -59,7 +59,7 @@ export function Content(props: {
       blockchain_experience: selected["blockchain_experience"],
       organization_size: selected["organization_size"],
       version: "v1.0.0",
-      until: new Date(8640000000000000), // Sat, 13 Sep 275760 00:00:00 UTC
+      until: new Date(7258118400000), // Wed, Jan 01 2200 00:00:00 UTC
     },
     onCompleted: onDismiss,
   });
@@ -77,7 +77,7 @@ export function Content(props: {
       until:
         isNewUser && !hasSkippedBefore
           ? new Date(Date.now() + 1000 * 60 * 60 * 24 * 7)
-          : new Date(8640000000000000), // Sat, 13 Sep 275760 00:00:00 UTC
+          : new Date(7258118400000), // Wed, Jan 01 2200 00:00:00 UTC
     },
     onCompleted: onDismiss,
   });

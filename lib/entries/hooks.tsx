@@ -15,7 +15,7 @@ import { fetchUsers } from "lib/entries/entries";
 import { fetchQueries } from "lib/entries/entries";
 import { fetchQuery } from "lib/entries/entries";
 import { fetchRelatedDashboards } from "lib/entries/entries";
-import { useTokenFetch } from "lib/hooks/use-token-fetch";
+import { useTokenFetch } from "src/hooks/useTokenFetch";
 
 export const useEntryQuery = (query?: number, apiKey?: string) => {
   return useTokenFetch(

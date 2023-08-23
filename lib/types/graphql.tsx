@@ -80,16 +80,6 @@ export type Boolean_Comparison_Exp = {
   _nin?: Maybe<Array<Scalars['Boolean']>>;
 };
 
-export type CancelApiUserPendingSubscriptionChangeResponse = {
-  __typename?: 'CancelApiUserPendingSubscriptionChangeResponse';
-  ok: Scalars['Boolean'];
-};
-
-export type CancelApiUserSubscriptionResponse = {
-  __typename?: 'CancelApiUserSubscriptionResponse';
-  ok: Scalars['Boolean'];
-};
-
 export type CancelExecutionResponse = {
   __typename?: 'CancelExecutionResponse';
   execution_id: Scalars['String'];
@@ -100,9 +90,32 @@ export type CancelTeamPendingSubscriptionChangeResponse = {
   ok: Scalars['Boolean'];
 };
 
-export type CancelUserPendingSubscriptionChangeResponse = {
-  __typename?: 'CancelUserPendingSubscriptionChangeResponse';
-  ok: Scalars['Boolean'];
+export type CatalogTable = {
+  __typename?: 'CatalogTable';
+  catalog_name: Scalars['String'];
+  columns: Array<CatalogTableColumn>;
+  created_at: Scalars['timestamptz'];
+  id: Scalars['String'];
+  is_private: Scalars['Boolean'];
+  last_refreshed_at?: Maybe<Scalars['timestamptz']>;
+  schema_name: Scalars['String'];
+  table_name: Scalars['String'];
+  table_size_bytes: Scalars['Int'];
+  table_type: TableType;
+  team_id?: Maybe<Scalars['Int']>;
+  updated_at: Scalars['timestamptz'];
+  user_id?: Maybe<Scalars['Int']>;
+};
+
+export type CatalogTableColumn = {
+  __typename?: 'CatalogTableColumn';
+  name: Scalars['String'];
+  nullable: Scalars['Boolean'];
+  type: Scalars['String'];
+};
+
+export type CatalogTablesFilterByInput = {
+  table_type: TableType;
 };
 
 export type ChangeEmailOutput = {
@@ -293,6 +306,14 @@ export type DashboardSchedulesResponse = {
   dashboard_id: Scalars['Int'];
 };
 
+export type DashboardSearchResult = {
+  __typename?: 'DashboardSearchResult';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  owner: Owner;
+  slug: Scalars['String'];
+};
+
 export type DashboardSettings = {
   id: Scalars['Int'];
   is_private?: Maybe<Scalars['Boolean']>;
@@ -329,6 +350,16 @@ export type DeleteDashboardScheduleResponse = {
 export type DeleteFolderResult = {
   __typename?: 'DeleteFolderResult';
   id: Scalars['String'];
+};
+
+export type DeleteMaterializedViewInput = {
+  deleter: ContextOwner;
+  query_id: Scalars['Int'];
+};
+
+export type DeleteMaterializedViewResponse = {
+  __typename?: 'DeleteMaterializedViewResponse';
+  ok: Scalars['Boolean'];
 };
 
 export type DeleteQueryScheduleResponse = {
@@ -370,6 +401,15 @@ export type EditWandQueryResponse = {
   __typename?: 'EditWandQueryResponse';
   query: Scalars['String'];
   response_id: Scalars['String'];
+};
+
+export type EmailAlert = {
+  __typename?: 'EmailAlert';
+  emails: Array<Scalars['String']>;
+};
+
+export type EmailAlertInput = {
+  emails: Array<Scalars['String']>;
 };
 
 export type ErrorMetadata = {
@@ -421,6 +461,12 @@ export type ExecutionSucceeded = {
   max_result_size_reached_bytes?: Maybe<Scalars['Int']>;
   request_max_result_size_bytes?: Maybe<Scalars['Int']>;
   runtime_seconds: Scalars['Int'];
+};
+
+export type ExplainWandQueryResponse = {
+  __typename?: 'ExplainWandQueryResponse';
+  explanation: Scalars['String'];
+  response_id: Scalars['String'];
 };
 
 export type ExportCsvResponse = {
@@ -479,6 +525,19 @@ export type ForkQueryV3Response = {
 export type GetApiUpcomingInvoiceResponse = {
   __typename?: 'GetApiUpcomingInvoiceResponse';
   invoice: UpcomingInvoice;
+};
+
+export type GetCatalogTablesInput = {
+  filter_by: CatalogTablesFilterByInput;
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  team_id?: Maybe<Scalars['Int']>;
+};
+
+export type GetCatalogTablesResponse = {
+  __typename?: 'GetCatalogTablesResponse';
+  next_offset: Scalars['Int'];
+  results: Array<CatalogTable>;
 };
 
 export type GetContentInput = {
@@ -586,6 +645,18 @@ export type GetUpcomingInvoiceResponse = {
   invoice: UpcomingInvoice;
 };
 
+export type GlobalSearchInput = {
+  search_term: Scalars['String'];
+};
+
+export type GlobalSearchResponse = {
+  __typename?: 'GlobalSearchResponse';
+  dashboards: Array<DashboardSearchResult>;
+  queries: Array<QuerySearchResult>;
+  teams: Array<Owner>;
+  users: Array<Owner>;
+};
+
 /** Boolean expression to compare columns of type "Int". All fields are combined with logical 'AND'. */
 export type Int_Comparison_Exp = {
   _eq?: Maybe<Scalars['Int']>;
@@ -681,6 +752,7 @@ export type Owner = {
   __typename?: 'Owner';
   handle: Scalars['String'];
   id: Scalars['Int'];
+  name?: Maybe<Scalars['String']>;
   profile_image_url?: Maybe<Scalars['String']>;
   type: OwnerType;
 };
@@ -784,10 +856,23 @@ export type QueryResult = {
   version: Scalars['Int'];
 };
 
+export type QueryScheduleEmailAlert = {
+  __typename?: 'QueryScheduleEmailAlert';
+  emailAlert?: Maybe<EmailAlert>;
+  id?: Maybe<Scalars['String']>;
+};
+
 export type QuerySchedulesResponse = {
   __typename?: 'QuerySchedulesResponse';
   cron_jobs: Array<CronJob>;
   query_id: Scalars['Int'];
+};
+
+export type QuerySearchResult = {
+  __typename?: 'QuerySearchResult';
+  id: Scalars['Int'];
+  name: Scalars['String'];
+  owner: Owner;
 };
 
 export type QuerySettings = {
@@ -921,6 +1006,11 @@ export type StripeDefaultCardResponse = {
   card?: Maybe<StripeCard>;
 };
 
+export enum TableType {
+  MaterializedView = 'materialized_view',
+  UserUploadedTable = 'user_uploaded_table'
+}
+
 export type TeamBillableUsageResponse = {
   __typename?: 'TeamBillableUsageResponse';
   credits_included?: Maybe<Scalars['Int']>;
@@ -938,11 +1028,6 @@ export type TeamBillableUsageResponse = {
 export type TeamStripeDefaultCardResponse = {
   __typename?: 'TeamStripeDefaultCardResponse';
   card?: Maybe<StripeCard>;
-};
-
-export type TerminateApiUserSubscriptionResponse = {
-  __typename?: 'TerminateApiUserSubscriptionResponse';
-  ok: Scalars['Boolean'];
 };
 
 export type TransferDashboardsResponse = {
@@ -1044,18 +1129,8 @@ export type UpdateTeamAccountForServiceTierResponse = {
   archived_queries_count: Scalars['Int'];
 };
 
-export type UpgradeApiUserSubscriptionResponse = {
-  __typename?: 'UpgradeApiUserSubscriptionResponse';
-  ok: Scalars['Boolean'];
-};
-
 export type UpgradeTeamSubscriptionResponse = {
   __typename?: 'UpgradeTeamSubscriptionResponse';
-  ok: Scalars['Boolean'];
-};
-
-export type UpgradeUserSubscriptionResponse = {
-  __typename?: 'UpgradeUserSubscriptionResponse';
   ok: Scalars['Boolean'];
 };
 
@@ -6107,14 +6182,66 @@ export type Folders = {
   __typename?: 'folders';
   color: Scalars['String'];
   created_at: Scalars['timestamptz'];
+  /** An array relationship */
+  dashboards: Array<Dashboards>;
+  /** An aggregate relationship */
+  dashboards_aggregate: Dashboards_Aggregate;
   description?: Maybe<Scalars['String']>;
   icon: Scalars['String'];
   id: Scalars['String'];
   name?: Maybe<Scalars['String']>;
   path: Scalars['String'];
+  /** An array relationship */
+  queries: Array<Queries>;
+  /** An aggregate relationship */
+  queries_aggregate: Queries_Aggregate;
+  /** An object relationship */
+  team?: Maybe<Teams>;
   team_id?: Maybe<Scalars['Int']>;
   updated_at: Scalars['timestamptz'];
+  /** An object relationship */
+  user?: Maybe<Users>;
   user_id?: Maybe<Scalars['Int']>;
+};
+
+
+/** columns and relationships of "folders" */
+export type FoldersDashboardsArgs = {
+  distinct_on?: Maybe<Array<Dashboards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dashboards_Order_By>>;
+  where?: Maybe<Dashboards_Bool_Exp>;
+};
+
+
+/** columns and relationships of "folders" */
+export type FoldersDashboards_AggregateArgs = {
+  distinct_on?: Maybe<Array<Dashboards_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Dashboards_Order_By>>;
+  where?: Maybe<Dashboards_Bool_Exp>;
+};
+
+
+/** columns and relationships of "folders" */
+export type FoldersQueriesArgs = {
+  distinct_on?: Maybe<Array<Queries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Queries_Order_By>>;
+  where?: Maybe<Queries_Bool_Exp>;
+};
+
+
+/** columns and relationships of "folders" */
+export type FoldersQueries_AggregateArgs = {
+  distinct_on?: Maybe<Array<Queries_Select_Column>>;
+  limit?: Maybe<Scalars['Int']>;
+  offset?: Maybe<Scalars['Int']>;
+  order_by?: Maybe<Array<Queries_Order_By>>;
+  where?: Maybe<Queries_Bool_Exp>;
 };
 
 /** aggregated selection of "folders" */
@@ -6161,13 +6288,19 @@ export type Folders_Bool_Exp = {
   _or?: Maybe<Array<Folders_Bool_Exp>>;
   color?: Maybe<String_Comparison_Exp>;
   created_at?: Maybe<Timestamptz_Comparison_Exp>;
+  dashboards?: Maybe<Dashboards_Bool_Exp>;
+  dashboards_aggregate?: Maybe<Dashboards_Aggregate_Bool_Exp>;
   description?: Maybe<String_Comparison_Exp>;
   icon?: Maybe<String_Comparison_Exp>;
   id?: Maybe<String_Comparison_Exp>;
   name?: Maybe<String_Comparison_Exp>;
   path?: Maybe<String_Comparison_Exp>;
+  queries?: Maybe<Queries_Bool_Exp>;
+  queries_aggregate?: Maybe<Queries_Aggregate_Bool_Exp>;
+  team?: Maybe<Teams_Bool_Exp>;
   team_id?: Maybe<Int_Comparison_Exp>;
   updated_at?: Maybe<Timestamptz_Comparison_Exp>;
+  user?: Maybe<Users_Bool_Exp>;
   user_id?: Maybe<Int_Comparison_Exp>;
 };
 
@@ -6191,12 +6324,16 @@ export type Folders_Inc_Input = {
 export type Folders_Insert_Input = {
   color?: Maybe<Scalars['String']>;
   created_at?: Maybe<Scalars['timestamptz']>;
+  dashboards?: Maybe<Dashboards_Arr_Rel_Insert_Input>;
   description?: Maybe<Scalars['String']>;
   icon?: Maybe<Scalars['String']>;
   id?: Maybe<Scalars['String']>;
   path?: Maybe<Scalars['String']>;
+  queries?: Maybe<Queries_Arr_Rel_Insert_Input>;
+  team?: Maybe<Teams_Obj_Rel_Insert_Input>;
   team_id?: Maybe<Scalars['Int']>;
   updated_at?: Maybe<Scalars['timestamptz']>;
+  user?: Maybe<Users_Obj_Rel_Insert_Input>;
   user_id?: Maybe<Scalars['Int']>;
 };
 
@@ -6257,13 +6394,17 @@ export type Folders_On_Conflict = {
 export type Folders_Order_By = {
   color?: Maybe<Order_By>;
   created_at?: Maybe<Order_By>;
+  dashboards_aggregate?: Maybe<Dashboards_Aggregate_Order_By>;
   description?: Maybe<Order_By>;
   icon?: Maybe<Order_By>;
   id?: Maybe<Order_By>;
   name?: Maybe<Order_By>;
   path?: Maybe<Order_By>;
+  queries_aggregate?: Maybe<Queries_Aggregate_Order_By>;
+  team?: Maybe<Teams_Order_By>;
   team_id?: Maybe<Order_By>;
   updated_at?: Maybe<Order_By>;
+  user?: Maybe<Users_Order_By>;
   user_id?: Maybe<Order_By>;
 };
 
@@ -7873,12 +8014,9 @@ export type Memberships_Variance_Order_By = {
 export type Mutation_Root = {
   __typename?: 'mutation_root';
   accept_invite_v2?: Maybe<AcceptInviteResponse>;
-  cancel_api_user_pending_subscription_change: CancelApiUserPendingSubscriptionChangeResponse;
-  cancel_api_user_subscription: CancelApiUserSubscriptionResponse;
   cancel_execution?: Maybe<CancelExecutionResponse>;
   /** cancel_team_pending_subscription_change */
   cancel_team_pending_subscription_change: CancelTeamPendingSubscriptionChangeResponse;
-  cancel_user_pending_subscription_change: CancelUserPendingSubscriptionChangeResponse;
   change_email?: Maybe<ChangeEmailOutput>;
   change_password?: Maybe<ChangePasswordResult>;
   complete_nlq_model: CompleteNlqModelResponse;
@@ -7953,6 +8091,7 @@ export type Mutation_Root = {
   delete_jobs?: Maybe<Jobs_Mutation_Response>;
   /** delete single row from the table: "jobs" */
   delete_jobs_by_pk?: Maybe<Jobs>;
+  delete_materialized_view: DeleteMaterializedViewResponse;
   /** delete data from the table: "memberships" */
   delete_memberships?: Maybe<Memberships_Mutation_Response>;
   /** delete single row from the table: "memberships" */
@@ -8059,6 +8198,7 @@ export type Mutation_Root = {
   downgrade_user_subscription: DowngradeUserSubscriptionResponse;
   edit_wand_query: EditWandQueryResponse;
   execute_query_v3?: Maybe<ExecuteQueryResponse>;
+  explain_wand_query: ExplainWandQueryResponse;
   fork_dashboard_v2?: Maybe<ForkDashboardResponse>;
   fork_query?: Maybe<Fork_Query_Response>;
   fork_query_v3: ForkQueryV3Response;
@@ -8239,7 +8379,6 @@ export type Mutation_Root = {
   set_max_overage_cents: SetMaxOverageCentsResponse;
   set_team_max_executions_overage_cost_cents: SetTeamMaxExecutionsOverageCostCentsResponse;
   set_team_max_overage_cents: SetTeamMaxOverageCentsResponse;
-  terminate_api_user_subscription: TerminateApiUserSubscriptionResponse;
   transfer_dashboards?: Maybe<Array<Maybe<TransferDashboardsResponse>>>;
   transfer_queries?: Maybe<Array<Maybe<TransferQueriesResponse>>>;
   unlink_wallet_address?: Maybe<UnlinkWalletAddressResult>;
@@ -8481,11 +8620,10 @@ export type Mutation_Root = {
   update_wand_completions_by_pk?: Maybe<Wand_Completions>;
   /** update multiples rows of table: "wand_completions" */
   update_wand_completions_many?: Maybe<Array<Maybe<Wand_Completions_Mutation_Response>>>;
-  upgrade_api_user_subscription: UpgradeApiUserSubscriptionResponse;
   /** upgrade_team_subscription */
   upgrade_team_subscription: UpgradeTeamSubscriptionResponse;
-  upgrade_user_subscription: UpgradeUserSubscriptionResponse;
   upsert_query_event_metadata: QueryEventMetadata;
+  upsert_query_schedule_email_alert: QueryScheduleEmailAlert;
   verify_email?: Maybe<VerifyEmailOutput>;
 };
 
@@ -8789,6 +8927,12 @@ export type Mutation_RootDelete_JobsArgs = {
 /** mutation root */
 export type Mutation_RootDelete_Jobs_By_PkArgs = {
   id: Scalars['uuid'];
+};
+
+
+/** mutation root */
+export type Mutation_RootDelete_Materialized_ViewArgs = {
+  input: DeleteMaterializedViewInput;
 };
 
 
@@ -9138,6 +9282,14 @@ export type Mutation_RootExecute_Query_V3Args = {
   parameters?: Maybe<Array<Parameter>>;
   performance?: Maybe<Scalars['String']>;
   query_id: Scalars['Int'];
+};
+
+
+/** mutation root */
+export type Mutation_RootExplain_Wand_QueryArgs = {
+  description: Scalars['String'];
+  name: Scalars['String'];
+  query: Scalars['String'];
 };
 
 
@@ -9816,14 +9968,6 @@ export type Mutation_RootSet_Team_Max_Executions_Overage_Cost_CentsArgs = {
 export type Mutation_RootSet_Team_Max_Overage_CentsArgs = {
   max_overage_cents?: Maybe<Scalars['Int']>;
   team_id: Scalars['Int'];
-};
-
-
-/** mutation root */
-export type Mutation_RootTerminate_Api_User_SubscriptionArgs = {
-  is_forced?: Maybe<Scalars['Boolean']>;
-  subscription_id: Scalars['String'];
-  user_id: Scalars['Int'];
 };
 
 
@@ -10902,12 +11046,6 @@ export type Mutation_RootUpdate_Wand_Completions_ManyArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpgrade_Api_User_SubscriptionArgs = {
-  service_tier_name: Scalars['String'];
-};
-
-
-/** mutation root */
 export type Mutation_RootUpgrade_Team_SubscriptionArgs = {
   service_tier_name: Scalars['String'];
   team_id: Scalars['Int'];
@@ -10915,15 +11053,17 @@ export type Mutation_RootUpgrade_Team_SubscriptionArgs = {
 
 
 /** mutation root */
-export type Mutation_RootUpgrade_User_SubscriptionArgs = {
-  service_tier_name: Scalars['String'];
+export type Mutation_RootUpsert_Query_Event_MetadataArgs = {
+  metadata: UpsertQueryEventMetadataInput;
+  query_event_id: Scalars['String'];
 };
 
 
 /** mutation root */
-export type Mutation_RootUpsert_Query_Event_MetadataArgs = {
-  metadata: UpsertQueryEventMetadataInput;
-  query_event_id: Scalars['String'];
+export type Mutation_RootUpsert_Query_Schedule_Email_AlertArgs = {
+  cron_job_id: Scalars['String'];
+  emailAlert: EmailAlertInput;
+  id?: Maybe<Scalars['String']>;
 };
 
 
@@ -11070,6 +11210,13 @@ export type Onboarding_Questions_Mutation_Response = {
   affected_rows: Scalars['Int'];
   /** data from the rows affected by the mutation */
   returning: Array<Onboarding_Questions>;
+};
+
+/** input type for inserting object relation for remote table "onboarding_questions" */
+export type Onboarding_Questions_Obj_Rel_Insert_Input = {
+  data: Onboarding_Questions_Insert_Input;
+  /** upsert condition */
+  on_conflict?: Maybe<Onboarding_Questions_On_Conflict>;
 };
 
 /** on_conflict condition type for table "onboarding_questions" */
@@ -17305,6 +17452,7 @@ export type Query_Root = {
   /** Get orb API subscription upcoming invoice */
   get_api_upcoming_invoice?: Maybe<GetApiUpcomingInvoiceResponse>;
   get_auth_provider_user?: Maybe<AuthProviderUser>;
+  get_catalog_tables: GetCatalogTablesResponse;
   get_content: GetContentResponse;
   get_execution?: Maybe<GetExecutionResponse>;
   get_execution_status?: Maybe<GetExecutionStatusResponse>;
@@ -17316,6 +17464,7 @@ export type Query_Root = {
   get_query_contributors: GetQueryContributorsResponse;
   get_query_event?: Maybe<QueryEvent>;
   get_query_events: GetQueryEventsResponse;
+  get_query_schedule_email_alert: QueryScheduleEmailAlert;
   /** execute function "get_result_by_job_id" which returns "get_result_template" */
   get_result_by_job_id: Array<Get_Result_Template>;
   /** execute function "get_result_by_job_id" and query aggregates on result of table type "get_result_template" */
@@ -17335,6 +17484,7 @@ export type Query_Root = {
   get_team_upcoming_invoice: GetTeamUpcomingInvoiceResponse;
   /** Get orb subscription upcoming invoice */
   get_upcoming_invoice?: Maybe<GetUpcomingInvoiceResponse>;
+  global_search: GlobalSearchResponse;
   /** fetch data from the table: "handles" */
   handles: Array<Handles>;
   /** fetch aggregated fields from the table: "handles" */
@@ -17916,6 +18066,11 @@ export type Query_RootFolders_By_PkArgs = {
 };
 
 
+export type Query_RootGet_Catalog_TablesArgs = {
+  input: GetCatalogTablesInput;
+};
+
+
 export type Query_RootGet_ContentArgs = {
   input: GetContentInput;
 };
@@ -17962,6 +18117,11 @@ export type Query_RootGet_Query_EventsArgs = {
   limit: Scalars['Int'];
   offset: Scalars['Int'];
   query_id: Scalars['Int'];
+};
+
+
+export type Query_RootGet_Query_Schedule_Email_AlertArgs = {
+  cron_job_id: Scalars['String'];
 };
 
 
@@ -18037,6 +18197,11 @@ export type Query_RootGet_Team_InvoicesArgs = {
 
 export type Query_RootGet_Team_Upcoming_InvoiceArgs = {
   team_id: Scalars['Int'];
+};
+
+
+export type Query_RootGlobal_SearchArgs = {
+  input: GlobalSearchInput;
 };
 
 
@@ -21714,6 +21879,7 @@ export type Team_Service_Tiers = {
   __typename?: 'team_service_tiers';
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   api_calls_per_minute: Scalars['Int'];
+  base_annually_price_dollars_cents: Scalars['Int'];
   base_monthly_price_dollars_cents: Scalars['Int'];
   can_hide_members: Scalars['Boolean'];
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
@@ -21826,6 +21992,7 @@ export type Team_Service_Tiers_Aggregate_FieldsCountArgs = {
 export type Team_Service_Tiers_Avg_Fields = {
   __typename?: 'team_service_tiers_avg_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -21848,6 +22015,7 @@ export type Team_Service_Tiers_Bool_Exp = {
   _or?: Maybe<Array<Team_Service_Tiers_Bool_Exp>>;
   allow_private_queries_as_views?: Maybe<Boolean_Comparison_Exp>;
   api_calls_per_minute?: Maybe<Int_Comparison_Exp>;
+  base_annually_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   base_monthly_price_dollars_cents?: Maybe<Int_Comparison_Exp>;
   can_hide_members?: Maybe<Boolean_Comparison_Exp>;
   can_use_crud_endpoints?: Maybe<Boolean_Comparison_Exp>;
@@ -21893,6 +22061,7 @@ export enum Team_Service_Tiers_Constraint {
 /** input type for incrementing numeric columns in table "team_service_tiers" */
 export type Team_Service_Tiers_Inc_Input = {
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -21912,6 +22081,7 @@ export type Team_Service_Tiers_Inc_Input = {
 export type Team_Service_Tiers_Insert_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
@@ -21948,6 +22118,7 @@ export type Team_Service_Tiers_Insert_Input = {
 export type Team_Service_Tiers_Max_Fields = {
   __typename?: 'team_service_tiers_max_fields';
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -21976,6 +22147,7 @@ export type Team_Service_Tiers_Max_Fields = {
 export type Team_Service_Tiers_Min_Fields = {
   __typename?: 'team_service_tiers_min_fields';
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   created_at?: Maybe<Scalars['timestamptz']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
@@ -22027,6 +22199,7 @@ export type Team_Service_Tiers_On_Conflict = {
 export type Team_Service_Tiers_Order_By = {
   allow_private_queries_as_views?: Maybe<Order_By>;
   api_calls_per_minute?: Maybe<Order_By>;
+  base_annually_price_dollars_cents?: Maybe<Order_By>;
   base_monthly_price_dollars_cents?: Maybe<Order_By>;
   can_hide_members?: Maybe<Order_By>;
   can_use_crud_endpoints?: Maybe<Order_By>;
@@ -22070,6 +22243,8 @@ export enum Team_Service_Tiers_Select_Column {
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
+  BaseAnnuallyPriceDollarsCents = 'base_annually_price_dollars_cents',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -22132,6 +22307,7 @@ export enum Team_Service_Tiers_Select_Column {
 export type Team_Service_Tiers_Set_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
@@ -22166,6 +22342,7 @@ export type Team_Service_Tiers_Set_Input = {
 export type Team_Service_Tiers_Stddev_Fields = {
   __typename?: 'team_service_tiers_stddev_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -22185,6 +22362,7 @@ export type Team_Service_Tiers_Stddev_Fields = {
 export type Team_Service_Tiers_Stddev_Pop_Fields = {
   __typename?: 'team_service_tiers_stddev_pop_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -22204,6 +22382,7 @@ export type Team_Service_Tiers_Stddev_Pop_Fields = {
 export type Team_Service_Tiers_Stddev_Samp_Fields = {
   __typename?: 'team_service_tiers_stddev_samp_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -22231,6 +22410,7 @@ export type Team_Service_Tiers_Stream_Cursor_Input = {
 export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
   allow_private_queries_as_views?: Maybe<Scalars['Boolean']>;
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   can_hide_members?: Maybe<Scalars['Boolean']>;
   can_use_crud_endpoints?: Maybe<Scalars['Boolean']>;
@@ -22265,6 +22445,7 @@ export type Team_Service_Tiers_Stream_Cursor_Value_Input = {
 export type Team_Service_Tiers_Sum_Fields = {
   __typename?: 'team_service_tiers_sum_fields';
   api_calls_per_minute?: Maybe<Scalars['Int']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Int']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Int']>;
   csv_downloads_per_month?: Maybe<Scalars['Int']>;
   id?: Maybe<Scalars['Int']>;
@@ -22286,6 +22467,8 @@ export enum Team_Service_Tiers_Update_Column {
   AllowPrivateQueriesAsViews = 'allow_private_queries_as_views',
   /** column name */
   ApiCallsPerMinute = 'api_calls_per_minute',
+  /** column name */
+  BaseAnnuallyPriceDollarsCents = 'base_annually_price_dollars_cents',
   /** column name */
   BaseMonthlyPriceDollarsCents = 'base_monthly_price_dollars_cents',
   /** column name */
@@ -22356,6 +22539,7 @@ export type Team_Service_Tiers_Updates = {
 export type Team_Service_Tiers_Var_Pop_Fields = {
   __typename?: 'team_service_tiers_var_pop_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -22375,6 +22559,7 @@ export type Team_Service_Tiers_Var_Pop_Fields = {
 export type Team_Service_Tiers_Var_Samp_Fields = {
   __typename?: 'team_service_tiers_var_samp_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -22394,6 +22579,7 @@ export type Team_Service_Tiers_Var_Samp_Fields = {
 export type Team_Service_Tiers_Variance_Fields = {
   __typename?: 'team_service_tiers_variance_fields';
   api_calls_per_minute?: Maybe<Scalars['Float']>;
+  base_annually_price_dollars_cents?: Maybe<Scalars['Float']>;
   base_monthly_price_dollars_cents?: Maybe<Scalars['Float']>;
   csv_downloads_per_month?: Maybe<Scalars['Float']>;
   id?: Maybe<Scalars['Float']>;
@@ -25490,6 +25676,8 @@ export type Users = {
   name: Scalars['String'];
   num_parallel_queries: Scalars['smallint'];
   onboarding_qs_skipped_until?: Maybe<Scalars['timestamptz']>;
+  /** An object relationship */
+  onboarding_questions?: Maybe<Onboarding_Questions>;
   orb_api_subscription_id?: Maybe<Scalars['String']>;
   orb_api_subscription_start_date?: Maybe<Scalars['timestamptz']>;
   orb_customer_id?: Maybe<Scalars['String']>;
@@ -25758,6 +25946,7 @@ export type Users_Bool_Exp = {
   name?: Maybe<String_Comparison_Exp>;
   num_parallel_queries?: Maybe<Smallint_Comparison_Exp>;
   onboarding_qs_skipped_until?: Maybe<Timestamptz_Comparison_Exp>;
+  onboarding_questions?: Maybe<Onboarding_Questions_Bool_Exp>;
   orb_api_subscription_id?: Maybe<String_Comparison_Exp>;
   orb_api_subscription_start_date?: Maybe<Timestamptz_Comparison_Exp>;
   orb_customer_id?: Maybe<String_Comparison_Exp>;
@@ -25862,6 +26051,7 @@ export type Users_Insert_Input = {
   name?: Maybe<Scalars['String']>;
   num_parallel_queries?: Maybe<Scalars['smallint']>;
   onboarding_qs_skipped_until?: Maybe<Scalars['timestamptz']>;
+  onboarding_questions?: Maybe<Onboarding_Questions_Obj_Rel_Insert_Input>;
   orb_api_subscription_id?: Maybe<Scalars['String']>;
   orb_api_subscription_start_date?: Maybe<Scalars['timestamptz']>;
   orb_customer_id?: Maybe<Scalars['String']>;
@@ -26085,6 +26275,7 @@ export type Users_Order_By = {
   name?: Maybe<Order_By>;
   num_parallel_queries?: Maybe<Order_By>;
   onboarding_qs_skipped_until?: Maybe<Order_By>;
+  onboarding_questions?: Maybe<Onboarding_Questions_Order_By>;
   orb_api_subscription_id?: Maybe<Order_By>;
   orb_api_subscription_start_date?: Maybe<Order_By>;
   orb_customer_id?: Maybe<Order_By>;
@@ -28049,38 +28240,6 @@ export type Wand_Completions_Variance_Fields = {
   user_id?: Maybe<Scalars['Float']>;
 };
 
-export type ApplyDowngradeApiUserSubscriptionMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  subscriptionId?: Maybe<Scalars['String']>;
-  subscriptionStartDate?: Maybe<Scalars['timestamptz']>;
-  serviceTierId?: Maybe<Scalars['Int']>;
-}>;
-
-
-export type ApplyDowngradeApiUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_users_by_pk?: Maybe<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-  )>, delete_pending_api_user_subscription_updates?: Maybe<(
-    { __typename?: 'pending_api_user_subscription_updates_mutation_response' }
-    & Pick<Pending_Api_User_Subscription_Updates_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
-export type FinalizeUpgradeApiUserSubscriptionMutationVariables = Exact<{
-  userId: Scalars['Int'];
-}>;
-
-
-export type FinalizeUpgradeApiUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { delete_pending_api_user_subscription_updates?: Maybe<(
-    { __typename?: 'pending_api_user_subscription_updates_mutation_response' }
-    & Pick<Pending_Api_User_Subscription_Updates_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
 export type UpdateTeamAfterUpgradeMutationVariables = Exact<{
   teamId: Scalars['Int'];
 }>;
@@ -28117,28 +28276,6 @@ export type ApplyTeamServiceTierUpdateMutation = (
   )>, delete_pending_team_subscription_updates?: Maybe<(
     { __typename?: 'pending_team_subscription_updates_mutation_response' }
     & Pick<Pending_Team_Subscription_Updates_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
-export type UpdateTeamServiceTierMutationVariables = Exact<{
-  teamId: Scalars['Int'];
-  serviceTierId: Scalars['Int'];
-  orbSubscriptionId?: Maybe<Scalars['String']>;
-  executionQuotaExceededUntil?: Maybe<Scalars['timestamptz']>;
-  csvDownloadQuotaExceededUntil?: Maybe<Scalars['timestamptz']>;
-  maxOverageCents?: Maybe<Scalars['numeric']>;
-  updateTeamMaxOverageCents: Scalars['Boolean'];
-}>;
-
-
-export type UpdateTeamServiceTierMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_teams_by_pk?: Maybe<(
-    { __typename?: 'teams' }
-    & Pick<Teams, 'id'>
-  )>, update_max_overage_cents?: Maybe<(
-    { __typename?: 'teams' }
-    & Pick<Teams, 'id'>
   )> }
 );
 
@@ -28181,45 +28318,6 @@ export type UpdateUserAfterUpgradeMutation = (
   )> }
 );
 
-export type UpdateUserServiceTierMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  serviceTierId: Scalars['Int'];
-  orbSubscriptionId?: Maybe<Scalars['String']>;
-  executionQuotaExceededUntil?: Maybe<Scalars['timestamptz']>;
-  csvDownloadQuotaExceededUntil?: Maybe<Scalars['timestamptz']>;
-  maxOverageCents?: Maybe<Scalars['numeric']>;
-  updateUserMaxOverageCents: Scalars['Boolean'];
-}>;
-
-
-export type UpdateUserServiceTierMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_users_by_pk?: Maybe<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-  )>, update_max_overage_cents?: Maybe<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-  )> }
-);
-
-export type GetPendingApiUserSubUpdatesQueryVariables = Exact<{
-  userId: Scalars['Int'];
-}>;
-
-
-export type GetPendingApiUserSubUpdatesQuery = (
-  { __typename?: 'query_root' }
-  & { pending_api_user_subscription_updates: Array<(
-    { __typename?: 'pending_api_user_subscription_updates' }
-    & Pick<Pending_Api_User_Subscription_Updates, 'user_id' | 'update_type' | 'soft_deadline' | 'update_date' | 'base_plan_id' | 'orb_subscription_id' | 'orb_subscription_start_date'>
-    & { api_user_service_tier?: Maybe<(
-      { __typename?: 'api_user_service_tiers' }
-      & Pick<Api_User_Service_Tiers, 'id' | 'name'>
-    )> }
-  )> }
-);
-
 export type GetPendingTeamSubUpdatesQueryVariables = Exact<{
   teamId: Scalars['Int'];
 }>;
@@ -28251,34 +28349,6 @@ export type GetPendingUserSubUpdatesQuery = (
       { __typename?: 'user_service_tiers' }
       & Pick<User_Service_Tiers, 'id' | 'name' | 'release_version'>
     ) }
-  )> }
-);
-
-export type UpdatePendingTeamSubUpdatesMutationVariables = Exact<{
-  teamId: Scalars['Int'];
-  serviceTierId: Scalars['Int'];
-}>;
-
-
-export type UpdatePendingTeamSubUpdatesMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_pending_team_subscription_updates_by_pk?: Maybe<(
-    { __typename?: 'pending_team_subscription_updates' }
-    & Pick<Pending_Team_Subscription_Updates, 'team_id'>
-  )> }
-);
-
-export type UpdatePendingUserSubUpdatesMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  serviceTierId: Scalars['Int'];
-}>;
-
-
-export type UpdatePendingUserSubUpdatesMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_pending_user_subscription_updates_by_pk?: Maybe<(
-    { __typename?: 'pending_user_subscription_updates' }
-    & Pick<Pending_User_Subscription_Updates, 'user_id'>
   )> }
 );
 
@@ -28680,36 +28750,6 @@ export type ListContractsQuery = (
   ) }
 );
 
-export type ListMyDashboardsQueryVariables = Exact<{
-  filter_name?: Maybe<String_Comparison_Exp>;
-  filter_tags?: Maybe<Jsonb_Comparison_Exp>;
-  filter_is_private?: Maybe<Boolean_Comparison_Exp>;
-  filter_custom?: Maybe<Array<Dashboards_Bool_Exp> | Dashboards_Bool_Exp>;
-  order?: Maybe<Array<Dashboards_Order_By> | Dashboards_Order_By>;
-  limit: Scalars['Int'];
-  offset: Scalars['Int'];
-  include_favs_last_24h?: Scalars['Boolean'];
-  include_favs_last_7d?: Scalars['Boolean'];
-  include_favs_last_30d?: Scalars['Boolean'];
-  include_favs_all_time?: Scalars['Boolean'];
-  is_archived?: Scalars['Boolean'];
-}>;
-
-
-export type ListMyDashboardsQuery = (
-  { __typename?: 'query_root' }
-  & { dashboards: Array<(
-    { __typename?: 'dashboards' }
-    & DashboardItemFragment
-  )>, dashboards_aggregate: (
-    { __typename?: 'dashboards_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'dashboards_aggregate_fields' }
-      & Pick<Dashboards_Aggregate_Fields, 'count'>
-    )> }
-  ) }
-);
-
 export type ListMyFavoriteDashboardsQueryVariables = Exact<{
   session_id: Scalars['Int'];
   filter_name?: Maybe<String_Comparison_Exp>;
@@ -28755,37 +28795,6 @@ export type ListMyFavoriteQueriesQueryVariables = Exact<{
 
 
 export type ListMyFavoriteQueriesQuery = (
-  { __typename?: 'query_root' }
-  & { queries: Array<(
-    { __typename?: 'queries' }
-    & QueryItemFragment
-  )>, queries_aggregate: (
-    { __typename?: 'queries_aggregate' }
-    & { aggregate?: Maybe<(
-      { __typename?: 'queries_aggregate_fields' }
-      & Pick<Queries_Aggregate_Fields, 'count'>
-    )> }
-  ) }
-);
-
-export type ListMyQueriesQueryVariables = Exact<{
-  filter_name?: Maybe<String_Comparison_Exp>;
-  filter_tags?: Maybe<Jsonb_Comparison_Exp>;
-  filter_is_private?: Maybe<Boolean_Comparison_Exp>;
-  filter_is_matview?: Maybe<String_Comparison_Exp>;
-  filter_custom?: Maybe<Array<Queries_Bool_Exp> | Queries_Bool_Exp>;
-  is_archived: Scalars['Boolean'];
-  order?: Maybe<Array<Queries_Order_By> | Queries_Order_By>;
-  limit: Scalars['Int'];
-  offset: Scalars['Int'];
-  include_favs_last_24h?: Scalars['Boolean'];
-  include_favs_last_7d?: Scalars['Boolean'];
-  include_favs_last_30d?: Scalars['Boolean'];
-  include_favs_all_time?: Scalars['Boolean'];
-}>;
-
-
-export type ListMyQueriesQuery = (
   { __typename?: 'query_root' }
   & { queries: Array<(
     { __typename?: 'queries' }
@@ -28980,17 +28989,6 @@ export type GetUserUsageDataQuery = (
   )> }
 );
 
-export type CancelApiUserPlanMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CancelApiUserPlanMutation = (
-  { __typename?: 'mutation_root' }
-  & { cancel_api_user_subscription: (
-    { __typename?: 'CancelApiUserSubscriptionResponse' }
-    & Pick<CancelApiUserSubscriptionResponse, 'ok'>
-  ) }
-);
-
 export type CancelUserPlanMutationVariables = Exact<{
   service_tier_name: Scalars['String'];
 }>;
@@ -29002,21 +29000,6 @@ export type CancelUserPlanMutation = (
     { __typename?: 'DowngradeUserSubscriptionResponse' }
     & Pick<DowngradeUserSubscriptionResponse, 'ok'>
   ) }
-);
-
-export type GetPendingApiUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type GetPendingApiUpdatesQuery = (
-  { __typename?: 'query_root' }
-  & { pending_api_user_subscription_updates: Array<(
-    { __typename?: 'pending_api_user_subscription_updates' }
-    & Pick<Pending_Api_User_Subscription_Updates, 'update_date' | 'update_type'>
-    & { api_user_service_tier?: Maybe<(
-      { __typename?: 'api_user_service_tiers' }
-      & Pick<Api_User_Service_Tiers, 'name'>
-    )> }
-  )> }
 );
 
 export type GetPendingUserUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -29317,6 +29300,23 @@ export type PatchDashboardSettingsMutation = (
     & { returning: Array<(
       { __typename?: 'dashboards' }
       & Pick<Dashboards, 'id' | 'tags'>
+    )> }
+  )> }
+);
+
+export type FindDashboardFolderQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindDashboardFolderQuery = (
+  { __typename?: 'query_root' }
+  & { dashboards_by_pk?: Maybe<(
+    { __typename?: 'dashboards' }
+    & Pick<Dashboards, 'is_archived'>
+    & { folder?: Maybe<(
+      { __typename?: 'folders' }
+      & Pick<Folders, 'id' | 'icon' | 'color' | 'name' | 'description' | 'path'>
     )> }
   )> }
 );
@@ -29644,13 +29644,16 @@ export type GetQueriesQuery = (
 
 export type QueryExplorerQueryItemFragment = (
   { __typename?: 'queries' }
-  & Pick<Queries, 'id' | 'name' | 'created_at' | 'dataset_id' | 'matview_id' | 'is_private'>
+  & Pick<Queries, 'id' | 'name' | 'created_at' | 'dataset_id' | 'matview_id' | 'is_private' | 'is_archived'>
   & { user?: Maybe<(
     { __typename?: 'users' }
     & Pick<Users, 'id' | 'name' | 'profile_image_url'>
   )>, team?: Maybe<(
     { __typename?: 'teams' }
     & Pick<Teams, 'id' | 'handle' | 'profile_image_url'>
+  )>, folder?: Maybe<(
+    { __typename?: 'folders' }
+    & Pick<Folders, 'id' | 'name' | 'path' | 'color' | 'icon'>
   )> }
 );
 
@@ -29759,6 +29762,19 @@ export type CreateMatViewMutation = (
   ) }
 );
 
+export type DeleteMatViewMutationVariables = Exact<{
+  input: DeleteMaterializedViewInput;
+}>;
+
+
+export type DeleteMatViewMutation = (
+  { __typename?: 'mutation_root' }
+  & { delete_materialized_view: (
+    { __typename?: 'DeleteMaterializedViewResponse' }
+    & Pick<DeleteMaterializedViewResponse, 'ok'>
+  ) }
+);
+
 export type GetExecutionStatusQueryVariables = Exact<{
   id: Scalars['String'];
 }>;
@@ -29781,7 +29797,7 @@ export type GetMatViewQuery = (
   { __typename?: 'query_root' }
   & { get_materialized_view: (
     { __typename?: 'GetMaterializedViewResponse' }
-    & Pick<GetMaterializedViewResponse, 'sql_names' | 'is_private' | 'last_execution_ids' | 'table_size_bytes'>
+    & Pick<GetMaterializedViewResponse, 'id' | 'sql_names' | 'is_private' | 'last_execution_ids' | 'table_size_bytes'>
     & { schedule: (
       { __typename?: 'CronJob' }
       & Pick<CronJob, 'id' | 'cron_expression' | 'performance' | 'next_execution_time'>
@@ -30154,6 +30170,23 @@ export type GetQueryEventQuery = (
     & { metadata?: Maybe<(
       { __typename?: 'QueryEventMetadata' }
       & Pick<QueryEventMetadata, 'name' | 'description'>
+    )> }
+  )> }
+);
+
+export type FindQueryFolderQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type FindQueryFolderQuery = (
+  { __typename?: 'query_root' }
+  & { queries_by_pk?: Maybe<(
+    { __typename?: 'queries' }
+    & Pick<Queries, 'is_archived'>
+    & { folder?: Maybe<(
+      { __typename?: 'folders' }
+      & Pick<Folders, 'id' | 'icon' | 'color' | 'name' | 'description' | 'path'>
     )> }
   )> }
 );
@@ -30890,23 +30923,6 @@ export type GetEntityBySubscriptionIdQuery = (
   )> }
 );
 
-export type GetApiUserOrbSubscriptionQueryVariables = Exact<{
-  userId: Scalars['Int'];
-}>;
-
-
-export type GetApiUserOrbSubscriptionQuery = (
-  { __typename?: 'query_root' }
-  & { users: Array<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id' | 'orb_api_subscription_id'>
-    & { api_user_service_tier?: Maybe<(
-      { __typename?: 'api_user_service_tiers' }
-      & Pick<Api_User_Service_Tiers, 'id' | 'name'>
-    )> }
-  )> }
-);
-
 export type GetTeamCommunityTierQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -30927,43 +30943,6 @@ export type GetUserCommunityTierQuery = (
     { __typename?: 'user_service_tiers' }
     & Pick<User_Service_Tiers, 'id' | 'orb_base_plan_id'>
   )> }
-);
-
-export type DowngradeUserToCommunityMutationVariables = Exact<{
-  userId: Scalars['Int'];
-}>;
-
-
-export type DowngradeUserToCommunityMutation = (
-  { __typename?: 'mutation_root' }
-  & { update_users_by_pk?: Maybe<(
-    { __typename?: 'users' }
-    & Pick<Users, 'id'>
-  )>, delete_pending_user_subscription_updates?: Maybe<(
-    { __typename?: 'pending_user_subscription_updates_mutation_response' }
-    & Pick<Pending_User_Subscription_Updates_Mutation_Response, 'affected_rows'>
-  )>, update_dashboards?: Maybe<(
-    { __typename?: 'dashboards_mutation_response' }
-    & Pick<Dashboards_Mutation_Response, 'affected_rows'>
-  )>, update_queries?: Maybe<(
-    { __typename?: 'queries_mutation_response' }
-    & Pick<Queries_Mutation_Response, 'affected_rows'>
-  )> }
-);
-
-export type TerminateApiUserSubscriptionMutationVariables = Exact<{
-  userId: Scalars['Int'];
-  subscriptionId: Scalars['String'];
-  isForced?: Maybe<Scalars['Boolean']>;
-}>;
-
-
-export type TerminateApiUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { terminate_api_user_subscription: (
-    { __typename?: 'TerminateApiUserSubscriptionResponse' }
-    & Pick<TerminateApiUserSubscriptionResponse, 'ok'>
-  ) }
 );
 
 export type GetTeamForOverageQueryVariables = Exact<{
@@ -31268,6 +31247,9 @@ export type SessionUserFragment = (
     { __typename?: 'user_private' }
     & Pick<User_Private, 'permissions' | 'service_tier' | 'onboarding_qs_skipped_until'>
     & { stripeCustomerId: User_Private['stripe_customer_id'], orbCustomerId: User_Private['orb_customer_id'], serviceTierId: User_Private['service_tier'], apiServiceTierId: User_Private['api_service_tier_id'], orbSubscriptionId: User_Private['orb_subscription_id'], orbApiSubscriptionId: User_Private['orb_api_subscription_id'], fromServiceTier: User_Private['from_service_tier'] }
+  )>, onboarding_questions?: Maybe<(
+    { __typename?: 'onboarding_questions' }
+    & Pick<Onboarding_Questions, 'brings_to_dune'>
   )>, user_service_tier: (
     { __typename?: 'user_service_tiers' }
     & Pick<User_Service_Tiers, 'id' | 'name' | 'max_private_queries' | 'max_private_dashboards' | 'csv_downloads_per_month' | 'included_query_executions' | 'included_nanocredits' | 'remove_watermark' | 'base_monthly_price_dollars_cents' | 'max_query_event_retention_days' | 'is_public' | 'performance' | 'release_version' | 'max_folders'>
@@ -31396,6 +31378,35 @@ export type CreateFolderMutation = (
   ) }
 );
 
+export type ListMyDashboardsQueryVariables = Exact<{
+  filter_name?: Maybe<String_Comparison_Exp>;
+  filter_is_private?: Maybe<Boolean_Comparison_Exp>;
+  filter_custom?: Maybe<Array<Dashboards_Bool_Exp> | Dashboards_Bool_Exp>;
+  order?: Maybe<Array<Dashboards_Order_By> | Dashboards_Order_By>;
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  include_favs_last_24h?: Scalars['Boolean'];
+  include_favs_last_7d?: Scalars['Boolean'];
+  include_favs_last_30d?: Scalars['Boolean'];
+  include_favs_all_time?: Scalars['Boolean'];
+  is_archived?: Scalars['Boolean'];
+}>;
+
+
+export type ListMyDashboardsQuery = (
+  { __typename?: 'query_root' }
+  & { dashboards: Array<(
+    { __typename?: 'dashboards' }
+    & DashboardItemFragment
+  )>, dashboards_aggregate: (
+    { __typename?: 'dashboards_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'dashboards_aggregate_fields' }
+      & Pick<Dashboards_Aggregate_Fields, 'count'>
+    )> }
+  ) }
+);
+
 export type UpdateFolderMutationVariables = Exact<{
   id: Scalars['String'];
   name: Scalars['String'];
@@ -31438,6 +31449,36 @@ export type ListFoldersQuery = (
     & { results: Array<(
       { __typename?: 'FolderResult' }
       & Pick<FolderResult, 'id' | 'name' | 'description' | 'path' | 'color' | 'icon' | 'content_count'>
+    )> }
+  ) }
+);
+
+export type ListMyQueriesQueryVariables = Exact<{
+  filter_name?: Maybe<String_Comparison_Exp>;
+  filter_is_private?: Maybe<Boolean_Comparison_Exp>;
+  filter_is_matview?: Maybe<String_Comparison_Exp>;
+  filter_custom?: Maybe<Array<Queries_Bool_Exp> | Queries_Bool_Exp>;
+  is_archived: Scalars['Boolean'];
+  order?: Maybe<Array<Queries_Order_By> | Queries_Order_By>;
+  limit: Scalars['Int'];
+  offset: Scalars['Int'];
+  include_favs_last_24h?: Scalars['Boolean'];
+  include_favs_last_7d?: Scalars['Boolean'];
+  include_favs_last_30d?: Scalars['Boolean'];
+  include_favs_all_time?: Scalars['Boolean'];
+}>;
+
+
+export type ListMyQueriesQuery = (
+  { __typename?: 'query_root' }
+  & { queries: Array<(
+    { __typename?: 'queries' }
+    & QueryItemFragment
+  )>, queries_aggregate: (
+    { __typename?: 'queries_aggregate' }
+    & { aggregate?: Maybe<(
+      { __typename?: 'queries_aggregate_fields' }
+      & Pick<Queries_Aggregate_Fields, 'count'>
     )> }
   ) }
 );
@@ -31671,17 +31712,6 @@ export type GetApiUpcomingInvoiceQuery = (
   )> }
 );
 
-export type CancelPendingUserSubscriptionUpdateMutationVariables = Exact<{ [key: string]: never; }>;
-
-
-export type CancelPendingUserSubscriptionUpdateMutation = (
-  { __typename?: 'mutation_root' }
-  & { cancel_user_pending_subscription_change: (
-    { __typename?: 'CancelUserPendingSubscriptionChangeResponse' }
-    & Pick<CancelUserPendingSubscriptionChangeResponse, 'ok'>
-  ) }
-);
-
 export type GetPendingUpdatesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -31785,7 +31815,7 @@ export type GetUserMaxOverageCentsQuery = (
     & Pick<Users, 'id'>
     & { private_info?: Maybe<(
       { __typename?: 'user_private' }
-      & Pick<User_Private, 'max_overage_cents'>
+      & Pick<User_Private, 'service_tier' | 'max_overage_cents'>
     )> }
   )> }
 );
@@ -32009,7 +32039,7 @@ export type GetTeamMaxOverageCentsQuery = (
     & Pick<Teams, 'id'>
     & { members_details?: Maybe<(
       { __typename?: 'team_members_details' }
-      & Pick<Team_Members_Details, 'id' | 'max_overage_cents'>
+      & Pick<Team_Members_Details, 'id' | 'service_tier_id' | 'max_overage_cents'>
     )> }
   )> }
 );
@@ -32330,45 +32360,6 @@ export type PendingUserSubscriptionUpdatesQuery = (
   )> }
 );
 
-export type UpgradeUserSubscriptionMutationVariables = Exact<{
-  service_tier_name: Scalars['String'];
-}>;
-
-
-export type UpgradeUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { upgrade_user_subscription: (
-    { __typename?: 'UpgradeUserSubscriptionResponse' }
-    & Pick<UpgradeUserSubscriptionResponse, 'ok'>
-  ) }
-);
-
-export type DowngradeApiUserSubscriptionMutationVariables = Exact<{
-  service_tier_name: Scalars['String'];
-}>;
-
-
-export type DowngradeApiUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { downgrade_api_user_subscription: (
-    { __typename?: 'DowngradeApiUserSubscriptionResponse' }
-    & Pick<DowngradeApiUserSubscriptionResponse, 'ok'>
-  ) }
-);
-
-export type UpgradeApiUserSubscriptionMutationVariables = Exact<{
-  service_tier_name: Scalars['String'];
-}>;
-
-
-export type UpgradeApiUserSubscriptionMutation = (
-  { __typename?: 'mutation_root' }
-  & { upgrade_api_user_subscription: (
-    { __typename?: 'UpgradeApiUserSubscriptionResponse' }
-    & Pick<UpgradeApiUserSubscriptionResponse, 'ok'>
-  ) }
-);
-
 export type GetDefaultCardQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -32466,19 +32457,6 @@ export type GetServiceTierInfoByNameQuery = (
   & { user_service_tiers: Array<(
     { __typename?: 'user_service_tiers' }
     & Pick<User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'max_private_queries' | 'max_private_dashboards' | 'remove_watermark' | 'csv_downloads_per_month' | 'performance' | 'included_query_executions' | 'included_nanocredits' | 'nanocredits_cost_cents' | 'query_exec_overage_dollars_cents' | 'is_public' | 'release_version'>
-  )> }
-);
-
-export type GetApiUserServiceTierInfoByNameQueryVariables = Exact<{
-  service_tier_name: Scalars['String'];
-}>;
-
-
-export type GetApiUserServiceTierInfoByNameQuery = (
-  { __typename?: 'query_root' }
-  & { api_user_service_tiers: Array<(
-    { __typename?: 'api_user_service_tiers' }
-    & Pick<Api_User_Service_Tiers, 'id' | 'name' | 'base_monthly_price_dollars_cents' | 'datapoint_overage_10k_cost_dollars_cents' | 'included_datapoints' | 'included_executions' | 'read_results_api_calls_per_minute' | 'dune_attribution_required'>
   )> }
 );
 
@@ -32839,6 +32817,14 @@ export const QueryExplorerQueryItemFragmentDoc = gql`
     profile_image_url
   }
   is_private
+  is_archived
+  folder {
+    id
+    name
+    path
+    color
+    icon
+  }
 }
     `;
 export const DashboardItemOnProfileFragmentDoc = gql`
@@ -33180,6 +33166,9 @@ export const SessionUserFragmentDoc = gql`
     fromServiceTier: from_service_tier
     onboarding_qs_skipped_until
   }
+  onboarding_questions {
+    brings_to_dune
+  }
   user_service_tier {
     id
     name
@@ -33261,79 +33250,6 @@ export const QueryElementFragmentDoc = gql`
   favorites
 }
     `;
-export const ApplyDowngradeApiUserSubscriptionDocument = gql`
-    mutation ApplyDowngradeApiUserSubscription($userId: Int!, $subscriptionId: String, $subscriptionStartDate: timestamptz, $serviceTierId: Int) {
-  update_users_by_pk(
-    pk_columns: {id: $userId}
-    _set: {orb_api_subscription_id: $subscriptionId, orb_api_subscription_start_date: $subscriptionStartDate, api_service_tier_id: $serviceTierId}
-  ) {
-    id
-  }
-  delete_pending_api_user_subscription_updates(where: {user_id: {_eq: $userId}}) {
-    affected_rows
-  }
-}
-    `;
-export type ApplyDowngradeApiUserSubscriptionMutationFn = Apollo.MutationFunction<ApplyDowngradeApiUserSubscriptionMutation, ApplyDowngradeApiUserSubscriptionMutationVariables>;
-
-/**
- * __useApplyDowngradeApiUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useApplyDowngradeApiUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useApplyDowngradeApiUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [applyDowngradeApiUserSubscriptionMutation, { data, loading, error }] = useApplyDowngradeApiUserSubscriptionMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      subscriptionId: // value for 'subscriptionId'
- *      subscriptionStartDate: // value for 'subscriptionStartDate'
- *      serviceTierId: // value for 'serviceTierId'
- *   },
- * });
- */
-export function useApplyDowngradeApiUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<ApplyDowngradeApiUserSubscriptionMutation, ApplyDowngradeApiUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<ApplyDowngradeApiUserSubscriptionMutation, ApplyDowngradeApiUserSubscriptionMutationVariables>(ApplyDowngradeApiUserSubscriptionDocument, baseOptions);
-      }
-export type ApplyDowngradeApiUserSubscriptionMutationHookResult = ReturnType<typeof useApplyDowngradeApiUserSubscriptionMutation>;
-export type ApplyDowngradeApiUserSubscriptionMutationResult = Apollo.MutationResult<ApplyDowngradeApiUserSubscriptionMutation>;
-export type ApplyDowngradeApiUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<ApplyDowngradeApiUserSubscriptionMutation, ApplyDowngradeApiUserSubscriptionMutationVariables>;
-export const FinalizeUpgradeApiUserSubscriptionDocument = gql`
-    mutation FinalizeUpgradeApiUserSubscription($userId: Int!) {
-  delete_pending_api_user_subscription_updates(where: {user_id: {_eq: $userId}}) {
-    affected_rows
-  }
-}
-    `;
-export type FinalizeUpgradeApiUserSubscriptionMutationFn = Apollo.MutationFunction<FinalizeUpgradeApiUserSubscriptionMutation, FinalizeUpgradeApiUserSubscriptionMutationVariables>;
-
-/**
- * __useFinalizeUpgradeApiUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useFinalizeUpgradeApiUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useFinalizeUpgradeApiUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [finalizeUpgradeApiUserSubscriptionMutation, { data, loading, error }] = useFinalizeUpgradeApiUserSubscriptionMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useFinalizeUpgradeApiUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<FinalizeUpgradeApiUserSubscriptionMutation, FinalizeUpgradeApiUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<FinalizeUpgradeApiUserSubscriptionMutation, FinalizeUpgradeApiUserSubscriptionMutationVariables>(FinalizeUpgradeApiUserSubscriptionDocument, baseOptions);
-      }
-export type FinalizeUpgradeApiUserSubscriptionMutationHookResult = ReturnType<typeof useFinalizeUpgradeApiUserSubscriptionMutation>;
-export type FinalizeUpgradeApiUserSubscriptionMutationResult = Apollo.MutationResult<FinalizeUpgradeApiUserSubscriptionMutation>;
-export type FinalizeUpgradeApiUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<FinalizeUpgradeApiUserSubscriptionMutation, FinalizeUpgradeApiUserSubscriptionMutationVariables>;
 export const UpdateTeamAfterUpgradeDocument = gql`
     mutation UpdateTeamAfterUpgrade($teamId: Int!) {
   delete_pending_team_subscription_updates(where: {team_id: {_eq: $teamId}}) {
@@ -33417,53 +33333,6 @@ export function useApplyTeamServiceTierUpdateMutation(baseOptions?: Apollo.Mutat
 export type ApplyTeamServiceTierUpdateMutationHookResult = ReturnType<typeof useApplyTeamServiceTierUpdateMutation>;
 export type ApplyTeamServiceTierUpdateMutationResult = Apollo.MutationResult<ApplyTeamServiceTierUpdateMutation>;
 export type ApplyTeamServiceTierUpdateMutationOptions = Apollo.BaseMutationOptions<ApplyTeamServiceTierUpdateMutation, ApplyTeamServiceTierUpdateMutationVariables>;
-export const UpdateTeamServiceTierDocument = gql`
-    mutation UpdateTeamServiceTier($teamId: Int!, $serviceTierId: Int!, $orbSubscriptionId: String, $executionQuotaExceededUntil: timestamptz, $csvDownloadQuotaExceededUntil: timestamptz, $maxOverageCents: numeric, $updateTeamMaxOverageCents: Boolean!) {
-  update_teams_by_pk(
-    pk_columns: {id: $teamId}
-    _set: {service_tier_id: $serviceTierId, orb_subscription_id: $orbSubscriptionId, execution_quota_exceeded_until: $executionQuotaExceededUntil, csv_download_quota_exceeded_until: $csvDownloadQuotaExceededUntil}
-  ) {
-    id
-  }
-  update_max_overage_cents: update_teams_by_pk(
-    pk_columns: {id: $teamId}
-    _set: {max_overage_cents: $maxOverageCents}
-  ) @include(if: $updateTeamMaxOverageCents) {
-    id
-  }
-}
-    `;
-export type UpdateTeamServiceTierMutationFn = Apollo.MutationFunction<UpdateTeamServiceTierMutation, UpdateTeamServiceTierMutationVariables>;
-
-/**
- * __useUpdateTeamServiceTierMutation__
- *
- * To run a mutation, you first call `useUpdateTeamServiceTierMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateTeamServiceTierMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateTeamServiceTierMutation, { data, loading, error }] = useUpdateTeamServiceTierMutation({
- *   variables: {
- *      teamId: // value for 'teamId'
- *      serviceTierId: // value for 'serviceTierId'
- *      orbSubscriptionId: // value for 'orbSubscriptionId'
- *      executionQuotaExceededUntil: // value for 'executionQuotaExceededUntil'
- *      csvDownloadQuotaExceededUntil: // value for 'csvDownloadQuotaExceededUntil'
- *      maxOverageCents: // value for 'maxOverageCents'
- *      updateTeamMaxOverageCents: // value for 'updateTeamMaxOverageCents'
- *   },
- * });
- */
-export function useUpdateTeamServiceTierMutation(baseOptions?: Apollo.MutationHookOptions<UpdateTeamServiceTierMutation, UpdateTeamServiceTierMutationVariables>) {
-        return Apollo.useMutation<UpdateTeamServiceTierMutation, UpdateTeamServiceTierMutationVariables>(UpdateTeamServiceTierDocument, baseOptions);
-      }
-export type UpdateTeamServiceTierMutationHookResult = ReturnType<typeof useUpdateTeamServiceTierMutation>;
-export type UpdateTeamServiceTierMutationResult = Apollo.MutationResult<UpdateTeamServiceTierMutation>;
-export type UpdateTeamServiceTierMutationOptions = Apollo.BaseMutationOptions<UpdateTeamServiceTierMutation, UpdateTeamServiceTierMutationVariables>;
 export const ApplyUserServiceTierUpdateDocument = gql`
     mutation ApplyUserServiceTierUpdate($userId: Int!, $serviceTierId: Int!, $orbSubscriptionId: String, $orbSubscriptionAnchorDay: Int, $executionQuotaExceededUntil: timestamptz, $csvDownloadQuotaExceededUntil: timestamptz, $maxOverageCents: numeric, $updateUserMaxOverageCents: Boolean!) {
   update_users_by_pk(
@@ -33547,96 +33416,6 @@ export function useUpdateUserAfterUpgradeMutation(baseOptions?: Apollo.MutationH
 export type UpdateUserAfterUpgradeMutationHookResult = ReturnType<typeof useUpdateUserAfterUpgradeMutation>;
 export type UpdateUserAfterUpgradeMutationResult = Apollo.MutationResult<UpdateUserAfterUpgradeMutation>;
 export type UpdateUserAfterUpgradeMutationOptions = Apollo.BaseMutationOptions<UpdateUserAfterUpgradeMutation, UpdateUserAfterUpgradeMutationVariables>;
-export const UpdateUserServiceTierDocument = gql`
-    mutation UpdateUserServiceTier($userId: Int!, $serviceTierId: Int!, $orbSubscriptionId: String, $executionQuotaExceededUntil: timestamptz, $csvDownloadQuotaExceededUntil: timestamptz, $maxOverageCents: numeric, $updateUserMaxOverageCents: Boolean!) {
-  update_users_by_pk(
-    pk_columns: {id: $userId}
-    _set: {service_tier: $serviceTierId, orb_subscription_id: $orbSubscriptionId, execution_quota_exceeded_until: $executionQuotaExceededUntil, csv_download_quota_exceeded_until: $csvDownloadQuotaExceededUntil}
-  ) {
-    id
-  }
-  update_max_overage_cents: update_users_by_pk(
-    pk_columns: {id: $userId}
-    _set: {max_overage_cents: $maxOverageCents}
-  ) @include(if: $updateUserMaxOverageCents) {
-    id
-  }
-}
-    `;
-export type UpdateUserServiceTierMutationFn = Apollo.MutationFunction<UpdateUserServiceTierMutation, UpdateUserServiceTierMutationVariables>;
-
-/**
- * __useUpdateUserServiceTierMutation__
- *
- * To run a mutation, you first call `useUpdateUserServiceTierMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdateUserServiceTierMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updateUserServiceTierMutation, { data, loading, error }] = useUpdateUserServiceTierMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      serviceTierId: // value for 'serviceTierId'
- *      orbSubscriptionId: // value for 'orbSubscriptionId'
- *      executionQuotaExceededUntil: // value for 'executionQuotaExceededUntil'
- *      csvDownloadQuotaExceededUntil: // value for 'csvDownloadQuotaExceededUntil'
- *      maxOverageCents: // value for 'maxOverageCents'
- *      updateUserMaxOverageCents: // value for 'updateUserMaxOverageCents'
- *   },
- * });
- */
-export function useUpdateUserServiceTierMutation(baseOptions?: Apollo.MutationHookOptions<UpdateUserServiceTierMutation, UpdateUserServiceTierMutationVariables>) {
-        return Apollo.useMutation<UpdateUserServiceTierMutation, UpdateUserServiceTierMutationVariables>(UpdateUserServiceTierDocument, baseOptions);
-      }
-export type UpdateUserServiceTierMutationHookResult = ReturnType<typeof useUpdateUserServiceTierMutation>;
-export type UpdateUserServiceTierMutationResult = Apollo.MutationResult<UpdateUserServiceTierMutation>;
-export type UpdateUserServiceTierMutationOptions = Apollo.BaseMutationOptions<UpdateUserServiceTierMutation, UpdateUserServiceTierMutationVariables>;
-export const GetPendingApiUserSubUpdatesDocument = gql`
-    query GetPendingApiUserSubUpdates($userId: Int!) {
-  pending_api_user_subscription_updates(where: {user_id: {_eq: $userId}}) {
-    user_id
-    update_type
-    soft_deadline
-    update_date
-    base_plan_id
-    orb_subscription_id
-    orb_subscription_start_date
-    api_user_service_tier {
-      id
-      name
-    }
-  }
-}
-    `;
-
-/**
- * __useGetPendingApiUserSubUpdatesQuery__
- *
- * To run a query within a React component, call `useGetPendingApiUserSubUpdatesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPendingApiUserSubUpdatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPendingApiUserSubUpdatesQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetPendingApiUserSubUpdatesQuery(baseOptions: Apollo.QueryHookOptions<GetPendingApiUserSubUpdatesQuery, GetPendingApiUserSubUpdatesQueryVariables>) {
-        return Apollo.useQuery<GetPendingApiUserSubUpdatesQuery, GetPendingApiUserSubUpdatesQueryVariables>(GetPendingApiUserSubUpdatesDocument, baseOptions);
-      }
-export function useGetPendingApiUserSubUpdatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingApiUserSubUpdatesQuery, GetPendingApiUserSubUpdatesQueryVariables>) {
-          return Apollo.useLazyQuery<GetPendingApiUserSubUpdatesQuery, GetPendingApiUserSubUpdatesQueryVariables>(GetPendingApiUserSubUpdatesDocument, baseOptions);
-        }
-export type GetPendingApiUserSubUpdatesQueryHookResult = ReturnType<typeof useGetPendingApiUserSubUpdatesQuery>;
-export type GetPendingApiUserSubUpdatesLazyQueryHookResult = ReturnType<typeof useGetPendingApiUserSubUpdatesLazyQuery>;
-export type GetPendingApiUserSubUpdatesQueryResult = Apollo.QueryResult<GetPendingApiUserSubUpdatesQuery, GetPendingApiUserSubUpdatesQueryVariables>;
 export const GetPendingTeamSubUpdatesDocument = gql`
     query GetPendingTeamSubUpdates($teamId: Int!) {
   pending_team_subscription_updates(where: {team_id: {_eq: $teamId}}) {
@@ -33726,78 +33505,6 @@ export function useGetPendingUserSubUpdatesLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetPendingUserSubUpdatesQueryHookResult = ReturnType<typeof useGetPendingUserSubUpdatesQuery>;
 export type GetPendingUserSubUpdatesLazyQueryHookResult = ReturnType<typeof useGetPendingUserSubUpdatesLazyQuery>;
 export type GetPendingUserSubUpdatesQueryResult = Apollo.QueryResult<GetPendingUserSubUpdatesQuery, GetPendingUserSubUpdatesQueryVariables>;
-export const UpdatePendingTeamSubUpdatesDocument = gql`
-    mutation UpdatePendingTeamSubUpdates($teamId: Int!, $serviceTierId: Int!) {
-  update_pending_team_subscription_updates_by_pk(
-    pk_columns: {team_id: $teamId}
-    _set: {service_tier_id: $serviceTierId}
-  ) {
-    team_id
-  }
-}
-    `;
-export type UpdatePendingTeamSubUpdatesMutationFn = Apollo.MutationFunction<UpdatePendingTeamSubUpdatesMutation, UpdatePendingTeamSubUpdatesMutationVariables>;
-
-/**
- * __useUpdatePendingTeamSubUpdatesMutation__
- *
- * To run a mutation, you first call `useUpdatePendingTeamSubUpdatesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePendingTeamSubUpdatesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updatePendingTeamSubUpdatesMutation, { data, loading, error }] = useUpdatePendingTeamSubUpdatesMutation({
- *   variables: {
- *      teamId: // value for 'teamId'
- *      serviceTierId: // value for 'serviceTierId'
- *   },
- * });
- */
-export function useUpdatePendingTeamSubUpdatesMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePendingTeamSubUpdatesMutation, UpdatePendingTeamSubUpdatesMutationVariables>) {
-        return Apollo.useMutation<UpdatePendingTeamSubUpdatesMutation, UpdatePendingTeamSubUpdatesMutationVariables>(UpdatePendingTeamSubUpdatesDocument, baseOptions);
-      }
-export type UpdatePendingTeamSubUpdatesMutationHookResult = ReturnType<typeof useUpdatePendingTeamSubUpdatesMutation>;
-export type UpdatePendingTeamSubUpdatesMutationResult = Apollo.MutationResult<UpdatePendingTeamSubUpdatesMutation>;
-export type UpdatePendingTeamSubUpdatesMutationOptions = Apollo.BaseMutationOptions<UpdatePendingTeamSubUpdatesMutation, UpdatePendingTeamSubUpdatesMutationVariables>;
-export const UpdatePendingUserSubUpdatesDocument = gql`
-    mutation UpdatePendingUserSubUpdates($userId: Int!, $serviceTierId: Int!) {
-  update_pending_user_subscription_updates_by_pk(
-    pk_columns: {user_id: $userId}
-    _set: {service_tier: $serviceTierId}
-  ) {
-    user_id
-  }
-}
-    `;
-export type UpdatePendingUserSubUpdatesMutationFn = Apollo.MutationFunction<UpdatePendingUserSubUpdatesMutation, UpdatePendingUserSubUpdatesMutationVariables>;
-
-/**
- * __useUpdatePendingUserSubUpdatesMutation__
- *
- * To run a mutation, you first call `useUpdatePendingUserSubUpdatesMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpdatePendingUserSubUpdatesMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [updatePendingUserSubUpdatesMutation, { data, loading, error }] = useUpdatePendingUserSubUpdatesMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      serviceTierId: // value for 'serviceTierId'
- *   },
- * });
- */
-export function useUpdatePendingUserSubUpdatesMutation(baseOptions?: Apollo.MutationHookOptions<UpdatePendingUserSubUpdatesMutation, UpdatePendingUserSubUpdatesMutationVariables>) {
-        return Apollo.useMutation<UpdatePendingUserSubUpdatesMutation, UpdatePendingUserSubUpdatesMutationVariables>(UpdatePendingUserSubUpdatesDocument, baseOptions);
-      }
-export type UpdatePendingUserSubUpdatesMutationHookResult = ReturnType<typeof useUpdatePendingUserSubUpdatesMutation>;
-export type UpdatePendingUserSubUpdatesMutationResult = Apollo.MutationResult<UpdatePendingUserSubUpdatesMutation>;
-export type UpdatePendingUserSubUpdatesMutationOptions = Apollo.BaseMutationOptions<UpdatePendingUserSubUpdatesMutation, UpdatePendingUserSubUpdatesMutationVariables>;
 export const TeamByOrbCustomerIdDocument = gql`
     query TeamByOrbCustomerId($orbCustomerId: String!) {
   teams(where: {orb_customer_id: {_eq: $orbCustomerId}}) {
@@ -34511,62 +34218,6 @@ export function useListContractsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type ListContractsQueryHookResult = ReturnType<typeof useListContractsQuery>;
 export type ListContractsLazyQueryHookResult = ReturnType<typeof useListContractsLazyQuery>;
 export type ListContractsQueryResult = Apollo.QueryResult<ListContractsQuery, ListContractsQueryVariables>;
-export const ListMyDashboardsDocument = gql`
-    query ListMyDashboards($filter_name: String_comparison_exp, $filter_tags: jsonb_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_custom: [dashboards_bool_exp!], $order: [dashboards_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false, $is_archived: Boolean! = false) {
-  dashboards(
-    where: {is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, _and: $filter_custom}
-    limit: $limit
-    offset: $offset
-    order_by: $order
-  ) {
-    ...DashboardItem
-  }
-  dashboards_aggregate(
-    where: {is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, _and: $filter_custom}
-  ) {
-    aggregate {
-      count
-    }
-  }
-}
-    ${DashboardItemFragmentDoc}`;
-
-/**
- * __useListMyDashboardsQuery__
- *
- * To run a query within a React component, call `useListMyDashboardsQuery` and pass it any options that fit your needs.
- * When your component renders, `useListMyDashboardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListMyDashboardsQuery({
- *   variables: {
- *      filter_name: // value for 'filter_name'
- *      filter_tags: // value for 'filter_tags'
- *      filter_is_private: // value for 'filter_is_private'
- *      filter_custom: // value for 'filter_custom'
- *      order: // value for 'order'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *      include_favs_last_24h: // value for 'include_favs_last_24h'
- *      include_favs_last_7d: // value for 'include_favs_last_7d'
- *      include_favs_last_30d: // value for 'include_favs_last_30d'
- *      include_favs_all_time: // value for 'include_favs_all_time'
- *      is_archived: // value for 'is_archived'
- *   },
- * });
- */
-export function useListMyDashboardsQuery(baseOptions: Apollo.QueryHookOptions<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>) {
-        return Apollo.useQuery<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>(ListMyDashboardsDocument, baseOptions);
-      }
-export function useListMyDashboardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>) {
-          return Apollo.useLazyQuery<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>(ListMyDashboardsDocument, baseOptions);
-        }
-export type ListMyDashboardsQueryHookResult = ReturnType<typeof useListMyDashboardsQuery>;
-export type ListMyDashboardsLazyQueryHookResult = ReturnType<typeof useListMyDashboardsLazyQuery>;
-export type ListMyDashboardsQueryResult = Apollo.QueryResult<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>;
 export const ListMyFavoriteDashboardsDocument = gql`
     query ListMyFavoriteDashboards($session_id: Int!, $filter_name: String_comparison_exp, $filter_tags: jsonb_comparison_exp, $filter_custom: [dashboards_bool_exp!], $order: [dashboards_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false) {
   dashboards(
@@ -34677,63 +34328,6 @@ export function useListMyFavoriteQueriesLazyQuery(baseOptions?: Apollo.LazyQuery
 export type ListMyFavoriteQueriesQueryHookResult = ReturnType<typeof useListMyFavoriteQueriesQuery>;
 export type ListMyFavoriteQueriesLazyQueryHookResult = ReturnType<typeof useListMyFavoriteQueriesLazyQuery>;
 export type ListMyFavoriteQueriesQueryResult = Apollo.QueryResult<ListMyFavoriteQueriesQuery, ListMyFavoriteQueriesQueryVariables>;
-export const ListMyQueriesDocument = gql`
-    query ListMyQueries($filter_name: String_comparison_exp, $filter_tags: jsonb_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_is_matview: String_comparison_exp, $filter_custom: [queries_bool_exp!], $is_archived: Boolean!, $order: [queries_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false) {
-  queries(
-    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, is_private: $filter_is_private, matview_id: $filter_is_matview, _and: $filter_custom}
-    limit: $limit
-    offset: $offset
-    order_by: $order
-  ) {
-    ...QueryItem
-  }
-  queries_aggregate(
-    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, tags: $filter_tags, matview_id: $filter_is_matview, is_private: $filter_is_private, _and: $filter_custom}
-  ) {
-    aggregate {
-      count
-    }
-  }
-}
-    ${QueryItemFragmentDoc}`;
-
-/**
- * __useListMyQueriesQuery__
- *
- * To run a query within a React component, call `useListMyQueriesQuery` and pass it any options that fit your needs.
- * When your component renders, `useListMyQueriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useListMyQueriesQuery({
- *   variables: {
- *      filter_name: // value for 'filter_name'
- *      filter_tags: // value for 'filter_tags'
- *      filter_is_private: // value for 'filter_is_private'
- *      filter_is_matview: // value for 'filter_is_matview'
- *      filter_custom: // value for 'filter_custom'
- *      is_archived: // value for 'is_archived'
- *      order: // value for 'order'
- *      limit: // value for 'limit'
- *      offset: // value for 'offset'
- *      include_favs_last_24h: // value for 'include_favs_last_24h'
- *      include_favs_last_7d: // value for 'include_favs_last_7d'
- *      include_favs_last_30d: // value for 'include_favs_last_30d'
- *      include_favs_all_time: // value for 'include_favs_all_time'
- *   },
- * });
- */
-export function useListMyQueriesQuery(baseOptions: Apollo.QueryHookOptions<ListMyQueriesQuery, ListMyQueriesQueryVariables>) {
-        return Apollo.useQuery<ListMyQueriesQuery, ListMyQueriesQueryVariables>(ListMyQueriesDocument, baseOptions);
-      }
-export function useListMyQueriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMyQueriesQuery, ListMyQueriesQueryVariables>) {
-          return Apollo.useLazyQuery<ListMyQueriesQuery, ListMyQueriesQueryVariables>(ListMyQueriesDocument, baseOptions);
-        }
-export type ListMyQueriesQueryHookResult = ReturnType<typeof useListMyQueriesQuery>;
-export type ListMyQueriesLazyQueryHookResult = ReturnType<typeof useListMyQueriesLazyQuery>;
-export type ListMyQueriesQueryResult = Apollo.QueryResult<ListMyQueriesQuery, ListMyQueriesQueryVariables>;
 export const ListOtherTeamMembersDocument = gql`
     query ListOtherTeamMembers($user_id: Int!, $team_id: Int!) {
   memberships_private_details(
@@ -35161,37 +34755,6 @@ export function useGetUserUsageDataLazyQuery(baseOptions?: Apollo.LazyQueryHookO
 export type GetUserUsageDataQueryHookResult = ReturnType<typeof useGetUserUsageDataQuery>;
 export type GetUserUsageDataLazyQueryHookResult = ReturnType<typeof useGetUserUsageDataLazyQuery>;
 export type GetUserUsageDataQueryResult = Apollo.QueryResult<GetUserUsageDataQuery, GetUserUsageDataQueryVariables>;
-export const CancelApiUserPlanDocument = gql`
-    mutation CancelApiUserPlan {
-  cancel_api_user_subscription {
-    ok
-  }
-}
-    `;
-export type CancelApiUserPlanMutationFn = Apollo.MutationFunction<CancelApiUserPlanMutation, CancelApiUserPlanMutationVariables>;
-
-/**
- * __useCancelApiUserPlanMutation__
- *
- * To run a mutation, you first call `useCancelApiUserPlanMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCancelApiUserPlanMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [cancelApiUserPlanMutation, { data, loading, error }] = useCancelApiUserPlanMutation({
- *   variables: {
- *   },
- * });
- */
-export function useCancelApiUserPlanMutation(baseOptions?: Apollo.MutationHookOptions<CancelApiUserPlanMutation, CancelApiUserPlanMutationVariables>) {
-        return Apollo.useMutation<CancelApiUserPlanMutation, CancelApiUserPlanMutationVariables>(CancelApiUserPlanDocument, baseOptions);
-      }
-export type CancelApiUserPlanMutationHookResult = ReturnType<typeof useCancelApiUserPlanMutation>;
-export type CancelApiUserPlanMutationResult = Apollo.MutationResult<CancelApiUserPlanMutation>;
-export type CancelApiUserPlanMutationOptions = Apollo.BaseMutationOptions<CancelApiUserPlanMutation, CancelApiUserPlanMutationVariables>;
 export const CancelUserPlanDocument = gql`
     mutation CancelUserPlan($service_tier_name: String!) {
   downgrade_user_subscription(service_tier_name: $service_tier_name) {
@@ -35224,42 +34787,6 @@ export function useCancelUserPlanMutation(baseOptions?: Apollo.MutationHookOptio
 export type CancelUserPlanMutationHookResult = ReturnType<typeof useCancelUserPlanMutation>;
 export type CancelUserPlanMutationResult = Apollo.MutationResult<CancelUserPlanMutation>;
 export type CancelUserPlanMutationOptions = Apollo.BaseMutationOptions<CancelUserPlanMutation, CancelUserPlanMutationVariables>;
-export const GetPendingApiUpdatesDocument = gql`
-    query GetPendingApiUpdates {
-  pending_api_user_subscription_updates {
-    update_date
-    api_user_service_tier {
-      name
-    }
-    update_type
-  }
-}
-    `;
-
-/**
- * __useGetPendingApiUpdatesQuery__
- *
- * To run a query within a React component, call `useGetPendingApiUpdatesQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetPendingApiUpdatesQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetPendingApiUpdatesQuery({
- *   variables: {
- *   },
- * });
- */
-export function useGetPendingApiUpdatesQuery(baseOptions?: Apollo.QueryHookOptions<GetPendingApiUpdatesQuery, GetPendingApiUpdatesQueryVariables>) {
-        return Apollo.useQuery<GetPendingApiUpdatesQuery, GetPendingApiUpdatesQueryVariables>(GetPendingApiUpdatesDocument, baseOptions);
-      }
-export function useGetPendingApiUpdatesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetPendingApiUpdatesQuery, GetPendingApiUpdatesQueryVariables>) {
-          return Apollo.useLazyQuery<GetPendingApiUpdatesQuery, GetPendingApiUpdatesQueryVariables>(GetPendingApiUpdatesDocument, baseOptions);
-        }
-export type GetPendingApiUpdatesQueryHookResult = ReturnType<typeof useGetPendingApiUpdatesQuery>;
-export type GetPendingApiUpdatesLazyQueryHookResult = ReturnType<typeof useGetPendingApiUpdatesLazyQuery>;
-export type GetPendingApiUpdatesQueryResult = Apollo.QueryResult<GetPendingApiUpdatesQuery, GetPendingApiUpdatesQueryVariables>;
 export const GetPendingUserUpdatesDocument = gql`
     query GetPendingUserUpdates {
   pending_user_subscription_updates {
@@ -35910,6 +35437,47 @@ export function usePatchDashboardSettingsMutation(baseOptions?: Apollo.MutationH
 export type PatchDashboardSettingsMutationHookResult = ReturnType<typeof usePatchDashboardSettingsMutation>;
 export type PatchDashboardSettingsMutationResult = Apollo.MutationResult<PatchDashboardSettingsMutation>;
 export type PatchDashboardSettingsMutationOptions = Apollo.BaseMutationOptions<PatchDashboardSettingsMutation, PatchDashboardSettingsMutationVariables>;
+export const FindDashboardFolderDocument = gql`
+    query FindDashboardFolder($id: Int!) {
+  dashboards_by_pk(id: $id) {
+    is_archived
+    folder {
+      id
+      icon
+      color
+      name
+      description
+      path
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindDashboardFolderQuery__
+ *
+ * To run a query within a React component, call `useFindDashboardFolderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindDashboardFolderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindDashboardFolderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindDashboardFolderQuery(baseOptions: Apollo.QueryHookOptions<FindDashboardFolderQuery, FindDashboardFolderQueryVariables>) {
+        return Apollo.useQuery<FindDashboardFolderQuery, FindDashboardFolderQueryVariables>(FindDashboardFolderDocument, baseOptions);
+      }
+export function useFindDashboardFolderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindDashboardFolderQuery, FindDashboardFolderQueryVariables>) {
+          return Apollo.useLazyQuery<FindDashboardFolderQuery, FindDashboardFolderQueryVariables>(FindDashboardFolderDocument, baseOptions);
+        }
+export type FindDashboardFolderQueryHookResult = ReturnType<typeof useFindDashboardFolderQuery>;
+export type FindDashboardFolderLazyQueryHookResult = ReturnType<typeof useFindDashboardFolderLazyQuery>;
+export type FindDashboardFolderQueryResult = Apollo.QueryResult<FindDashboardFolderQuery, FindDashboardFolderQueryVariables>;
 export const GetUserPrivateDashboardsDocument = gql`
     query GetUserPrivateDashboards {
   dashboards_aggregate(
@@ -36984,6 +36552,38 @@ export function useCreateMatViewMutation(baseOptions?: Apollo.MutationHookOption
 export type CreateMatViewMutationHookResult = ReturnType<typeof useCreateMatViewMutation>;
 export type CreateMatViewMutationResult = Apollo.MutationResult<CreateMatViewMutation>;
 export type CreateMatViewMutationOptions = Apollo.BaseMutationOptions<CreateMatViewMutation, CreateMatViewMutationVariables>;
+export const DeleteMatViewDocument = gql`
+    mutation DeleteMatView($input: DeleteMaterializedViewInput!) {
+  delete_materialized_view(input: $input) {
+    ok
+  }
+}
+    `;
+export type DeleteMatViewMutationFn = Apollo.MutationFunction<DeleteMatViewMutation, DeleteMatViewMutationVariables>;
+
+/**
+ * __useDeleteMatViewMutation__
+ *
+ * To run a mutation, you first call `useDeleteMatViewMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useDeleteMatViewMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [deleteMatViewMutation, { data, loading, error }] = useDeleteMatViewMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useDeleteMatViewMutation(baseOptions?: Apollo.MutationHookOptions<DeleteMatViewMutation, DeleteMatViewMutationVariables>) {
+        return Apollo.useMutation<DeleteMatViewMutation, DeleteMatViewMutationVariables>(DeleteMatViewDocument, baseOptions);
+      }
+export type DeleteMatViewMutationHookResult = ReturnType<typeof useDeleteMatViewMutation>;
+export type DeleteMatViewMutationResult = Apollo.MutationResult<DeleteMatViewMutation>;
+export type DeleteMatViewMutationOptions = Apollo.BaseMutationOptions<DeleteMatViewMutation, DeleteMatViewMutationVariables>;
 export const GetExecutionStatusDocument = gql`
     query GetExecutionStatus($id: String!) {
   get_execution_status(execution_id: $id) {
@@ -37022,6 +36622,7 @@ export type GetExecutionStatusQueryResult = Apollo.QueryResult<GetExecutionStatu
 export const GetMatViewDocument = gql`
     query GetMatView($id: String!) {
   get_materialized_view(id: $id) {
+    id
     sql_names
     is_private
     last_execution_ids
@@ -37979,6 +37580,47 @@ export function useGetQueryEventLazyQuery(baseOptions?: Apollo.LazyQueryHookOpti
 export type GetQueryEventQueryHookResult = ReturnType<typeof useGetQueryEventQuery>;
 export type GetQueryEventLazyQueryHookResult = ReturnType<typeof useGetQueryEventLazyQuery>;
 export type GetQueryEventQueryResult = Apollo.QueryResult<GetQueryEventQuery, GetQueryEventQueryVariables>;
+export const FindQueryFolderDocument = gql`
+    query FindQueryFolder($id: Int!) {
+  queries_by_pk(id: $id) {
+    is_archived
+    folder {
+      id
+      icon
+      color
+      name
+      description
+      path
+    }
+  }
+}
+    `;
+
+/**
+ * __useFindQueryFolderQuery__
+ *
+ * To run a query within a React component, call `useFindQueryFolderQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFindQueryFolderQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFindQueryFolderQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useFindQueryFolderQuery(baseOptions: Apollo.QueryHookOptions<FindQueryFolderQuery, FindQueryFolderQueryVariables>) {
+        return Apollo.useQuery<FindQueryFolderQuery, FindQueryFolderQueryVariables>(FindQueryFolderDocument, baseOptions);
+      }
+export function useFindQueryFolderLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FindQueryFolderQuery, FindQueryFolderQueryVariables>) {
+          return Apollo.useLazyQuery<FindQueryFolderQuery, FindQueryFolderQueryVariables>(FindQueryFolderDocument, baseOptions);
+        }
+export type FindQueryFolderQueryHookResult = ReturnType<typeof useFindQueryFolderQuery>;
+export type FindQueryFolderLazyQueryHookResult = ReturnType<typeof useFindQueryFolderLazyQuery>;
+export type FindQueryFolderQueryResult = Apollo.QueryResult<FindQueryFolderQuery, FindQueryFolderQueryVariables>;
 export const GetUserPrivateQueriesDocument = gql`
     query GetUserPrivateQueries {
   queries_aggregate(
@@ -39134,44 +38776,6 @@ export function useGetEntityBySubscriptionIdLazyQuery(baseOptions?: Apollo.LazyQ
 export type GetEntityBySubscriptionIdQueryHookResult = ReturnType<typeof useGetEntityBySubscriptionIdQuery>;
 export type GetEntityBySubscriptionIdLazyQueryHookResult = ReturnType<typeof useGetEntityBySubscriptionIdLazyQuery>;
 export type GetEntityBySubscriptionIdQueryResult = Apollo.QueryResult<GetEntityBySubscriptionIdQuery, GetEntityBySubscriptionIdQueryVariables>;
-export const GetApiUserOrbSubscriptionDocument = gql`
-    query GetApiUserOrbSubscription($userId: Int!) {
-  users(where: {id: {_eq: $userId}}) {
-    id
-    orb_api_subscription_id
-    api_user_service_tier {
-      id
-      name
-    }
-  }
-}
-    `;
-
-/**
- * __useGetApiUserOrbSubscriptionQuery__
- *
- * To run a query within a React component, call `useGetApiUserOrbSubscriptionQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApiUserOrbSubscriptionQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetApiUserOrbSubscriptionQuery({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useGetApiUserOrbSubscriptionQuery(baseOptions: Apollo.QueryHookOptions<GetApiUserOrbSubscriptionQuery, GetApiUserOrbSubscriptionQueryVariables>) {
-        return Apollo.useQuery<GetApiUserOrbSubscriptionQuery, GetApiUserOrbSubscriptionQueryVariables>(GetApiUserOrbSubscriptionDocument, baseOptions);
-      }
-export function useGetApiUserOrbSubscriptionLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApiUserOrbSubscriptionQuery, GetApiUserOrbSubscriptionQueryVariables>) {
-          return Apollo.useLazyQuery<GetApiUserOrbSubscriptionQuery, GetApiUserOrbSubscriptionQueryVariables>(GetApiUserOrbSubscriptionDocument, baseOptions);
-        }
-export type GetApiUserOrbSubscriptionQueryHookResult = ReturnType<typeof useGetApiUserOrbSubscriptionQuery>;
-export type GetApiUserOrbSubscriptionLazyQueryHookResult = ReturnType<typeof useGetApiUserOrbSubscriptionLazyQuery>;
-export type GetApiUserOrbSubscriptionQueryResult = Apollo.QueryResult<GetApiUserOrbSubscriptionQuery, GetApiUserOrbSubscriptionQueryVariables>;
 export const GetTeamCommunityTierDocument = gql`
     query GetTeamCommunityTier {
   team_service_tiers(where: {id: {_eq: 1}}) {
@@ -39238,94 +38842,6 @@ export function useGetUserCommunityTierLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type GetUserCommunityTierQueryHookResult = ReturnType<typeof useGetUserCommunityTierQuery>;
 export type GetUserCommunityTierLazyQueryHookResult = ReturnType<typeof useGetUserCommunityTierLazyQuery>;
 export type GetUserCommunityTierQueryResult = Apollo.QueryResult<GetUserCommunityTierQuery, GetUserCommunityTierQueryVariables>;
-export const DowngradeUserToCommunityDocument = gql`
-    mutation DowngradeUserToCommunity($userId: Int!) {
-  update_users_by_pk(
-    pk_columns: {id: $userId}
-    _set: {service_tier: 1, orb_subscription_id: null, execution_quota_exceeded_until: null, csv_download_quota_exceeded_until: null, max_overage_cents: 0}
-  ) {
-    id
-  }
-  delete_pending_user_subscription_updates(where: {user_id: {_eq: $userId}}) {
-    affected_rows
-  }
-  update_dashboards(
-    where: {user_id: {_eq: $userId}, is_private: {_eq: true}}
-    _set: {is_archived: true}
-  ) {
-    affected_rows
-  }
-  update_queries(
-    where: {user_id: {_eq: $userId}, is_private: {_eq: true}, is_temp: {_eq: false}}
-    _set: {is_archived: true}
-  ) {
-    affected_rows
-  }
-}
-    `;
-export type DowngradeUserToCommunityMutationFn = Apollo.MutationFunction<DowngradeUserToCommunityMutation, DowngradeUserToCommunityMutationVariables>;
-
-/**
- * __useDowngradeUserToCommunityMutation__
- *
- * To run a mutation, you first call `useDowngradeUserToCommunityMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDowngradeUserToCommunityMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [downgradeUserToCommunityMutation, { data, loading, error }] = useDowngradeUserToCommunityMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *   },
- * });
- */
-export function useDowngradeUserToCommunityMutation(baseOptions?: Apollo.MutationHookOptions<DowngradeUserToCommunityMutation, DowngradeUserToCommunityMutationVariables>) {
-        return Apollo.useMutation<DowngradeUserToCommunityMutation, DowngradeUserToCommunityMutationVariables>(DowngradeUserToCommunityDocument, baseOptions);
-      }
-export type DowngradeUserToCommunityMutationHookResult = ReturnType<typeof useDowngradeUserToCommunityMutation>;
-export type DowngradeUserToCommunityMutationResult = Apollo.MutationResult<DowngradeUserToCommunityMutation>;
-export type DowngradeUserToCommunityMutationOptions = Apollo.BaseMutationOptions<DowngradeUserToCommunityMutation, DowngradeUserToCommunityMutationVariables>;
-export const TerminateApiUserSubscriptionDocument = gql`
-    mutation TerminateApiUserSubscription($userId: Int!, $subscriptionId: String!, $isForced: Boolean) {
-  terminate_api_user_subscription(
-    user_id: $userId
-    subscription_id: $subscriptionId
-    is_forced: $isForced
-  ) {
-    ok
-  }
-}
-    `;
-export type TerminateApiUserSubscriptionMutationFn = Apollo.MutationFunction<TerminateApiUserSubscriptionMutation, TerminateApiUserSubscriptionMutationVariables>;
-
-/**
- * __useTerminateApiUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useTerminateApiUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useTerminateApiUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [terminateApiUserSubscriptionMutation, { data, loading, error }] = useTerminateApiUserSubscriptionMutation({
- *   variables: {
- *      userId: // value for 'userId'
- *      subscriptionId: // value for 'subscriptionId'
- *      isForced: // value for 'isForced'
- *   },
- * });
- */
-export function useTerminateApiUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<TerminateApiUserSubscriptionMutation, TerminateApiUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<TerminateApiUserSubscriptionMutation, TerminateApiUserSubscriptionMutationVariables>(TerminateApiUserSubscriptionDocument, baseOptions);
-      }
-export type TerminateApiUserSubscriptionMutationHookResult = ReturnType<typeof useTerminateApiUserSubscriptionMutation>;
-export type TerminateApiUserSubscriptionMutationResult = Apollo.MutationResult<TerminateApiUserSubscriptionMutation>;
-export type TerminateApiUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<TerminateApiUserSubscriptionMutation, TerminateApiUserSubscriptionMutationVariables>;
 export const GetTeamForOverageDocument = gql`
     query GetTeamForOverage($orbCustomerId: String!) {
   teams(where: {orb_customer_id: {_eq: $orbCustomerId}}) {
@@ -40239,6 +39755,61 @@ export function useCreateFolderMutation(baseOptions?: Apollo.MutationHookOptions
 export type CreateFolderMutationHookResult = ReturnType<typeof useCreateFolderMutation>;
 export type CreateFolderMutationResult = Apollo.MutationResult<CreateFolderMutation>;
 export type CreateFolderMutationOptions = Apollo.BaseMutationOptions<CreateFolderMutation, CreateFolderMutationVariables>;
+export const ListMyDashboardsDocument = gql`
+    query ListMyDashboards($filter_name: String_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_custom: [dashboards_bool_exp!], $order: [dashboards_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false, $is_archived: Boolean! = false) {
+  dashboards(
+    where: {is_archived: {_eq: $is_archived}, name: $filter_name, is_private: $filter_is_private, _and: $filter_custom}
+    limit: $limit
+    offset: $offset
+    order_by: $order
+  ) {
+    ...DashboardItem
+  }
+  dashboards_aggregate(
+    where: {is_archived: {_eq: $is_archived}, name: $filter_name, is_private: $filter_is_private, _and: $filter_custom}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${DashboardItemFragmentDoc}`;
+
+/**
+ * __useListMyDashboardsQuery__
+ *
+ * To run a query within a React component, call `useListMyDashboardsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListMyDashboardsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListMyDashboardsQuery({
+ *   variables: {
+ *      filter_name: // value for 'filter_name'
+ *      filter_is_private: // value for 'filter_is_private'
+ *      filter_custom: // value for 'filter_custom'
+ *      order: // value for 'order'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      include_favs_last_24h: // value for 'include_favs_last_24h'
+ *      include_favs_last_7d: // value for 'include_favs_last_7d'
+ *      include_favs_last_30d: // value for 'include_favs_last_30d'
+ *      include_favs_all_time: // value for 'include_favs_all_time'
+ *      is_archived: // value for 'is_archived'
+ *   },
+ * });
+ */
+export function useListMyDashboardsQuery(baseOptions: Apollo.QueryHookOptions<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>) {
+        return Apollo.useQuery<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>(ListMyDashboardsDocument, baseOptions);
+      }
+export function useListMyDashboardsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>) {
+          return Apollo.useLazyQuery<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>(ListMyDashboardsDocument, baseOptions);
+        }
+export type ListMyDashboardsQueryHookResult = ReturnType<typeof useListMyDashboardsQuery>;
+export type ListMyDashboardsLazyQueryHookResult = ReturnType<typeof useListMyDashboardsLazyQuery>;
+export type ListMyDashboardsQueryResult = Apollo.QueryResult<ListMyDashboardsQuery, ListMyDashboardsQueryVariables>;
 export const UpdateFolderDocument = gql`
     mutation UpdateFolder($id: String!, $name: String!, $icon: String!, $color: String!, $description: String) {
   update_folder(
@@ -40350,6 +39921,62 @@ export function useListFoldersLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type ListFoldersQueryHookResult = ReturnType<typeof useListFoldersQuery>;
 export type ListFoldersLazyQueryHookResult = ReturnType<typeof useListFoldersLazyQuery>;
 export type ListFoldersQueryResult = Apollo.QueryResult<ListFoldersQuery, ListFoldersQueryVariables>;
+export const ListMyQueriesDocument = gql`
+    query ListMyQueries($filter_name: String_comparison_exp, $filter_is_private: Boolean_comparison_exp, $filter_is_matview: String_comparison_exp, $filter_custom: [queries_bool_exp!], $is_archived: Boolean!, $order: [queries_order_by!], $limit: Int!, $offset: Int!, $include_favs_last_24h: Boolean! = false, $include_favs_last_7d: Boolean! = false, $include_favs_last_30d: Boolean! = false, $include_favs_all_time: Boolean! = false) {
+  queries(
+    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, is_private: $filter_is_private, matview_id: $filter_is_matview, _and: $filter_custom}
+    limit: $limit
+    offset: $offset
+    order_by: $order
+  ) {
+    ...QueryItem
+  }
+  queries_aggregate(
+    where: {is_temp: {_eq: false}, is_archived: {_eq: $is_archived}, name: $filter_name, matview_id: $filter_is_matview, is_private: $filter_is_private, _and: $filter_custom}
+  ) {
+    aggregate {
+      count
+    }
+  }
+}
+    ${QueryItemFragmentDoc}`;
+
+/**
+ * __useListMyQueriesQuery__
+ *
+ * To run a query within a React component, call `useListMyQueriesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useListMyQueriesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useListMyQueriesQuery({
+ *   variables: {
+ *      filter_name: // value for 'filter_name'
+ *      filter_is_private: // value for 'filter_is_private'
+ *      filter_is_matview: // value for 'filter_is_matview'
+ *      filter_custom: // value for 'filter_custom'
+ *      is_archived: // value for 'is_archived'
+ *      order: // value for 'order'
+ *      limit: // value for 'limit'
+ *      offset: // value for 'offset'
+ *      include_favs_last_24h: // value for 'include_favs_last_24h'
+ *      include_favs_last_7d: // value for 'include_favs_last_7d'
+ *      include_favs_last_30d: // value for 'include_favs_last_30d'
+ *      include_favs_all_time: // value for 'include_favs_all_time'
+ *   },
+ * });
+ */
+export function useListMyQueriesQuery(baseOptions: Apollo.QueryHookOptions<ListMyQueriesQuery, ListMyQueriesQueryVariables>) {
+        return Apollo.useQuery<ListMyQueriesQuery, ListMyQueriesQueryVariables>(ListMyQueriesDocument, baseOptions);
+      }
+export function useListMyQueriesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ListMyQueriesQuery, ListMyQueriesQueryVariables>) {
+          return Apollo.useLazyQuery<ListMyQueriesQuery, ListMyQueriesQueryVariables>(ListMyQueriesDocument, baseOptions);
+        }
+export type ListMyQueriesQueryHookResult = ReturnType<typeof useListMyQueriesQuery>;
+export type ListMyQueriesLazyQueryHookResult = ReturnType<typeof useListMyQueriesLazyQuery>;
+export type ListMyQueriesQueryResult = Apollo.QueryResult<ListMyQueriesQuery, ListMyQueriesQueryVariables>;
 export const GetFolderContentDocument = gql`
     query GetFolderContent($input: GetContentInput!) {
   get_content(input: $input) {
@@ -40887,37 +40514,6 @@ export function useGetApiUpcomingInvoiceLazyQuery(baseOptions?: Apollo.LazyQuery
 export type GetApiUpcomingInvoiceQueryHookResult = ReturnType<typeof useGetApiUpcomingInvoiceQuery>;
 export type GetApiUpcomingInvoiceLazyQueryHookResult = ReturnType<typeof useGetApiUpcomingInvoiceLazyQuery>;
 export type GetApiUpcomingInvoiceQueryResult = Apollo.QueryResult<GetApiUpcomingInvoiceQuery, GetApiUpcomingInvoiceQueryVariables>;
-export const CancelPendingUserSubscriptionUpdateDocument = gql`
-    mutation CancelPendingUserSubscriptionUpdate {
-  cancel_user_pending_subscription_change {
-    ok
-  }
-}
-    `;
-export type CancelPendingUserSubscriptionUpdateMutationFn = Apollo.MutationFunction<CancelPendingUserSubscriptionUpdateMutation, CancelPendingUserSubscriptionUpdateMutationVariables>;
-
-/**
- * __useCancelPendingUserSubscriptionUpdateMutation__
- *
- * To run a mutation, you first call `useCancelPendingUserSubscriptionUpdateMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useCancelPendingUserSubscriptionUpdateMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [cancelPendingUserSubscriptionUpdateMutation, { data, loading, error }] = useCancelPendingUserSubscriptionUpdateMutation({
- *   variables: {
- *   },
- * });
- */
-export function useCancelPendingUserSubscriptionUpdateMutation(baseOptions?: Apollo.MutationHookOptions<CancelPendingUserSubscriptionUpdateMutation, CancelPendingUserSubscriptionUpdateMutationVariables>) {
-        return Apollo.useMutation<CancelPendingUserSubscriptionUpdateMutation, CancelPendingUserSubscriptionUpdateMutationVariables>(CancelPendingUserSubscriptionUpdateDocument, baseOptions);
-      }
-export type CancelPendingUserSubscriptionUpdateMutationHookResult = ReturnType<typeof useCancelPendingUserSubscriptionUpdateMutation>;
-export type CancelPendingUserSubscriptionUpdateMutationResult = Apollo.MutationResult<CancelPendingUserSubscriptionUpdateMutation>;
-export type CancelPendingUserSubscriptionUpdateMutationOptions = Apollo.BaseMutationOptions<CancelPendingUserSubscriptionUpdateMutation, CancelPendingUserSubscriptionUpdateMutationVariables>;
 export const GetPendingUpdatesDocument = gql`
     query GetPendingUpdates {
   pending_user_subscription_updates {
@@ -41132,6 +40728,7 @@ export const GetUserMaxOverageCentsDocument = gql`
   users_by_pk(id: $id) {
     id
     private_info {
+      service_tier
       max_overage_cents
     }
   }
@@ -41656,6 +41253,7 @@ export const GetTeamMaxOverageCentsDocument = gql`
     id
     members_details {
       id
+      service_tier_id
       max_overage_cents
     }
   }
@@ -42425,102 +42023,6 @@ export function usePendingUserSubscriptionUpdatesLazyQuery(baseOptions?: Apollo.
 export type PendingUserSubscriptionUpdatesQueryHookResult = ReturnType<typeof usePendingUserSubscriptionUpdatesQuery>;
 export type PendingUserSubscriptionUpdatesLazyQueryHookResult = ReturnType<typeof usePendingUserSubscriptionUpdatesLazyQuery>;
 export type PendingUserSubscriptionUpdatesQueryResult = Apollo.QueryResult<PendingUserSubscriptionUpdatesQuery, PendingUserSubscriptionUpdatesQueryVariables>;
-export const UpgradeUserSubscriptionDocument = gql`
-    mutation UpgradeUserSubscription($service_tier_name: String!) {
-  upgrade_user_subscription(service_tier_name: $service_tier_name) {
-    ok
-  }
-}
-    `;
-export type UpgradeUserSubscriptionMutationFn = Apollo.MutationFunction<UpgradeUserSubscriptionMutation, UpgradeUserSubscriptionMutationVariables>;
-
-/**
- * __useUpgradeUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useUpgradeUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpgradeUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upgradeUserSubscriptionMutation, { data, loading, error }] = useUpgradeUserSubscriptionMutation({
- *   variables: {
- *      service_tier_name: // value for 'service_tier_name'
- *   },
- * });
- */
-export function useUpgradeUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<UpgradeUserSubscriptionMutation, UpgradeUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<UpgradeUserSubscriptionMutation, UpgradeUserSubscriptionMutationVariables>(UpgradeUserSubscriptionDocument, baseOptions);
-      }
-export type UpgradeUserSubscriptionMutationHookResult = ReturnType<typeof useUpgradeUserSubscriptionMutation>;
-export type UpgradeUserSubscriptionMutationResult = Apollo.MutationResult<UpgradeUserSubscriptionMutation>;
-export type UpgradeUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<UpgradeUserSubscriptionMutation, UpgradeUserSubscriptionMutationVariables>;
-export const DowngradeApiUserSubscriptionDocument = gql`
-    mutation DowngradeApiUserSubscription($service_tier_name: String!) {
-  downgrade_api_user_subscription(service_tier_name: $service_tier_name) {
-    ok
-  }
-}
-    `;
-export type DowngradeApiUserSubscriptionMutationFn = Apollo.MutationFunction<DowngradeApiUserSubscriptionMutation, DowngradeApiUserSubscriptionMutationVariables>;
-
-/**
- * __useDowngradeApiUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useDowngradeApiUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useDowngradeApiUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [downgradeApiUserSubscriptionMutation, { data, loading, error }] = useDowngradeApiUserSubscriptionMutation({
- *   variables: {
- *      service_tier_name: // value for 'service_tier_name'
- *   },
- * });
- */
-export function useDowngradeApiUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<DowngradeApiUserSubscriptionMutation, DowngradeApiUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<DowngradeApiUserSubscriptionMutation, DowngradeApiUserSubscriptionMutationVariables>(DowngradeApiUserSubscriptionDocument, baseOptions);
-      }
-export type DowngradeApiUserSubscriptionMutationHookResult = ReturnType<typeof useDowngradeApiUserSubscriptionMutation>;
-export type DowngradeApiUserSubscriptionMutationResult = Apollo.MutationResult<DowngradeApiUserSubscriptionMutation>;
-export type DowngradeApiUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<DowngradeApiUserSubscriptionMutation, DowngradeApiUserSubscriptionMutationVariables>;
-export const UpgradeApiUserSubscriptionDocument = gql`
-    mutation UpgradeApiUserSubscription($service_tier_name: String!) {
-  upgrade_api_user_subscription(service_tier_name: $service_tier_name) {
-    ok
-  }
-}
-    `;
-export type UpgradeApiUserSubscriptionMutationFn = Apollo.MutationFunction<UpgradeApiUserSubscriptionMutation, UpgradeApiUserSubscriptionMutationVariables>;
-
-/**
- * __useUpgradeApiUserSubscriptionMutation__
- *
- * To run a mutation, you first call `useUpgradeApiUserSubscriptionMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useUpgradeApiUserSubscriptionMutation` returns a tuple that includes:
- * - A mutate function that you can call at any time to execute the mutation
- * - An object with fields that represent the current status of the mutation's execution
- *
- * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
- *
- * @example
- * const [upgradeApiUserSubscriptionMutation, { data, loading, error }] = useUpgradeApiUserSubscriptionMutation({
- *   variables: {
- *      service_tier_name: // value for 'service_tier_name'
- *   },
- * });
- */
-export function useUpgradeApiUserSubscriptionMutation(baseOptions?: Apollo.MutationHookOptions<UpgradeApiUserSubscriptionMutation, UpgradeApiUserSubscriptionMutationVariables>) {
-        return Apollo.useMutation<UpgradeApiUserSubscriptionMutation, UpgradeApiUserSubscriptionMutationVariables>(UpgradeApiUserSubscriptionDocument, baseOptions);
-      }
-export type UpgradeApiUserSubscriptionMutationHookResult = ReturnType<typeof useUpgradeApiUserSubscriptionMutation>;
-export type UpgradeApiUserSubscriptionMutationResult = Apollo.MutationResult<UpgradeApiUserSubscriptionMutation>;
-export type UpgradeApiUserSubscriptionMutationOptions = Apollo.BaseMutationOptions<UpgradeApiUserSubscriptionMutation, UpgradeApiUserSubscriptionMutationVariables>;
 export const GetDefaultCardDocument = gql`
     query GetDefaultCard {
   stripe_default_card {
@@ -42758,48 +42260,6 @@ export function useGetServiceTierInfoByNameLazyQuery(baseOptions?: Apollo.LazyQu
 export type GetServiceTierInfoByNameQueryHookResult = ReturnType<typeof useGetServiceTierInfoByNameQuery>;
 export type GetServiceTierInfoByNameLazyQueryHookResult = ReturnType<typeof useGetServiceTierInfoByNameLazyQuery>;
 export type GetServiceTierInfoByNameQueryResult = Apollo.QueryResult<GetServiceTierInfoByNameQuery, GetServiceTierInfoByNameQueryVariables>;
-export const GetApiUserServiceTierInfoByNameDocument = gql`
-    query GetApiUserServiceTierInfoByName($service_tier_name: String!) {
-  api_user_service_tiers(
-    where: {name: {_eq: $service_tier_name}, is_public: {_eq: true}}
-  ) {
-    id
-    name
-    base_monthly_price_dollars_cents
-    datapoint_overage_10k_cost_dollars_cents
-    included_datapoints
-    included_executions
-    read_results_api_calls_per_minute
-    dune_attribution_required
-  }
-}
-    `;
-
-/**
- * __useGetApiUserServiceTierInfoByNameQuery__
- *
- * To run a query within a React component, call `useGetApiUserServiceTierInfoByNameQuery` and pass it any options that fit your needs.
- * When your component renders, `useGetApiUserServiceTierInfoByNameQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useGetApiUserServiceTierInfoByNameQuery({
- *   variables: {
- *      service_tier_name: // value for 'service_tier_name'
- *   },
- * });
- */
-export function useGetApiUserServiceTierInfoByNameQuery(baseOptions: Apollo.QueryHookOptions<GetApiUserServiceTierInfoByNameQuery, GetApiUserServiceTierInfoByNameQueryVariables>) {
-        return Apollo.useQuery<GetApiUserServiceTierInfoByNameQuery, GetApiUserServiceTierInfoByNameQueryVariables>(GetApiUserServiceTierInfoByNameDocument, baseOptions);
-      }
-export function useGetApiUserServiceTierInfoByNameLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GetApiUserServiceTierInfoByNameQuery, GetApiUserServiceTierInfoByNameQueryVariables>) {
-          return Apollo.useLazyQuery<GetApiUserServiceTierInfoByNameQuery, GetApiUserServiceTierInfoByNameQueryVariables>(GetApiUserServiceTierInfoByNameDocument, baseOptions);
-        }
-export type GetApiUserServiceTierInfoByNameQueryHookResult = ReturnType<typeof useGetApiUserServiceTierInfoByNameQuery>;
-export type GetApiUserServiceTierInfoByNameLazyQueryHookResult = ReturnType<typeof useGetApiUserServiceTierInfoByNameLazyQuery>;
-export type GetApiUserServiceTierInfoByNameQueryResult = Apollo.QueryResult<GetApiUserServiceTierInfoByNameQuery, GetApiUserServiceTierInfoByNameQueryVariables>;
 export const GetTeamServiceTierInfoByNameDocument = gql`
     query GetTeamServiceTierInfoByName($service_tier_name: String!) {
   team_service_tiers(

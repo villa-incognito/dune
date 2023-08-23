@@ -37,7 +37,7 @@ import { NotFoundError } from "lib/entries/errors";
 import { Session } from "lib/users/types";
 import { apolloCore } from "lib/apollo/apollo";
 import { assert } from "lib/assert/assert";
-import { assertUnreachable } from "lib/assertUnreachable";
+import { assertUnreachable } from "src/utils/assertUnreachable";
 import { deleteFavoriteDashboard } from "lib/entries/graphql";
 import { deleteFavoriteQuery } from "lib/entries/graphql";
 import { findDashboard } from "lib/entries/graphql";

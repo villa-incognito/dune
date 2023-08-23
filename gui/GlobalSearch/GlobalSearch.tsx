@@ -12,8 +12,8 @@ import { useEffect, useState } from "react";
 import useGlobalSearch, { Item } from "./api/useGlobalSearch";
 import { useAnalytics } from "gui/analytics/analytics";
 import { useRouter } from "next/router";
-import { useHotkey } from "lib/hooks/use-hotkey";
-import { isMac } from "lib/shortcut";
+import { useHotkey } from "src/hooks/useHotkey";
+import { isMac } from "src/utils/shortcut";
 
 import React from "react";
 

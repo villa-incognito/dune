@@ -8,7 +8,7 @@ import { formatRFC7231 } from "date-fns";
 import { formatTimer } from "lib/dates/dates";
 import { fromUnixTime } from "date-fns";
 import { parseISO } from "date-fns";
-import { useForceUpdate } from "lib/hooks/useForceUpdate";
+import { useForceUpdate } from "src/hooks/useForceUpdate";
 
 type DateValue = string | number | Date;
 

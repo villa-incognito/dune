@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 
 import useGetGlobalSearchResults from "./useGetGlobalSearchResults";
 import panelStyles from "../MenuPanel.module.css";
-import { useDebouncedValue } from "lib/hooks/use-debounced-value";
+import { useDebouncedValue } from "src/hooks/useDebouncedValue";
 import { Maybe } from "lib/types/graphql";
 import { ArrowRight } from "phosphor-react";
 import { Icon } from "gui/icon/icon";

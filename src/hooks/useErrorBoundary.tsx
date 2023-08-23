@@ -4,7 +4,7 @@ import React from "react";
 export const useErrorBoundary = () => {
   const [, setError] = React.useState();
 
-  const fn = React.useCallback(
+  return React.useCallback(
     (err) => {
       setError(() => {
         throw err;
@@ -12,6 +12,4 @@ export const useErrorBoundary = () => {
     },
     [setError]
   );
-
-  return fn;
 };

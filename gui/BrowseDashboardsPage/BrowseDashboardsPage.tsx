@@ -7,7 +7,7 @@ import { Loading } from "gui/loading/loading";
 import List from "gui/BrowseDashboardsPage/List/DashboardsList";
 import { Empty } from "gui/empty/empty";
 import Link from "next/link";
-import { useLoginUrl } from "lib/hooks/useLoginUrl";
+import { useLoginUrl } from "src/hooks/useLoginUrl";
 import EmptyBecausePageIsOutOfBounds from "gui/browse-shared/EmptyBecausePageIsOutOfBounds";
 import BrowsePagination, {
   usePaginationState,

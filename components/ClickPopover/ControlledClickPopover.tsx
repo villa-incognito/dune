@@ -12,8 +12,8 @@ import React, {
   CSSProperties,
 } from "react";
 import { getPosition, Position } from "shared/getPosition/getPosition";
-import { useClickOutside } from "lib/hooks/useClickOutside";
-import { useForceUpdate } from "lib/hooks/useForceUpdate";
+import { useClickOutside } from "src/hooks/useClickOutside";
+import { useForceUpdate } from "src/hooks/useForceUpdate";
 
 import type { ReactNode, ReactElement } from "react";
 

@@ -12,10 +12,12 @@ import { useHasViewPermission } from "lib/permissions/permissions";
 import type { DashboardType } from "../api/dashboardItem";
 import { Tags } from "gui/tags/tags";
 import { AvatarOrIcon } from "gui/browse-shared/AvatarOrIcon";
+import { ThreeDotsMenu } from "page-components/Library/MoveContentIndividually/ThreeDotsMenu";
 
 interface Props {
   dashboards: DashboardType[];
   origin?: "creations";
+  refetchFolderContent?: () => Promise<void> | void;
 }
 
 export default function DashboardsList(props: Props) {
@@ -31,6 +33,7 @@ export default function DashboardsList(props: Props) {
             dashboard={dashboard}
             favorites={favorites}
             origin={props.origin}
+            refetchFolderContent={props.refetchFolderContent}
           />
         ))}
       </tbody>
@@ -42,10 +45,12 @@ export const DashboardTableRow = ({
   dashboard,
   favorites,
   origin,
+  refetchFolderContent,
 }: {
   dashboard: DashboardType;
   favorites: Output;
   origin?: "creations";
+  refetchFolderContent?: () => Promise<void> | void;
 }) => {
   const hasViewPermission = useHasViewPermission(dashboard.owner);
 
@@ -77,16 +82,13 @@ export const DashboardTableRow = ({
               />
             )}
           </div>
-          <div className={styles.userName}>
+          <div className={styles.ownerAndDetails}>
             <Link href={`/${dashboard.owner.handle}`}>
               <a>@{dashboard.owner.handle}</a>
-            </Link>{" "}
-            <ul>
-              <li>
-                <span>updated</span>
-                <TimeRelative>{dashboard.updated_at}</TimeRelative>
-              </li>
-            </ul>
+            </Link>
+            <span>
+              • updated <TimeRelative>{dashboard.updated_at}</TimeRelative>
+            </span>
             {dashboard.is_private && <Icon icon="lock-fill" />}
           </div>
         </div>
@@ -98,11 +100,19 @@ export const DashboardTableRow = ({
               <DashboardScheduleBadge size="L" dashboardId={dashboard.id} />
             )}
           </div>
-          <Star
-            dashboard_id={dashboard.id}
-            stars={dashboard.favoriteCount}
-            isFavorite={favorites.dict?.[dashboard.id]?.iHaveFavorited ?? false}
-          />
+          <div className={styles.actions}>
+            <Star
+              dashboard_id={dashboard.id}
+              stars={dashboard.favoriteCount}
+              isFavorite={
+                favorites.dict?.[dashboard.id]?.iHaveFavorited ?? false
+              }
+            />
+            <ThreeDotsMenu
+              contentItem={{ type: "dashboard", id: dashboard.id }}
+              refetchFolderContent={refetchFolderContent}
+            />
+          </div>
         </div>
       </td>
     </tr>

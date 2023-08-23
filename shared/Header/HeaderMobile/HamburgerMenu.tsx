@@ -14,8 +14,8 @@ import { useContext, useState } from "react";
 import { SessionContext } from "gui/session/session";
 import { useActiveContext } from "shared/ContextSwitcher/store";
 import { useIsDataUploadEnabledForActiveContext } from "page-components/DataUpload/useIsDataUploadEnabledForActiveContext";
-import { useLoginUrl, getLoginUrlWithNextUrl } from "lib/hooks/useLoginUrl";
-import { useSignupUrl } from "lib/hooks/useSignupUrl";
+import { useLoginUrl, getLoginUrlWithNextUrl } from "src/hooks/useLoginUrl";
+import { useSignupUrl } from "src/hooks/useSignupUrl";
 
 export function HamburgerMenu() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -122,6 +122,33 @@ export function HamburgerMenu() {
                     <ul className={styles.buttonGroup}>
                       <li>
                         <AnchorButton
+                          theme="primary-light"
+                          size="M"
+                          href={getLoginUrlWithNextUrl("/queries")}
+                          onClick={() => {
+                            setIsMenuOpen(false);
+                          }}
+                        >
+                          <span>New query</span>
+                        </AnchorButton>
+                      </li>
+
+                      <li>
+                        <AnchorButton
+                          theme="primary-light"
+                          size="M"
+                          href={loginUrl}
+                        >
+                          <span>New dashboard</span>
+                        </AnchorButton>
+                      </li>
+                    </ul>
+                  </li>
+
+                  <li>
+                    <ul className={styles.buttonGroup}>
+                      <li>
+                        <AnchorButton
                           theme="secondary"
                           size="M"
                           href={signupUrl}
@@ -172,7 +199,7 @@ export function HamburgerMenu() {
             <Menu.ItemLink href="/contracts/new">
               Submit a contract
             </Menu.ItemLink>
-            {dataUploadEnabled && (
+            {dataUploadEnabled === "enabled" && (
               <Menu.ItemLink href="/data/upload">
                 Upload a dataset
               </Menu.ItemLink>

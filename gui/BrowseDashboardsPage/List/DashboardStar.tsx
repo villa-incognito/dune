@@ -9,6 +9,8 @@ import styles from "shared/ContentList/ContentList.module.css";
 
 import { Icon } from "gui/icon/icon";
 import { formatNumber } from "lib/intl/number";
+import Link from "next/link";
+import { useLoginUrl } from "src/hooks/useLoginUrl";
 
 import type { Session } from "lib/users/types";
 import { useSession } from "gui/session/session";
@@ -23,6 +25,9 @@ import {
   DeleteFavoriteDashboardMutation,
   DeleteFavoriteDashboardMutationVariables,
 } from "lib/types/graphql";
+import { Badge } from "components/Badge/Badge";
+import { IconStar } from "components/Icons/IconStar";
+import { IconStarFill } from "components/Icons/IconStarFill";
 
 interface Props {
   dashboard_id: number;
@@ -34,19 +39,35 @@ interface Props {
 export default function DashboardStar(props: Props) {
   const session = useSession();
   const { enableFavoriting = true } = props;
+  const loginUrl = useLoginUrl();
 
-  if (!session || !enableFavoriting) {
+  if (!enableFavoriting) {
     return (
       <div className={styles.favorites}>
         {formatNumber(props.stars)}
         <Icon icon="person" />
       </div>
     );
+  } else if (!session) {
+    return (
+      <div className={styles.favorites}>
+        <Badge size="L" variant="filled" color="neutral">
+          {formatNumber(props.stars)}
+          <Link href={loginUrl}>
+            <a aria-label="Add to favorites">
+              <IconStar />
+            </a>
+          </Link>
+        </Badge>
+      </div>
+    );
   } else if (props.isFavorite === undefined) {
     return (
       <div className={styles.favorites}>
-        {formatNumber(props.stars)}
-        <Icon icon="star" />
+        <Badge size="L" variant="filled" color="neutral">
+          {formatNumber(props.stars)}
+          <IconStar />
+        </Badge>
       </div>
     );
   } else {
@@ -60,37 +81,41 @@ function ToggleableDashboardStar(props: Props) {
   if (!props.isFavorite) {
     return (
       <div className={styles.favorites}>
-        {formatNumber(props.stars)}
-        <button
-          aria-label="Add to favorites"
-          onClick={() => {
-            addToFavorites(session, props.dashboard_id)
-              .then(() => refetchFavorites(session, props.dashboard_id))
-              .catch(
-                () => {} // ignore failed request
-              );
-          }}
-        >
-          <Icon icon="star" />
-        </button>
+        <Badge size="L" variant="filled" color="neutral">
+          {formatNumber(props.stars)}
+          <button
+            aria-label="Add to favorites"
+            onClick={() => {
+              addToFavorites(session, props.dashboard_id)
+                .then(() => refetchFavorites(session, props.dashboard_id))
+                .catch(
+                  () => {} // ignore failed request
+                );
+            }}
+          >
+            <IconStar />
+          </button>
+        </Badge>
       </div>
     );
   } else {
     return (
       <div className={styles.favorites}>
-        {formatNumber(props.stars)}
-        <button
-          aria-label="Remove from favorites"
-          onClick={() => {
-            removeFromFavorites(session, props.dashboard_id)
-              .then(() => refetchFavorites(session, props.dashboard_id))
-              .catch(
-                () => {} // ignore failed request
-              );
-          }}
-        >
-          <Icon icon="star-fill" />
-        </button>
+        <Badge size="L" variant="filled" color="neutral">
+          {formatNumber(props.stars)}
+          <button
+            aria-label="Remove from favorites"
+            onClick={() => {
+              removeFromFavorites(session, props.dashboard_id)
+                .then(() => refetchFavorites(session, props.dashboard_id))
+                .catch(
+                  () => {} // ignore failed request
+                );
+            }}
+          >
+            <IconStarFill />
+          </button>
+        </Badge>
       </div>
     );
   }

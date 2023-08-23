@@ -3,7 +3,7 @@ import cn from "classnames";
 
 import React, { useEffect, useRef, useState, useMemo } from "react";
 import { getPosition, Position } from "shared/getPosition/getPosition";
-import { useForceUpdate } from "lib/hooks/useForceUpdate";
+import { useForceUpdate } from "src/hooks/useForceUpdate";
 
 import type { ReactNode, ReactElement } from "react";
 

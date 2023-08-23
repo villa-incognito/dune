@@ -109,11 +109,15 @@ export const mergeDashboardParameters = (
   const parameters = mergeParamsWithQueryId(...details);
   const mapping: ParameterMapping = {};
 
-  details.forEach((d) => {
-    mapping[d.query_id] = (d.parameters ?? []).map((p) => {
-      p.default_value = p.value;
-      return uniqueParam(p);
-    });
+  details.forEach((dashboard) => {
+    mapping[dashboard.query_id] = (dashboard.parameters ?? []).map(
+      (parameter) => {
+        return uniqueParam({
+          ...parameter,
+          default_value: parameter.value,
+        });
+      }
+    );
   });
 
   return [parameters, mapping];

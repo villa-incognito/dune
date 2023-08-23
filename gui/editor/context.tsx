@@ -36,7 +36,7 @@ import {
   useHasAdminPermission,
   useHasEditPermission,
 } from "lib/permissions/permissions";
-import type { Datasets } from "lib/types/graphql";
+import { isDeprecated } from "lib/datasets/deprecation";
 import type { ActiveContext } from "shared/ContextSwitcher/store";
 
 interface Props {
@@ -169,16 +169,7 @@ const createEmptyQuery = (
     const param = Router.query.d;
     const parsedId = param ? Number(param) : undefined;
     const datasetId = datasets.datasets.find(
-      (ds) =>
-        ds.id === parsedId &&
-        !isDeprecated(ds, {
-          // Assume user is not a spellbook contributor, since we don't
-          // have access to that information at page load.
-          // If they are a spellbook contributor, they can still select
-          // Spark SQL in the dropdown, but it won't be selected from
-          // the query param.
-          isSpellbookContributor: false,
-        })
+      (ds) => ds.id === parsedId && !isDeprecated(ds)
     )?.id;
 
     if (typeof datasetId === "number") {
@@ -312,12 +303,6 @@ export const useEditorTheme = () => {
 export const useEditorDispatch = () => {
   return useContextSelector(EditorContext, ({ dispatch }) => {
     return dispatch;
-  });
-};
-
-export const useEditorDatasets = () => {
-  return useContextSelector(EditorContext, ({ editor }) => {
-    return editor?.datasets || { datasets: [] };
   });
 };
 
@@ -489,37 +474,3 @@ export const useEditorVisual = () => {
     return editor?.query.visualizations?.[editor.visualIndex];
   });
 };
-
-// Utils
-export function isDeprecated(
-  dataset: Pick<Datasets, "name">,
-  options: { isSpellbookContributor: boolean }
-) {
-  if (dataset.name.includes("Spark SQL")) {
-    return !options.isSpellbookContributor;
-  }
-
-  return dataset.name.includes("[deprecated]");
-}
-
-export function isEditingDisabled(
-  dataset: Pick<Datasets, "name">,
-  options: { isSpellbookContributor: boolean }
-) {
-  if (dataset.name.includes("Spark SQL")) {
-    return !options.isSpellbookContributor;
-  }
-
-  return dataset.name.includes("[deprecated]");
-}
-
-export function isExecutionDisabled(
-  dataset: Pick<Datasets, "name">,
-  options: { hasPaidPlan: boolean; isSpellbookContributor: boolean }
-) {
-  if (dataset.name.includes("Spark SQL")) {
-    return !(options.hasPaidPlan || options.isSpellbookContributor);
-  }
-
-  return !dataset.name.includes("Dune SQL");
-}

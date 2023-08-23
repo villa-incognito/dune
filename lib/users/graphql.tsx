@@ -26,6 +26,9 @@ const SessionUser = gql`
       fromServiceTier: from_service_tier
       onboarding_qs_skipped_until
     }
+    onboarding_questions {
+      brings_to_dune
+    }
     user_service_tier {
       id
       name

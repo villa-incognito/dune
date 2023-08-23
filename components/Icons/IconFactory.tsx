@@ -1,4 +1,4 @@
-export function IconFileDoc() {
+export function IconFactory() {
   return (
     <svg
       width="16"
@@ -8,31 +8,31 @@ export function IconFileDoc() {
       xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d="M3.625 14.5C4.02282 14.5 4.40436 14.342 4.68566 14.0607C4.96696 13.7794 5.125 13.3978 5.125 13C5.125 12.6022 4.96696 12.2206 4.68566 11.9393C4.40436 11.658 4.02282 11.5 3.625 11.5H2.75V14.5H3.625Z"
+        d="M5 11H6.75"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M8.125 14.5C8.88439 14.5 9.5 13.8284 9.5 13C9.5 12.1716 8.88439 11.5 8.125 11.5C7.36561 11.5 6.75 12.1716 6.75 13C6.75 13.8284 7.36561 14.5 8.125 14.5Z"
+        d="M9.25 11H11"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M13.25 14.1562C13.0108 14.3749 12.6991 14.4974 12.375 14.5C11.6125 14.5 11 13.8313 11 13C11 12.1687 11.6125 11.5 12.375 11.5C12.6991 11.5026 13.0108 11.6251 13.25 11.8438"
+        d="M13.5 13.5V8.5H10.5L6.5 5.5V8.5L2.5 5.5V13.5"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M3 9V1.5C3 1.36739 3.05268 1.24021 3.14645 1.14645C3.24021 1.05268 3.36739 1 3.5 1H9.5L13 4.5V9"
+        d="M1 13.5H15"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
-        d="M9.5 1V4.5H13"
+        d="M13.5 8.5L12.5625 1.93125C12.5459 1.81195 12.4869 1.70264 12.3962 1.62341C12.3055 1.54419 12.1892 1.50036 12.0688 1.5H10.9312C10.8108 1.50036 10.6945 1.54419 10.6038 1.62341C10.5131 1.70264 10.4541 1.81195 10.4375 1.93125L9.59375 7.825"
         stroke="currentColor"
         strokeLinecap="round"
         strokeLinejoin="round"

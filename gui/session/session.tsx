@@ -48,7 +48,7 @@ export const SessionProvider: React.FC = (props) => {
 
     globalSession.addListener(onSession);
     return () => globalSession.removeListener(onSession);
-  }, []);
+  }, [data]);
 
   // Perform a global logout, notify other tabs, and reload the page.
   const logout = React.useCallback(() => {
@@ -123,22 +123,6 @@ export const useSessionWithUser = (): SessionWithUser | undefined => {
   // This cast is guaranteed to be safe since we've already made
   // sure that user is present in the session object
   return session as SessionWithUser;
-};
-
-// For a lot of the hooks, a new session should not trigger a new request
-// but whenever a new request is made, it should use the latest session.
-// To solve this problem we wrap the session inside a ref which will always pass
-// the shallow equality checks but when the `current` property is accessed it will
-// refer to the latest session.
-export const useSessionRef = (): React.MutableRefObject<
-  Session | undefined
-> => {
-  const { session } = React.useContext(SessionContext);
-  const s = React.useRef(session);
-  React.useEffect(() => {
-    s.current = session;
-  }, [session]);
-  return s;
 };
 
 // Get the session or throw if the user is not logged in.

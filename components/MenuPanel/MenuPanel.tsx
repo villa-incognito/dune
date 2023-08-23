@@ -10,7 +10,7 @@ import {
   getKeys,
   Shortcut as IShortcut,
   Key,
-} from "lib/shortcut";
+} from "src/utils/shortcut";
 
 import type { ReactNode } from "react";
 

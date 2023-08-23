@@ -1,5 +1,5 @@
 import { usePosthog } from "gui/analytics/analytics";
-import { useForceUpdate } from "lib/hooks/useForceUpdate";
+import { useForceUpdate } from "src/hooks/useForceUpdate";
 import { useEffect } from "react";
 
 import type { PostHog } from "posthog-js";
@@ -24,8 +24,8 @@ type FeatureFlag =
   | "query-refresh"
   | "dashboard-refresh"
   | "matviews"
-  | "enable-spark-spellbook-contributors"
   | "data-upload-v1"
+  | "prompt-joined-for-work-but-not-team-banner"
   | "teams-announcement";
 
 // Use this hook to find out if the logged in user has access to a feature

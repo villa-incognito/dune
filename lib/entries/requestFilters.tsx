@@ -1,6 +1,6 @@
 /* eslint @typescript-eslint/strict-boolean-expressions: off */
 
-import { assertUnreachable } from "lib/assertUnreachable";
+import { assertUnreachable } from "src/utils/assertUnreachable";
 import { EntryFilter } from "lib/entries/types";
 import { EntryType } from "lib/entries/types";
 import { EntriesRequestFilters } from "lib/entries/types";

@@ -51,16 +51,6 @@ export const FieldError: React.FC<{
   );
 };
 
-export const FieldText: React.FC<{
-  as?: string;
-}> = (props) => {
-  return React.createElement(
-    props.as ?? "p",
-    { className: styles.text },
-    props.children
-  );
-};
-
 export const FieldButtons: React.FC = (props) => {
   return (
     <ButtonGroup className={cn(styles.field, styles.buttons)}>

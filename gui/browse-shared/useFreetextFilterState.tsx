@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useDebouncedEffect } from "lib/hooks/use-debounced-effect";
+import { useDebouncedEffect } from "src/hooks/useDebouncedEffect";
 import useStringQueryParamState from "lib/queryParamState/useStringQueryParamState";
 import { resetPagination } from "./usePaginationState";
 

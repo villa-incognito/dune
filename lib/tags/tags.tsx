@@ -1,4 +1,4 @@
-import { assertUnreachable } from "lib/assertUnreachable";
+import { assertUnreachable } from "src/utils/assertUnreachable";
 import { EntrySlug } from "lib/entries/types";
 import { Nullable, removeNullable } from "lib/types/types";
 import {

@@ -11,23 +11,21 @@ import { Tooltip } from "components/Tooltip/Tooltip";
 import { ClickPopover } from "components/ClickPopover";
 import * as Menu from "components/MenuPanel/MenuPanel";
 
-import { IconFileDoc } from "components/Icons/IconFileDoc";
 import { IconDiscord } from "components/Icons/IconDiscord";
 import { IconThreeDots } from "components/Icons/IconThreeDots";
 
 import { useRouter, NextRouter } from "next/router";
 import { useActiveContext } from "shared/ContextSwitcher/store";
-import { useIsDataUploadEnabledForActiveContext } from "page-components/DataUpload/useIsDataUploadEnabledForActiveContext";
-import { useLoginUrl } from "lib/hooks/useLoginUrl";
-import { useSignupUrl } from "lib/hooks/useSignupUrl";
+import { useLoginUrl } from "src/hooks/useLoginUrl";
+import { useSignupUrl } from "src/hooks/useSignupUrl";
 
 import { ReactNode, useContext } from "react";
 import { SessionContext } from "gui/session/session";
-import { MigrationBanner } from "shared/MigrationBanner/MigrationBanner";
 import { UsageTracker } from "shared/UsageTracker/UsageTracker";
 import { MigrationDialogV2 } from "../../MigrationDialogV2/MigrationDialogV2";
 import { Button } from "components/Button/Button";
 import { IconTelegram } from "components/Icons/IconTelegram";
+import { HeaderBanner } from "shared/HeaderBanner/HeaderBanner";
 
 interface Props {
   className?: string;
@@ -40,7 +38,6 @@ export function HeaderDesktop(props: Props) {
   const signupUrl = useSignupUrl();
   const activeContext = useActiveContext();
   const currentPlanId = activeContext?.serviceTier?.id;
-  const dataUploadEnabled = useIsDataUploadEnabledForActiveContext();
 
   return (
     <header className={cn(styles.header, props.className)}>
@@ -87,7 +84,7 @@ export function HeaderDesktop(props: Props) {
                   <UsageTracker />
                 </li>
               )}
-              {activeContext?.permissions.canEditContent && (
+              {(!activeContext || activeContext.permissions.canEditContent) && (
                 <li>
                   <HeaderCreateButton />
                 </li>
@@ -99,33 +96,24 @@ export function HeaderDesktop(props: Props) {
         {/* Right half */}
         <div className={styles.group}>
           <ul className={styles.spacedGroup}>
-            {session && (
-              <li>
-                {currentPlanId && [3, 4].includes(currentPlanId) ? (
-                  <MigrationDialogV2>
-                    <Button size="M" theme="secondary-light">
-                      Explore new plans
-                    </Button>
-                  </MigrationDialogV2>
-                ) : (
-                  <AnchorButton
-                    theme="secondary-light"
-                    size="M"
-                    href="/pricing"
-                  >
-                    Explore new plans
-                  </AnchorButton>
-                )}
-              </li>
-            )}
             <li>
-              <CommunityLink />
+              {currentPlanId && [3, 4].includes(currentPlanId) ? (
+                <MigrationDialogV2>
+                  <Button size="M" theme="secondary-light">
+                    Explore Plans
+                  </Button>
+                </MigrationDialogV2>
+              ) : (
+                <AnchorButton theme="secondary-light" size="M" href="/pricing">
+                  Explore Plans
+                </AnchorButton>
+              )}
             </li>
-            <Item tooltip="Docs">
-              <a className={styles.iconButton} href="/docs" target="_blank">
-                <IconFileDoc />
-              </a>
-            </Item>
+            <li>
+              <PageLink href="/docs" isActive={() => false} shouldOpenInNewTab>
+                Get Started | Docs
+              </PageLink>
+            </li>
             <Item tooltip="Discord">
               <a
                 className={styles.iconButton}
@@ -157,6 +145,7 @@ export function HeaderDesktop(props: Props) {
                         Give feedback
                       </Menu.ItemLink>
                       <Menu.ItemLink href="/projects">Projects</Menu.ItemLink>
+                      <Menu.ItemLink href="/community">Community</Menu.ItemLink>
                       <Menu.ItemLink href="/blog">Blog</Menu.ItemLink>
                       <Menu.ItemLink href="/pricing">
                         Subscriptions
@@ -169,11 +158,6 @@ export function HeaderDesktop(props: Props) {
                         <Menu.ItemLink href="/contracts/new">
                           Submit a contract
                         </Menu.ItemLink>
-                        {dataUploadEnabled && (
-                          <Menu.ItemLink href="/data/upload">
-                            Upload a dataset
-                          </Menu.ItemLink>
-                        )}
                         <Menu.ItemLink href="/settings/profile">
                           Settings
                         </Menu.ItemLink>
@@ -211,7 +195,7 @@ export function HeaderDesktop(props: Props) {
           </ul>
         </div>
       </nav>
-      {!isLoggedOut && <MigrationBanner />}
+      <HeaderBanner />
     </header>
   );
 }
@@ -219,7 +203,12 @@ export function HeaderDesktop(props: Props) {
 function DuneLogo() {
   return (
     <a className={styles.logoLink} href="/home">
-      <img src="/assets/DuneLogoCircle.svg" alt="Dune" />
+      <img
+        src="/assets/DuneLogoCircle.svg"
+        alt="Dune"
+        width="24px"
+        height="24px"
+      />
     </a>
   );
 }
@@ -238,6 +227,7 @@ function DiscoverLink() {
     </PageLink>
   );
 }
+
 function FavoritesLink() {
   return (
     <PageLink
@@ -251,6 +241,7 @@ function FavoritesLink() {
     </PageLink>
   );
 }
+
 function LibraryLink() {
   return (
     <PageLink
@@ -264,13 +255,6 @@ function LibraryLink() {
     </PageLink>
   );
 }
-function CommunityLink() {
-  return (
-    <PageLink href="/community" isActive={() => false}>
-      Community
-    </PageLink>
-  );
-}
 
 export const pathRegex = {
   browse: /^\/browse\/[a-z]+$/,
@@ -281,6 +265,7 @@ export const pathRegex = {
 const PageLink: React.FC<
   React.ComponentProps<typeof Link> & {
     isActive?: (router: NextRouter) => boolean;
+    shouldOpenInNewTab?: boolean;
   }
 > = ({ isActive, ...props }) => {
   const router = useRouter();
@@ -295,6 +280,7 @@ const PageLink: React.FC<
       <a
         className={styles.pageLink}
         aria-current={current ? "page" : undefined}
+        target={props.shouldOpenInNewTab ? "_blank" : undefined}
       >
         {props.children}
       </a>

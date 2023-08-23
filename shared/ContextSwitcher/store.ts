@@ -3,7 +3,7 @@
 import createStore from "zustand";
 import { useSessionWithUser } from "gui/session/session";
 import { useMyTeamsIfLoggedIn } from "shared/teams/useMyTeams";
-import { useAndRemoveQueryParam } from "lib/hooks/queryParams";
+import { useAndRemoveQueryParam } from "src/hooks/useQueryParams";
 import { useState, useEffect } from "react";
 
 import { pick } from "lodash";

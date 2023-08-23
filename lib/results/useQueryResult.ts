@@ -1,6 +1,7 @@
 /* eslint react-hooks/exhaustive-deps: 2 */
 /* eslint react-hooks/rules-of-hooks: 2 */
 
+import { gql } from "@apollo/client";
 import { isEqual } from "lodash";
 import {
   useCallback,
@@ -18,7 +19,7 @@ import {
   isExecutionFinal,
   pollForFinalExecution,
 } from "lib/execution/execution";
-import { useDeepMemo } from "lib/hooks/useDeepMemo";
+import { useDeepMemo } from "src/hooks/useDeepMemo";
 import { Parameter } from "lib/parameters/types";
 import {
   GetResultDocument,
@@ -35,7 +36,7 @@ import {
 } from "./types";
 import { guessResultColumnTypes, sortColumns } from "./values";
 
-export function useQueryResultNew(
+export function useQueryResult(
   queryId: number | undefined,
   parameters: Parameter[] | undefined,
   {
@@ -79,12 +80,21 @@ export function useQueryResultNew(
         return;
       }
 
-      const controller = createAbortController();
+      const done = jobQueryResult?.job?.done ?? false;
 
-      setLoading(true);
-      setResultQueryResult(undefined);
-      setErrorQueryResult(undefined);
+      // If a previous job has finished, we overwrite the stale results
+      // with the fresh results while waiting for the new job to finish.
+      if (done) {
+        if (jobQueryResult?.error !== undefined) {
+          setErrorQueryResult(jobQueryResult);
+        } else {
+          setResultQueryResult(jobQueryResult);
+        }
+      }
+
       setJobQueryResult(undefined);
+      setLoading(true);
+      const controller = createAbortController();
 
       try {
         if (tempJobId !== undefined) {
@@ -129,6 +139,7 @@ export function useQueryResultNew(
       session,
       apiKey,
       can_refresh,
+      jobQueryResult,
       createAbortController,
       setResultQueryResult,
       setErrorQueryResult,
@@ -217,6 +228,37 @@ export function useQueryResultNew(
   ]);
 
   return queryResult;
+}
+
+interface GetResultQueryParams {
+  queryId?: number;
+  parameters?: Parameter[];
+  can_refresh: boolean;
+  apiKey: string | undefined;
+  session?: Session;
+}
+
+// Since the apollo cache uses the variables as part of the
+// the cache key this function provides a way to ensure that
+// useGetResult and any other query calling GetResult share
+// the same variables.
+export function getResultQueryParams({
+  queryId,
+  parameters,
+  can_refresh,
+  apiKey,
+  session,
+}: GetResultQueryParams) {
+  const formattedParams: Parameter[] = normalizeParameters(parameters ?? []);
+  return {
+    queryDoc: GetResultDocument,
+    context: { session: session, apiKey },
+    variables: {
+      query_id: queryId ?? 0,
+      parameters: formattedParams,
+      can_refresh,
+    },
+  };
 }
 
 function useCreateAbortController() {
@@ -510,3 +552,21 @@ function transformError(error: Error): Error {
 
   return error;
 }
+
+gql`
+  query GetResult(
+    $query_id: Int!
+    $parameters: [Parameter!]!
+    $can_refresh: Boolean!
+  ) {
+    get_result_v4(
+      query_id: $query_id
+      parameters: $parameters
+      can_refresh: $can_refresh
+    ) {
+      job_id
+      result_id
+      error_id
+    }
+  }
+`;

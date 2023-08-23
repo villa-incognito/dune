@@ -6,7 +6,7 @@ import { HamburgerMenu } from "./HamburgerMenu";
 
 import { useContext } from "react";
 import { SessionContext } from "gui/session/session";
-import { useSignupUrl } from "lib/hooks/useSignupUrl";
+import { useSignupUrl } from "src/hooks/useSignupUrl";
 
 interface Props {
   className?: string;
@@ -61,7 +61,12 @@ export function HeaderMobile(props: Props) {
 function DuneLogo() {
   return (
     <a className={styles.logoLink} href="/home">
-      <img src="/assets/DuneLogoCircle.svg" alt="Dune" />
+      <img
+        src="/assets/DuneLogoCircle.svg"
+        alt="Dune"
+        width="24px"
+        height="24px"
+      />
     </a>
   );
 }

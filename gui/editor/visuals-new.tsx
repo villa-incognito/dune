@@ -16,7 +16,7 @@ import { NoId, removeNullable } from "lib/types/types";
 import { useEditorDispatch } from "gui/editor/context";
 import { useEditorQueryId } from "gui/editor/context";
 import { useEditorResult } from "gui/editor/context";
-import { useErrorBoundary } from "lib/hooks/use-error-boundary";
+import { useErrorBoundary } from "src/hooks/useErrorBoundary";
 import { useRequiredSession } from "gui/session/session";
 import { VisualChart } from "lib/visuals/types";
 import { VisualCounter } from "lib/visuals/types";

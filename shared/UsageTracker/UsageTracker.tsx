@@ -4,6 +4,7 @@ import { IconGauge } from "components/Icons/IconGauge";
 import styles from "./UsageTracker.module.css";
 import { HoverPopover } from "components/HoverPopover/HoverPopover";
 import { IconButton } from "components/Button/IconButton";
+import { IconLoading } from "components/Icons/IconLoading";
 import { useActiveContext } from "shared/ContextSwitcher/store";
 import { AnchorButton } from "components/Button/AnchorButton";
 import { useTeamUsage } from "page-components/Settings/Teams/ManageTeam/SubscriptionTab/hooks/useTeamUsage";
@@ -108,48 +109,54 @@ function CommonUsageTracker(props: {
     settingsLink,
   } = props;
 
-  if (!usage) {
-    return null;
-  }
+  const content = () => {
+    if (!usage) {
+      return (
+        <div className={styles.usageTracker}>
+          <IconLoading />
+        </div>
+      );
+    }
 
-  const usagePercentage = getUsagePercentage(
-    usage.usedCredits,
-    usage.maxCredits
-  );
+    const usagePercentage = getUsagePercentage(
+      usage.usedCredits,
+      usage.maxCredits
+    );
 
-  const content = () => (
-    <div className={styles.usageTracker}>
-      <h1>{formattedPlanName(currentPlanName || "")}</h1>
-      <hr />
+    return (
+      <div className={styles.usageTracker}>
+        <h1>{formattedPlanName(currentPlanName || "")}</h1>
+        <hr />
 
-      <div className={styles.usage}>
-        <UsageItem
-          title="Credits"
-          currentUsage={usage?.usedCredits ?? 0}
-          maxUsage={usage?.maxCredits ?? 0}
-          usagePerMonth
-          tooltipLabel={<>Amount of used Dune credits, renews monthly.</>}
-          className={styles.usageItem}
-        />
+        <div className={styles.usage}>
+          <UsageItem
+            title="Credits"
+            currentUsage={usage?.usedCredits ?? 0}
+            maxUsage={usage?.maxCredits ?? 0}
+            usagePerMonth
+            tooltipLabel={<>Amount of used Dune credits, renews monthly.</>}
+            className={styles.usageItem}
+          />
 
-        {canUpdateSubscription && (
-          <>
-            <AnchorButton
-              theme={usagePercentage >= 100 ? "secondary" : "tertiary"}
-              size="S"
-              href={settingsLink}
-            >
-              {usagePercentage >= 100 ? "Add extra credits" : "Upgrade plan"}
-            </AnchorButton>
+          {canUpdateSubscription && (
+            <>
+              <AnchorButton
+                theme={usagePercentage >= 100 ? "secondary" : "tertiary"}
+                size="S"
+                href={settingsLink}
+              >
+                {usagePercentage >= 100 ? "Add extra credits" : "Upgrade plan"}
+              </AnchorButton>
 
-            {upcomingInvoice && (
-              <p>Your credits renew on {formatDateMDY(upcomingInvoice)}.</p>
-            )}
-          </>
-        )}
+              {upcomingInvoice && (
+                <p>Your credits renew on {formatDateMDY(upcomingInvoice)}.</p>
+              )}
+            </>
+          )}
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <>

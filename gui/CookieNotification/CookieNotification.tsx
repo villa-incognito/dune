@@ -1,23 +1,29 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
-import { IconCross } from "components/Icons/IconCross";
 import {
   tryLocalStorageGetItem,
   tryLocalStorageSetItem,
 } from "lib/storage/storage";
 import styles from "./CookieNotification.module.css";
 import { IconInformation } from "components/Icons/IconInformation";
-import { IconButton } from "components/Button/IconButton";
+import { Button } from "components/Button/Button";
+import CookieModal from "./CookieModal";
+
+const CURRENT_COOKIE = "cookieNotificationV2Dismissed";
+const CURRENT_PERFORMANCE_COOKIE = "performanceCookiesAllowed";
 
 export default function CookieNotification() {
   const [dismissed, setDismissed] = useState(
-    tryLocalStorageGetItem("cookieNotificationDismissed") === "true"
+    tryLocalStorageGetItem(CURRENT_COOKIE) === "true"
   );
   const [visible, setVisible] = useState(true);
-
-  const handleDismiss = () => {
+  const handleDismiss = (performanceCookiesAllowed: boolean) => {
     setDismissed(true);
-    tryLocalStorageSetItem("cookieNotificationDismissed", "true");
+    tryLocalStorageSetItem(CURRENT_COOKIE, "true");
+    tryLocalStorageSetItem(
+      CURRENT_PERFORMANCE_COOKIE,
+      performanceCookiesAllowed.toString()
+    );
     setVisible(false);
   };
 
@@ -30,18 +36,23 @@ export default function CookieNotification() {
   return (
     <div className={styles.notification}>
       <div>
-        <IconInformation />
+        <span className={styles.notificationIcon}>
+          <IconInformation />
+        </span>
         <p>
-          We use necessary cookies to perform the services and prevent attacks.
-          For more information, please see our{" "}
+          We use cookies to improve your experience on our site. By using this
+          website you agree to our{" "}
           <a href="/privacy" target="_blank">
-            Cookies Policy
+            Cookie Policy
           </a>
           .
         </p>
-        <IconButton theme="ghost" size="XS" onClick={handleDismiss}>
-          <IconCross />
-        </IconButton>
+        <div className={styles.notificationActions}>
+          <CookieModal handleDismiss={handleDismiss} />
+          <Button theme="primary" size="S" onClick={() => handleDismiss(true)}>
+            Accept
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { useDebouncedEffect } from "lib/hooks/use-debounced-effect";
+import { useDebouncedEffect } from "src/hooks/useDebouncedEffect";
 import { useState } from "react";
 
 /**

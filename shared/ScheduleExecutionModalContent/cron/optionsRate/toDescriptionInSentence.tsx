@@ -1,5 +1,5 @@
 import { RateOption } from "./dataModel";
-import { assertUnreachable } from "lib/assertUnreachable";
+import { assertUnreachable } from "src/utils/assertUnreachable";
 
 export function toDescriptionInSentence(option: RateOption) {
   switch (option) {
